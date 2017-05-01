@@ -81,7 +81,7 @@ DIR* openDataDir(const char * const name) {
 }
 
 
-bool dataExists(const char * const path) {
+bool dataPathExists(const char * const path) {
 	char full_path[1024];
 	completePath(full_path, path);
 	return access(full_path, F_OK) != -1;

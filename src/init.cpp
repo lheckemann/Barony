@@ -560,7 +560,7 @@ int loadLanguage(char* lang)
 	snprintf(filename, 127, "lang/%s.txt", lang);
 
 	// check if language file is valid
-	if ( !dataExists(filename) )
+	if ( !dataPathExists(filename) )
 	{
 		// language file doesn't exist
 		printlog("error: unable to locate language file: '%s'", filename);
@@ -587,11 +587,11 @@ int loadLanguage(char* lang)
 	// load fonts
 	char fontName[64] = { 0 };
 	snprintf(fontName, 63, "lang/%s.ttf", lang);
-	if ( !dataExists(fontName) )
+	if ( !dataPathExists(fontName) )
 	{
 		strncpy(fontName, "lang/en.ttf", 63);
 	}
-	if ( !dataExists(fontName) )
+	if ( !dataPathExists(fontName) )
 	{
 		printlog("error: default game font 'lang/en.ttf' not found");
 		return 1;
