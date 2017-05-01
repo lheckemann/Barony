@@ -58,7 +58,7 @@ bool completePath(char *dest, const char * const filename) {
 	return true;
 }
 
-FILE* openFile(const char * const filename, const char * const mode) {
+FILE* openDataFile(const char * const filename, const char * const mode) {
 	char path[1024];
 	completePath(path, filename);
 	printlog("Opening %s", path);
@@ -152,7 +152,7 @@ voxel_t* loadVoxel(char* filename)
 		//bool has_ext = strstr(filename, ".vox") == NULL;
 		//snprintf(filename2, 1024, "%s%s", filename, has_ext ? "" : ".vox");
 
-		if ((file = openFile(filename, "rb")) == NULL)
+		if ((file = openDataFile(filename, "rb")) == NULL)
 		{
 			return NULL;
 		}
@@ -223,7 +223,7 @@ int loadMap(char* filename2, map_t* destmap, list_t* entlist)
 	}
 
 	// load the file!
-	if ((fp = openFile(filename, "rb")) == NULL)
+	if ((fp = openDataFile(filename, "rb")) == NULL)
 	{
 		printlog("warning: failed to open file '%s' for map loading!\n", filename);
 		if ( destmap == &map && game )
@@ -387,7 +387,7 @@ int saveMap(char* filename2)
 		{
 			strcat(filename, ".lmp");
 		}
-		if ((fp = openFile(filename, "wb")) == NULL)
+		if ((fp = openDataFile(filename, "wb")) == NULL)
 		{
 			printlog("warning: failed to open file '%s' for map saving!\n", filename);
 			return 1;
@@ -435,7 +435,7 @@ char* readFile(char* filename)
 {
 	char* file_contents = NULL;
 	long input_file_size;
-	FILE* input_file = openFile(filename, "rb");
+	FILE* input_file = openDataFile(filename, "rb");
 	if (!input_file) {
 		printlog("Open failed: %s", strerror(errno));
 		goto out_input_file;

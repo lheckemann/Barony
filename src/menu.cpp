@@ -3791,11 +3791,11 @@ void handleMainMenu(bool mode)
 				{
 					if ( !secretlevel )
 					{
-						fp = openFile(LEVELSFILE, "r");
+						fp = openDataFile(LEVELSFILE, "r");
 					}
 					else
 					{
-						fp = openFile(SECRETLEVELSFILE, "r");
+						fp = openDataFile(SECRETLEVELSFILE, "r");
 					}
 					int i;
 					for ( i = 0; i < currentlevel; i++ )
@@ -3952,11 +3952,11 @@ void handleMainMenu(bool mode)
 				{
 					if ( !secretlevel )
 					{
-						fp = openFile(LEVELSFILE, "r");
+						fp = openDataFile(LEVELSFILE, "r");
 					}
 					else
 					{
-						fp = openFile(SECRETLEVELSFILE, "r");
+						fp = openDataFile(SECRETLEVELSFILE, "r");
 					}
 					int i;
 					for ( i = 0; i < currentlevel; i++ )

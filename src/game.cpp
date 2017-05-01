@@ -672,11 +672,11 @@ void gameLogic(void)
 					numplayers = 0;
 					if ( !secretlevel )
 					{
-						fp = openFile(LEVELSFILE, "r");
+						fp = openDataFile(LEVELSFILE, "r");
 					}
 					else
 					{
-						fp = openFile(SECRETLEVELSFILE, "r");
+						fp = openDataFile(SECRETLEVELSFILE, "r");
 					}
 					for ( i = 0; i < currentlevel; i++ )
 						while ( fgetc(fp) != '\n' ) if ( feof(fp) )
@@ -2563,11 +2563,11 @@ int main(int argc, char** argv)
 						{
 							if ( !secretlevel )
 							{
-								fp = openFile(LEVELSFILE, "r");
+								fp = openDataFile(LEVELSFILE, "r");
 							}
 							else
 							{
-								fp = openFile(SECRETLEVELSFILE, "r");
+								fp = openDataFile(SECRETLEVELSFILE, "r");
 							}
 							fscanf(fp, "%s", tempstr);
 							while ( fgetc(fp) != ' ' ) if ( feof(fp) )

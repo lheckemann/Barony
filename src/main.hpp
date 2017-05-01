@@ -652,6 +652,6 @@ extern GLuint fbo_ren;
 void GO_SwapBuffers(SDL_Window* screen);
 unsigned int GO_GetPixelU32(int x, int y);
 extern char datadir[1024];
-FILE *openFile(const char *const filename, const char * const mode);
+FILE *openDataFile(const char *const filename, const char * const mode);
 DIR * openDataDir(const char *const);
 bool dataPathExists(const char *const);
