@@ -9,7 +9,6 @@
 
 -------------------------------------------------------------------------------*/
 
-#include "main.hpp"
 #include "game.hpp"
 #include "stat.hpp"
 #include "net.hpp"
@@ -34,7 +33,7 @@ int lobbyPlayers[MAX_STEAM_LOBBIES] = { 0 };
 void* steamIDRemote[MAXPLAYERS] = {NULL, NULL, NULL, NULL};
 
 char currentLobbyName[32] = { 0 };
-Uint32 currentSvFlags = 0;
+uint32_t currentSvFlags = 0;
 #ifdef STEAMWORKS
 ELobbyType currentLobbyType = k_ELobbyTypePrivate;
 #endif
@@ -712,7 +711,7 @@ void* cpp_SteamMatchmaking_GetLobbyByIndex(int iLobby)
 
 void steam_OnLobbyMatchListCallback( void* pCallback, bool bIOFailure )
 {
-	Uint32 iLobby;
+	uint32_t iLobby;
 
 	if ( !requestingLobbies )
 	{
@@ -874,8 +873,8 @@ void processLobbyInvite()
 
 	if ( loadingSaveGameChar && loadingSaveGameChar[0] )
 	{
-		Uint32 temp32 = atoi(loadingSaveGameChar);
-		Uint32 gameKey = getSaveGameUniqueGameKey();
+		uint32_t temp32 = atoi(loadingSaveGameChar);
+		uint32_t gameKey = getSaveGameUniqueGameKey();
 		if ( temp32 && temp32 == gameKey )
 		{
 			loadingsavegame = temp32;

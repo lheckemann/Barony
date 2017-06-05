@@ -9,7 +9,6 @@
 
 -------------------------------------------------------------------------------*/
 
-#include "main.hpp"
 #include "game.hpp"
 #include "stat.hpp"
 #include "entity.hpp"
@@ -207,7 +206,7 @@ void actArrow(Entity* my)
 						{
 							if ( !strcmp(hitstats->name, "") )
 							{
-								Uint32 color = SDL_MapRGB(mainsurface->format, 0, 255, 0);
+								uint32_t color = SDL_MapRGB(mainsurface->format, 0, 255, 0);
 								messagePlayerColor(parent->skill[2], color, language[446], language[90 + hitstats->type]);
 								if ( damage == 0 )
 								{
@@ -216,7 +215,7 @@ void actArrow(Entity* my)
 							}
 							else
 							{
-								Uint32 color = SDL_MapRGB(mainsurface->format, 0, 255, 0);
+								uint32_t color = SDL_MapRGB(mainsurface->format, 0, 255, 0);
 								messagePlayerColor(parent->skill[2], color, language[448], hitstats->name);
 								if ( damage == 0 )
 								{
@@ -234,7 +233,7 @@ void actArrow(Entity* my)
 					}
 					else if ( hit.entity->behavior == &actPlayer )
 					{
-						Uint32 color = SDL_MapRGB(mainsurface->format, 255, 0, 0);
+						uint32_t color = SDL_MapRGB(mainsurface->format, 255, 0, 0);
 						messagePlayerColor(hit.entity->skill[2], color, language[451]);
 						if ( damage == 0 )
 						{
@@ -248,7 +247,7 @@ void actArrow(Entity* my)
 						hitstats->EFFECTS_TIMERS[EFF_POISONED] = ARROW_POISON;
 						if ( hit.entity->behavior == &actPlayer )
 						{
-							Uint32 color = SDL_MapRGB(mainsurface->format, 255, 0, 0);
+							uint32_t color = SDL_MapRGB(mainsurface->format, 255, 0, 0);
 							messagePlayerColor(hit.entity->skill[2], color, language[453]);
 							serverUpdateEffects(hit.entity->skill[2]);
 						}

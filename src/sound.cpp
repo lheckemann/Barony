@@ -9,7 +9,6 @@
 
 -------------------------------------------------------------------------------*/
 
-#include "main.hpp"
 #include "files.hpp"
 //#include "game.hpp"
 #include "sound.hpp"
@@ -36,7 +35,7 @@ int fmod_flags;
 void* fmod_extdriverdata;
 
 FMOD_SOUND** sounds = NULL;
-Uint32 numsounds = 0;
+uint32_t numsounds = 0;
 FMOD_SOUND** minesmusic = NULL;
 FMOD_SOUND** swampmusic = NULL;
 FMOD_SOUND** labyrinthmusic = NULL;
@@ -371,7 +370,7 @@ ALCdevice  *openal_device = NULL;
 //#define openal_maxchannels 100
 
 OPENAL_BUFFER** sounds = NULL;
-Uint32 numsounds = 0;
+uint32_t numsounds = 0;
 OPENAL_BUFFER** minesmusic = NULL;
 OPENAL_BUFFER** swampmusic = NULL;
 OPENAL_BUFFER** labyrinthmusic = NULL;

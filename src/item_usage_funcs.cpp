@@ -10,7 +10,6 @@
 
 -------------------------------------------------------------------------------*/
 
-#include "main.hpp"
 #include "game.hpp"
 #include "stat.hpp"
 #include "items.hpp"
@@ -390,7 +389,7 @@ void item_PotionCureAilment(Item* item, Entity* entity)
 		return;
 	}
 
-	Uint32 color = SDL_MapRGB(mainsurface->format, 0, 255, 0);
+	uint32_t color = SDL_MapRGB(mainsurface->format, 0, 255, 0);
 	messagePlayerColor(player, color, language[763]);
 	for ( c = 0; c < NUMEFFECTS; c++ )   //This does a whole lot more than just cure ailments.
 	{
@@ -790,7 +789,7 @@ void item_PotionHealing(Item* item, Entity* entity)
 
 	// play drink sound
 	playSoundEntity(entity, 52, 64);
-	Uint32 color = SDL_MapRGB(mainsurface->format, 0, 255, 0);
+	uint32_t color = SDL_MapRGB(mainsurface->format, 0, 255, 0);
 	messagePlayerColor(player, color, language[773]);
 
 	// stop bleeding
@@ -866,7 +865,7 @@ void item_PotionExtraHealing(Item* item, Entity* entity)
 
 	// play drink sound
 	playSoundEntity(entity, 52, 64);
-	Uint32 color = SDL_MapRGB(mainsurface->format, 0, 255, 0);
+	uint32_t color = SDL_MapRGB(mainsurface->format, 0, 255, 0);
 	messagePlayerColor(player, color, language[773]);
 
 	// stop bleeding
@@ -1864,7 +1863,7 @@ void item_ScrollSummon(Item* item, int player)
 	messagePlayer(player, language[848]);
 
 	playSoundEntity(players[player]->entity, 153, 64);
-	Uint32 numCreatures = 1;
+	uint32_t numCreatures = 1;
 	Monster creature = RAT;
 
 	if (item->beatitude <= -2)
@@ -1985,7 +1984,7 @@ void item_ScrollSummon(Item* item, int player)
 				// update followers for this player
 				node_t* newNode = list_AddNodeLast(&stats[player]->FOLLOWERS);
 				newNode->deconstructor = &defaultDeconstructor;
-				Uint32* myuid = (Uint32*) malloc(sizeof(Uint32));
+				uint32_t* myuid = (uint32_t*) malloc(sizeof(uint32_t));
 				newNode->element = myuid;
 				*myuid = monster->getUID();
 
@@ -1993,7 +1992,7 @@ void item_ScrollSummon(Item* item, int player)
 				if ( player > 0 && multiplayer == SERVER )
 				{
 					strcpy((char*)net_packet->data, "LEAD");
-					SDLNet_Write32((Uint32)monster->getUID(), &net_packet->data[4]);
+					SDLNet_Write32((uint32_t)monster->getUID(), &net_packet->data[4]);
 					net_packet->address.host = net_clients[player - 1].host;
 					net_packet->address.port = net_clients[player - 1].port;
 					net_packet->len = 8;

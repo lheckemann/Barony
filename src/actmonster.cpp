@@ -9,7 +9,6 @@
 
 -------------------------------------------------------------------------------*/
 
-#include "main.hpp"
 #include "game.hpp"
 #include "stat.hpp"
 #include "messages.hpp"
@@ -113,7 +112,7 @@ double sightranges[NUMMONSTERS] =
 
 -------------------------------------------------------------------------------*/
 
-void summonMonsterClient(Monster creature, long x, long y, Uint32 uid)
+void summonMonsterClient(Monster creature, long x, long y, uint32_t uid)
 {
 	Entity* entity = summonMonster(creature, x, y);
 	entity->flags[INVISIBLE] = false;
@@ -348,9 +347,9 @@ Entity* summonMonster(Monster creature, long x, long y)
 		if ( multiplayer == SERVER )
 		{
 			strcpy((char*)net_packet->data, "SUMM");
-			SDLNet_Write32((Uint32)creature, &net_packet->data[4]);
-			SDLNet_Write32((Uint32)entity->x, &net_packet->data[8]);
-			SDLNet_Write32((Uint32)entity->y, &net_packet->data[12]);
+			SDLNet_Write32((uint32_t)creature, &net_packet->data[4]);
+			SDLNet_Write32((uint32_t)entity->x, &net_packet->data[8]);
+			SDLNet_Write32((uint32_t)entity->y, &net_packet->data[12]);
 			SDLNet_Write32(entity->getUID(), &net_packet->data[16]);
 			net_packet->len = 20;
 
@@ -890,7 +889,7 @@ void actMonster(Entity* my)
 				{
 					MONSTER_SOUND = playSoundPlayer(c, 179, 128);
 					playSoundPlayer(c, 166, 128);
-					Uint32 color = SDL_MapRGB(mainsurface->format, 255, 0, 255);
+					uint32_t color = SDL_MapRGB(mainsurface->format, 255, 0, 255);
 					messagePlayerColor(c, color, language[512]);
 				}
 			}
@@ -1307,7 +1306,7 @@ void actMonster(Entity* my)
 	}
 
 	// calculate weight
-	Sint32 weight = 0;
+	int32_t weight = 0;
 	if ( myStats->helmet != NULL )
 	{
 		weight += items[myStats->helmet->type].weight * myStats->helmet->count;
@@ -1524,7 +1523,7 @@ void actMonster(Entity* my)
 								{
 									node_t* newNode = list_AddNodeLast(&stats[monsterclicked]->FOLLOWERS);
 									newNode->deconstructor = &defaultDeconstructor;
-									Uint32* myuid = (Uint32*) malloc(sizeof(Uint32));
+									uint32_t* myuid = (uint32_t*) malloc(sizeof(uint32_t));
 									newNode->element = myuid;
 									*myuid = my->getUID();
 									if (my->getINT() > -2)
@@ -1542,7 +1541,7 @@ void actMonster(Entity* my)
 									if (monsterclicked > 0 && multiplayer == SERVER)
 									{
 										strcpy((char*)net_packet->data, "LEAD");
-										SDLNet_Write32((Uint32)my->getUID(), &net_packet->data[4]);
+										SDLNet_Write32((uint32_t)my->getUID(), &net_packet->data[4]);
 										net_packet->address.host = net_clients[monsterclicked - 1].host;
 										net_packet->address.port = net_clients[monsterclicked - 1].port;
 										net_packet->len = 8;

@@ -9,7 +9,6 @@
 
 -------------------------------------------------------------------------------*/
 
-#include "main.hpp"
 #include "game.hpp"
 #include "stat.hpp"
 #include "items.hpp"
@@ -20,8 +19,8 @@
 #include "player.hpp"
 
 list_t* shopInv = NULL;
-Uint32 shopkeeper = 0;
-Uint32 shoptimer = 0;
+uint32_t shopkeeper = 0;
+uint32_t shoptimer = 0;
 char* shopspeech = NULL;
 int shopinventorycategory = 7;
 int shopitemscroll;
@@ -95,7 +94,7 @@ void startTradingServer(Entity* entity, int player)
 		// open shop on client
 		Stat* entitystats = entity->getStats();
 		strcpy((char*)net_packet->data, "SHOP");
-		SDLNet_Write32((Uint32)entity->getUID(), &net_packet->data[4]);
+		SDLNet_Write32((uint32_t)entity->getUID(), &net_packet->data[4]);
 		net_packet->data[8] = entity->skill[18];
 		strcpy((char*)(&net_packet->data[9]), entitystats->name);
 		net_packet->data[9 + strlen(entitystats->name)] = 0;
@@ -114,7 +113,7 @@ void startTradingServer(Entity* entity, int player)
 			net_packet->data[8] = (char)item->status;
 			net_packet->data[9] = (char)item->beatitude;
 			net_packet->data[10] = (unsigned char)item->count;
-			SDLNet_Write32((Uint32)item->appearance, &net_packet->data[11]);
+			SDLNet_Write32((uint32_t)item->appearance, &net_packet->data[11]);
 			if ( item->identified )
 			{
 				net_packet->data[15] = 1;
@@ -189,7 +188,7 @@ void buyItemFromShop(Item* item)
 			SDLNet_Write32(item->type, &net_packet->data[8]);
 			SDLNet_Write32(item->status, &net_packet->data[12]);
 			SDLNet_Write32(item->beatitude, &net_packet->data[16]);
-			SDLNet_Write32((Uint32)item->appearance, &net_packet->data[20]);
+			SDLNet_Write32((uint32_t)item->appearance, &net_packet->data[20]);
 			if ( item->identified )
 			{
 				net_packet->data[24] = 1;
@@ -330,7 +329,7 @@ void sellItemToShop(Item* item)
 		SDLNet_Write32(item->type, &net_packet->data[8]);
 		SDLNet_Write32(item->status, &net_packet->data[12]);
 		SDLNet_Write32(item->beatitude, &net_packet->data[16]);
-		SDLNet_Write32((Uint32)item->appearance, &net_packet->data[20]);
+		SDLNet_Write32((uint32_t)item->appearance, &net_packet->data[20]);
 		if ( item->identified )
 		{
 			net_packet->data[24] = 1;

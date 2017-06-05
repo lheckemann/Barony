@@ -9,7 +9,6 @@
 
 -------------------------------------------------------------------------------*/
 
-#include "main.hpp"
 
 #pragma once
 
@@ -18,9 +17,9 @@ extern int current_player; //This may not be necessary. Consider this: Each Play
 
 //TODO: Move these into each and every individual player.
 extern Entity* selectedEntity;
-extern Sint32 mousex, mousey;
-extern Sint32 omousex, omousey;
-extern Sint32 mousexrel, mouseyrel;
+extern int32_t mousex, mousey;
+extern int32_t omousex, omousey;
+extern int32_t mousexrel, mouseyrel;
 
 /*
  * TODO: Will need to make messages work for each hotseat player.

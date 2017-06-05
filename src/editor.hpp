@@ -105,7 +105,7 @@ extern int slidersize;
 extern int selectedFile;
 extern int messagetime;
 extern char message[48];
-extern Uint32 cursorflash;
+extern uint32_t cursorflash;
 extern char widthtext[4], heighttext[4], nametext[32], authortext[32];
 extern int editproperty;
 extern bool mode3d;
@@ -119,12 +119,12 @@ extern list_t undolist;
 
 // fps
 extern bool showfps;
-extern real_t t, ot, frameval[AVERAGEFRAMES];
-extern Uint32 cycles, pingtime;
-extern Uint32 timesync;
-extern real_t fps;
+extern float t, ot, frameval[AVERAGEFRAMES];
+extern uint32_t cycles, pingtime;
+extern uint32_t timesync;
+extern float fps;
 
-extern Sint32 ocamx, ocamy;
+extern int32_t ocamx, ocamy;
 
 // undo/redo funcs
 void makeUndo();

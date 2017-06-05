@@ -10,7 +10,6 @@
 -------------------------------------------------------------------------------*/
 
 #include <new>
-#include "main.hpp"
 #include "entity.hpp"
 
 /*-------------------------------------------------------------------------------
@@ -97,7 +96,7 @@ void entityDeconstructor(void* data)
 
 void lightDeconstructor(void* data)
 {
-	Sint32 x, y;
+	int32_t x, y;
 	light_t* light;
 
 	if ( data != NULL)
@@ -178,7 +177,7 @@ void listDeconstructor(void* data)
 
 -------------------------------------------------------------------------------*/
 
-Entity* newEntity(Sint32 sprite, Uint32 pos, list_t* entlist)
+Entity* newEntity(int32_t sprite, uint32_t pos, list_t* entlist)
 {
 	Entity* entity;
 
@@ -252,7 +251,7 @@ button_t* newButton(void)
 
 -------------------------------------------------------------------------------*/
 
-light_t* newLight(Sint32 x, Sint32 y, Sint32 radius, Sint32 intensity)
+light_t* newLight(int32_t x, int32_t y, int32_t radius, int32_t intensity)
 {
 	light_t* light;
 
@@ -276,8 +275,8 @@ light_t* newLight(Sint32 x, Sint32 y, Sint32 radius, Sint32 intensity)
 	light->intensity = intensity;
 	if ( light->radius > 0 )
 	{
-		light->tiles = (Sint32*) malloc(sizeof(Sint32) * (radius * 2 + 1) * (radius * 2 + 1));
-		memset(light->tiles, 0, sizeof(Sint32) * (radius * 2 + 1) * (radius * 2 + 1));
+		light->tiles = (int32_t*) malloc(sizeof(int32_t) * (radius * 2 + 1) * (radius * 2 + 1));
+		memset(light->tiles, 0, sizeof(int32_t) * (radius * 2 + 1) * (radius * 2 + 1));
 	}
 	else
 	{
@@ -294,7 +293,7 @@ light_t* newLight(Sint32 x, Sint32 y, Sint32 radius, Sint32 intensity)
 
 -------------------------------------------------------------------------------*/
 
-string_t* newString(list_t* list, Uint32 color, char* content, ...)
+string_t* newString(list_t* list, uint32_t color, char* content, ...)
 {
 	string_t* string;
 	char str[1024] = { 0 };
@@ -370,7 +369,7 @@ string_t* newString(list_t* list, Uint32 color, char* content, ...)
 
 -------------------------------------------------------------------------------*/
 
-pathnode_t* newPathnode(list_t* list, Sint32 x, Sint32 y, pathnode_t* parent, Sint8 pos)
+pathnode_t* newPathnode(list_t* list, int32_t x, int32_t y, pathnode_t* parent, Sint8 pos)
 {
 	pathnode_t* pathnode;
 

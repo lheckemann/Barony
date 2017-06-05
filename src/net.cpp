@@ -9,7 +9,6 @@
 
 -------------------------------------------------------------------------------*/
 
-#include "main.hpp"
 #include "draw.hpp"
 #include "game.hpp"
 #include "stat.hpp"
@@ -39,6 +38,16 @@ char last_ip[64] = "";
 char last_port[64] = "";
 char lobbyChatbox[LOBBY_CHATBOX_LENGTH];
 list_t lobbyChatboxMessages;
+
+SDLNet_SocketSet tcpset = NULL;
+list_t safePacketsSent, safePacketsReceived[MAXPLAYERS];
+bool receivedclientnum = false;
+IPaddress net_server;
+IPaddress* net_clients = NULL;
+UDPsocket net_sock = NULL;
+TCPsocket net_tcpsock = NULL;
+UDPpacket* net_packet = NULL;
+TCPsocket* net_tcpclients = NULL;
 
 // uncomment this to have the game log packet info
 //#define PACKETINFO
@@ -97,7 +106,7 @@ int sendPacket(UDPsocket sock, int channel, UDPpacket* packet, int hostnum)
 
 -------------------------------------------------------------------------------*/
 
-Uint32 packetnum = 0;
+uint32_t packetnum = 0;
 int sendPacketSafe(UDPsocket sock, int channel, UDPpacket* packet, int hostnum)
 {
 	packetsend_t* packetsend = (packetsend_t*) malloc(sizeof(packetsend_t));
@@ -202,7 +211,7 @@ void messagePlayer(int player, char* message, ...)
 
 -------------------------------------------------------------------------------*/
 
-void messagePlayerColor(int player, Uint32 color, char* message, ...)
+void messagePlayerColor(int player, uint32_t color, char* message, ...)
 {
 	char str[256] = { 0 };
 	va_list argptr;
@@ -287,7 +296,7 @@ void sendEntityTCP(Entity* entity, int c)
 
 	// send entity data to the client
 	strcpy((char*)net_packet->data, "ENTU");
-	SDLNet_Write32((Uint32)entity->getUID(), &net_packet->data[4]);
+	SDLNet_Write32((uint32_t)entity->getUID(), &net_packet->data[4]);
 	SDLNet_Write16((Uint16)entity->sprite, &net_packet->data[8]);
 	SDLNet_Write16((Sint16)(entity->x * 32), &net_packet->data[10]);
 	SDLNet_Write16((Sint16)(entity->y * 32), &net_packet->data[12]);
@@ -313,7 +322,7 @@ void sendEntityTCP(Entity* entity, int c)
 			net_packet->data[34 + j / 8] |= power(2, j - (j / 8) * 8);
 		}
 	}
-	SDLNet_Write32((Uint32)ticks, &net_packet->data[36]);
+	SDLNet_Write32((uint32_t)ticks, &net_packet->data[36]);
 	SDLNet_Write16((Sint16)(entity->vel_x * 32), &net_packet->data[40]);
 	SDLNet_Write16((Sint16)(entity->vel_y * 32), &net_packet->data[42]);
 	SDLNet_Write16((Sint16)(entity->vel_z * 32), &net_packet->data[44]);
@@ -348,7 +357,7 @@ void sendEntityUDP(Entity* entity, int c, bool guarantee)
 
 	// send entity data to the client
 	strcpy((char*)net_packet->data, "ENTU");
-	SDLNet_Write32((Uint32)entity->getUID(), &net_packet->data[4]);
+	SDLNet_Write32((uint32_t)entity->getUID(), &net_packet->data[4]);
 	SDLNet_Write16((Uint16)entity->sprite, &net_packet->data[8]);
 	SDLNet_Write16((Sint16)(entity->x * 32), &net_packet->data[10]);
 	SDLNet_Write16((Sint16)(entity->y * 32), &net_packet->data[12]);
@@ -374,7 +383,7 @@ void sendEntityUDP(Entity* entity, int c, bool guarantee)
 			net_packet->data[34 + j / 8] |= power(2, j - (j / 8) * 8);
 		}
 	}
-	SDLNet_Write32((Uint32)ticks, &net_packet->data[36]);
+	SDLNet_Write32((uint32_t)ticks, &net_packet->data[36]);
 	SDLNet_Write16((Sint16)(entity->vel_x * 32), &net_packet->data[40]);
 	SDLNet_Write16((Sint16)(entity->vel_y * 32), &net_packet->data[42]);
 	SDLNet_Write16((Sint16)(entity->vel_z * 32), &net_packet->data[44]);
@@ -435,7 +444,7 @@ void sendMapSeedTCP(int c)
 
 void sendMapTCP(int c)
 {
-	Uint32 x, y, z;
+	uint32_t x, y, z;
 
 	if ( client_disconnected[c] == true )
 	{
@@ -742,7 +751,7 @@ Entity* receiveEntity(Entity* entity)
 		entity->sprite = (int)SDLNet_Read16(&net_packet->data[8]);
 	}
 	entity->lastupdate = ticks;
-	entity->lastupdateserver = (Uint32)SDLNet_Read32(&net_packet->data[36]);
+	entity->lastupdateserver = (uint32_t)SDLNet_Read32(&net_packet->data[36]);
 	entity->setUID((int)SDLNet_Read32(&net_packet->data[4])); // remember who I am
 	entity->new_x = ((Sint16)SDLNet_Read16(&net_packet->data[10])) / 32.0;
 	entity->new_y = ((Sint16)SDLNet_Read16(&net_packet->data[12])) / 32.0;
@@ -960,12 +969,12 @@ void clientHandlePacket()
 		return;
 	}
 
-	Uint32 x, y;
+	uint32_t x, y;
 	node_t* node;
 	node_t* nextnode;
 	Entity* entity, *entity2;
 	int c = 0;
-	Uint32 i = 0, j;
+	uint32_t i = 0, j;
 	Item* item = NULL;
 	FILE* fp;
 
@@ -1419,7 +1428,7 @@ void clientHandlePacket()
 	// open shop
 	else if (!strncmp((char*)net_packet->data, "SHOP", 4))
 	{
-		shopkeeper = (Uint32)SDLNet_Read32(&net_packet->data[4]);
+		shopkeeper = (uint32_t)SDLNet_Read32(&net_packet->data[4]);
 		shopkeepertype = net_packet->data[8];
 		strcpy( shopkeepername_client, (char*)(&net_packet->data[9]) );
 		shopkeepername = shopkeepername_client;
@@ -1474,7 +1483,7 @@ void clientHandlePacket()
 	{
 		if ( ticks != 1 )
 		{
-			Uint32 color = SDLNet_Read32(&net_packet->data[4]);
+			uint32_t color = SDLNet_Read32(&net_packet->data[4]);
 			messagePlayerColor(clientnum, color, (char*)(&net_packet->data[8]));
 		}
 		for ( c = 0; c < MAXPLAYERS; c++ )
@@ -1533,11 +1542,11 @@ void clientHandlePacket()
 					continue;
 				}
 				strcpy((char*)net_packet->data, "DIEI");
-				SDLNet_Write32((Uint32)item->type, &net_packet->data[4]);
-				SDLNet_Write32((Uint32)item->status, &net_packet->data[8]);
-				SDLNet_Write32((Uint32)item->beatitude, &net_packet->data[12]);
-				SDLNet_Write32((Uint32)item->count, &net_packet->data[16]);
-				SDLNet_Write32((Uint32)item->appearance, &net_packet->data[20]);
+				SDLNet_Write32((uint32_t)item->type, &net_packet->data[4]);
+				SDLNet_Write32((uint32_t)item->status, &net_packet->data[8]);
+				SDLNet_Write32((uint32_t)item->beatitude, &net_packet->data[12]);
+				SDLNet_Write32((uint32_t)item->count, &net_packet->data[16]);
+				SDLNet_Write32((uint32_t)item->appearance, &net_packet->data[20]);
 				net_packet->data[24] = item->identified;
 				net_packet->data[25] = clientnum;
 				net_packet->data[26] = (Uint8)camera.x;
@@ -1676,7 +1685,7 @@ void clientHandlePacket()
 	// update hunger
 	else if (!strncmp((char*)net_packet->data, "HNGR", 4))
 	{
-		stats[clientnum]->HUNGER = (Sint32)SDLNet_Read32(&net_packet->data[4]);
+		stats[clientnum]->HUNGER = (int32_t)SDLNet_Read32(&net_packet->data[4]);
 		return;
 	}
 
@@ -1759,13 +1768,13 @@ void clientHandlePacket()
 		secretlevel = net_packet->data[4];
 		mapseed = SDLNet_Read32(&net_packet->data[5]);
 		int result = 0;
-		/*Uint32 oldtime = SDL_GetTicks();
+		/*uint32_t oldtime = SDL_GetTicks();
 		while( SDLNet_TCP_Recv(net_tcpsock, net_packet->data, 4)!=4 ) {
 			if( SDL_GetTicks()-oldtime>10000 )
 				printlog("warning: game has taken more than 10 seconds to receive map seed\n");
 		}*/
 		numplayers = 0;
-		entity_uids = (Uint32)SDLNet_Read32(&net_packet->data[9]);
+		entity_uids = (uint32_t)SDLNet_Read32(&net_packet->data[9]);
 		printlog("Received map seed: %d. Entity UID start: %d\n", mapseed, entity_uids);
 		if ( !secretlevel )
 		{
@@ -1880,7 +1889,7 @@ void clientHandlePacket()
 		Sint16 x = (Sint16)SDLNet_Read16(&net_packet->data[4]);
 		Sint16 y = (Sint16)SDLNet_Read16(&net_packet->data[6]);
 		Sint16 z = (Sint16)SDLNet_Read16(&net_packet->data[8]);
-		Uint32 sprite = (Uint32)SDLNet_Read32(&net_packet->data[10]);
+		uint32_t sprite = (uint32_t)SDLNet_Read32(&net_packet->data[10]);
 		spawnMagicEffectParticles( x, y, z, sprite );
 		return;
 	}
@@ -1934,12 +1943,12 @@ void clientHandlePacket()
 	// lead a monster
 	else if (!strncmp((char*)net_packet->data, "LEAD", 4))
 	{
-		Uint32* uidnum = (Uint32*) malloc(sizeof(Uint32));
-		*uidnum = (Uint32)SDLNet_Read32(&net_packet->data[4]);
+		uint32_t* uidnum = (uint32_t*) malloc(sizeof(uint32_t));
+		*uidnum = (uint32_t)SDLNet_Read32(&net_packet->data[4]);
 		node_t* node = list_AddNodeLast(&stats[clientnum]->FOLLOWERS);
 		node->element = uidnum;
 		node->deconstructor = &defaultDeconstructor;
-		node->size = sizeof(Uint32);
+		node->size = sizeof(uint32_t);
 		return;
 	}
 
@@ -2040,9 +2049,9 @@ void clientHandlePacket()
 	else if (!strncmp((char*)net_packet->data, "SUMM", 4))
 	{
 		Monster monster = (Monster)SDLNet_Read32(&net_packet->data[4]);
-		Sint32 x = (Sint32)SDLNet_Read32(&net_packet->data[8]);
-		Sint32 y = (Sint32)SDLNet_Read32(&net_packet->data[12]);
-		Uint32 uid = SDLNet_Read32(&net_packet->data[16]);
+		int32_t x = (int32_t)SDLNet_Read32(&net_packet->data[8]);
+		int32_t y = (int32_t)SDLNet_Read32(&net_packet->data[12]);
+		uint32_t uid = SDLNet_Read32(&net_packet->data[16]);
 		summonMonsterClient(monster, x, y, uid);
 		return;
 	}
@@ -2050,7 +2059,7 @@ void clientHandlePacket()
 	// update entity bodypart
 	else if (!strncmp((char*)net_packet->data, "ENTB", 4))
 	{
-		i = (Uint32)SDLNet_Read32(&net_packet->data[4]);
+		i = (uint32_t)SDLNet_Read32(&net_packet->data[4]);
 		for ( node = map.entities->first; node != NULL; node = node->next )
 		{
 			entity = (Entity*)node->element;
@@ -2110,7 +2119,7 @@ void clientHandlePacket()
 			entity2 = (Entity*)node->element;
 			if (entity2->getUID() == i)
 			{
-				if ( (Uint32)SDLNet_Read32(&net_packet->data[36]) < (Uint32)entity2->lastupdateserver )
+				if ( (uint32_t)SDLNet_Read32(&net_packet->data[36]) < (uint32_t)entity2->lastupdateserver )
 				{
 					i = -1; // old packet, not used
 				}
@@ -2483,7 +2492,7 @@ void serverHandlePacket()
 	node_t* node;
 	Entity* entity;
 	int c = 0;
-	Uint32 j;
+	uint32_t j;
 	Item* item;
 	char shortname[11];
 	double dx, dy, velx, vely, yaw, pitch, dist;
@@ -2541,7 +2550,7 @@ void serverHandlePacket()
 	else if (!strncmp((char*)net_packet->data, "ENTE", 4))
 	{
 		int x = net_packet->data[4];
-		Uint32 uid = SDLNet_Read32(&net_packet->data[5]);
+		uint32_t uid = SDLNet_Read32(&net_packet->data[5]);
 		bool foundit = false;
 		for ( node = map.entities->first; node != NULL; node = node->next )
 		{
@@ -2733,7 +2742,7 @@ void serverHandlePacket()
 
 		int pnum = net_packet->data[4];
 		client_keepalive[pnum] = ticks;
-		Uint32 color = SDLNet_Read32(&net_packet->data[5]);
+		uint32_t color = SDLNet_Read32(&net_packet->data[5]);
 
 		strncpy(tempstr, stats[pnum]->name, std::min<size_t>(strlen(stats[pnum]->name), 10)); //TODO: Why are size_t and int being compared?
 		tempstr[std::min<size_t>(strlen(stats[pnum]->name), 10)] = 0; //TODO: Why are size_t and int being compared?
@@ -2817,7 +2826,7 @@ void serverHandlePacket()
 	// close shop
 	else if (!strncmp((char*)net_packet->data, "SHPC", 4))
 	{
-		Entity* entity = uidToEntity((Uint32)SDLNet_Read32(&net_packet->data[4]));
+		Entity* entity = uidToEntity((uint32_t)SDLNet_Read32(&net_packet->data[4]));
 		if ( entity )
 		{
 			entity->skill[0] = 0;
@@ -2830,7 +2839,7 @@ void serverHandlePacket()
 	// buy item from shop
 	else if (!strncmp((char*)net_packet->data, "SHPB", 4))
 	{
-		Uint32 uidnum = (Uint32)SDLNet_Read32(&net_packet->data[4]);
+		uint32_t uidnum = (uint32_t)SDLNet_Read32(&net_packet->data[4]);
 		int client = net_packet->data[25];
 		Entity* entity = uidToEntity(uidnum);
 		if ( !entity )
@@ -2903,7 +2912,7 @@ void serverHandlePacket()
 	// sell item to shop
 	else if (!strncmp((char*)net_packet->data, "SHPS", 4))
 	{
-		Uint32 uidnum = (Uint32)SDLNet_Read32(&net_packet->data[4]);
+		uint32_t uidnum = (uint32_t)SDLNet_Read32(&net_packet->data[4]);
 		int client = net_packet->data[25];
 		Entity* entity = uidToEntity(uidnum);
 		if ( !entity )
@@ -3416,8 +3425,8 @@ int steamPacketThread(void* data)
 
 	NetHandler& handler = *static_cast<NetHandler* >(data); //Basically, our this.
 
-	Uint32 packetlen = 0;
-	Uint32 bytes_read = 0;
+	uint32_t packetlen = 0;
+	uint32_t bytes_read = 0;
 	CSteamID steam_id_remote;
 	Uint8* packet = nullptr;
 	CSteamID mySteamID = SteamUser()->GetSteamID();

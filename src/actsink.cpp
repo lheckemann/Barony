@@ -9,7 +9,6 @@
 
 -------------------------------------------------------------------------------*/
 
-#include "main.hpp"
 #include "game.hpp"
 #include "stat.hpp"
 #include "entity.hpp"
@@ -140,7 +139,7 @@ void actSink(Entity* my)
 							Entity* monster = summonMonster(SLIME, my->x, my->y);
 							if ( monster )
 							{
-								Uint32 color = SDL_MapRGB(mainsurface->format, 255, 128, 0);
+								uint32_t color = SDL_MapRGB(mainsurface->format, 255, 128, 0);
 								messagePlayerColor(i, color, language[582]);
 								Stat* monsterStats = monster->getStats();
 								monsterStats->LVL = 4;

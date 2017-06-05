@@ -9,7 +9,6 @@
 
 -------------------------------------------------------------------------------*/
 
-#include "main.hpp"
 #include "game.hpp"
 #include "stat.hpp"
 #include "entity.hpp"
@@ -35,9 +34,9 @@ int pathMapZone = 1;
 
 -------------------------------------------------------------------------------*/
 
-Uint32 heuristic(int x1, int y1, int x2, int y2)
+uint32_t heuristic(int x1, int y1, int x2, int y2)
 {
-	Uint32 h;
+	uint32_t h;
 	h = (abs(x2 - x1) + abs(y2 - y1)) * STRAIGHTCOST;
 	return h;
 }
@@ -184,7 +183,7 @@ list_t* generatePath(int x1, int y1, int x2, int y2, Entity* my, Entity* target,
 	list_t* path;
 	node_t* node;
 	bool alreadyadded;
-	Sint32 x, y, z, h, g;
+	int32_t x, y, z, h, g;
 	pathnode_t** binaryheap;
 	long heaplength = 0;
 	node_t* entityNode = NULL;

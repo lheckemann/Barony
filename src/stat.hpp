@@ -96,26 +96,26 @@ class Stat
 public:
 	Monster type;
 	sex_t sex;
-	Uint32 appearance;
+	uint32_t appearance;
 	char name[128];
 	char obituary[128];
-	Uint32 poisonKiller; // uid of the entity which killed me via burning/poison
+	uint32_t poisonKiller; // uid of the entity which killed me via burning/poison
 
 	// attributes
-	Sint32 HP, MAXHP, OLDHP;
-	Sint32 MP, MAXMP;
-	Sint32 STR, DEX, CON, INT, PER, CHR;
-	Sint32 EXP, LVL;
-	Sint32 GOLD, HUNGER;
+	int32_t HP, MAXHP, OLDHP;
+	int32_t MP, MAXMP;
+	int32_t STR, DEX, CON, INT, PER, CHR;
+	int32_t EXP, LVL;
+	int32_t GOLD, HUNGER;
 
 	// skills and effects
-	Sint32 PROFICIENCIES[NUMPROFICIENCIES];
+	int32_t PROFICIENCIES[NUMPROFICIENCIES];
 	bool EFFECTS[NUMEFFECTS];
-	Sint32 EFFECTS_TIMERS[NUMEFFECTS];
+	int32_t EFFECTS_TIMERS[NUMEFFECTS];
 	bool defending;
 
 	// group think
-	Uint32 leader_uid;
+	uint32_t leader_uid;
 	list_t FOLLOWERS;
 	int stache_x1, stache_x2;
 	int stache_y1, stache_y2;

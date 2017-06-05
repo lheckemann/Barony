@@ -49,7 +49,7 @@
 
 /* RC4-based pseudo-random state. */
 static unsigned char s[256];
-static Sint32 s_i, s_j;
+static int32_t s_i, s_j;
 
 /* Nonzero if PRNG has been seeded. */
 static int seeded;
@@ -121,7 +121,7 @@ get_octet (const void* bytes_, size_t n_bytes, size_t octet_idx)
 void
 prng_seed_bytes (const void* key, size_t size)
 {
-	Sint32 i, j;
+	int32_t i, j;
 
 	assert (key != NULL && size > 0);
 
@@ -160,7 +160,7 @@ unsigned char
 prng_get_byte (void)
 {
 	unsigned char byte;
-	Sint32 bits;
+	int32_t bits;
 
 	byte = prng_get_octet ();
 	for (bits = 8; bits < CHAR_BIT; bits += 8)
@@ -207,10 +207,10 @@ prng_get_long (void)
 
 /* Returns a pseudo-random unsigned int in the range [0,
    UINT_MAX]. */
-Uint32
+uint32_t
 prng_get_uint (void)
 {
-	Uint32 uint;
+	uint32_t uint;
 	size_t bits;
 
 	uint = prng_get_octet ();
@@ -252,7 +252,7 @@ prng_get_double_normal (void)
 {
 	/* Knuth, _The Art of Computer Programming_, Vol. 2, 3.4.1C,
 	   Algorithm P. */
-	static Sint32 has_next = 0;
+	static int32_t has_next = 0;
 	static double next_normal;
 	double this_normal;
 

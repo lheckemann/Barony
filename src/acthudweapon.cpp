@@ -9,7 +9,6 @@
 
 -------------------------------------------------------------------------------*/
 
-#include "main.hpp"
 #include "game.hpp"
 #include "stat.hpp"
 #include "items.hpp"
@@ -25,7 +24,7 @@ Entity* hudarm = NULL;
 bool weaponSwitch = false;
 bool shieldSwitch = false;
 
-Sint32 throwGimpTimer = 0; // player cannot throw objects unless zero
+int32_t throwGimpTimer = 0; // player cannot throw objects unless zero
 
 /*-------------------------------------------------------------------------------
 
@@ -145,9 +144,9 @@ ALboolean bowDrawingSoundPlaying = 0;
 // implement bow drawing timer via SDL_GetTicks()
 bool bowDrawingSound = false;
 bool bowDrawingSoundPlaying = false;
-Uint32 bowDrawingStart = 0;
+uint32_t bowDrawingStart = 0;
 // based on superficial analysis of the BowDraw1V1.ogg file
-Uint32 bowDrawingLength = 1030;
+uint32_t bowDrawingLength = 1030;
 #endif
 
 bool bowFire = false;
@@ -166,7 +165,7 @@ bool bowFire = false;
 #define HUDWEAPON_OLDVIBRATEY my->fskill[7]
 #define HUDWEAPON_OLDVIBRATEZ my->fskill[8]
 
-Uint32 hudweaponuid = 0;
+uint32_t hudweaponuid = 0;
 void actHudWeapon(Entity* my)
 {
 	double result = 0;
@@ -505,51 +504,51 @@ void actHudWeapon(Entity* my)
 								}
 								if ( HUDWEAPON_MOVEX > 0 )
 								{
-									HUDWEAPON_MOVEX = std::max<real_t>(HUDWEAPON_MOVEX - 1, 0.0);
+									HUDWEAPON_MOVEX = std::max<float>(HUDWEAPON_MOVEX - 1, 0.0);
 								}
 								else if ( HUDWEAPON_MOVEX < 0 )
 								{
-									HUDWEAPON_MOVEX = std::min<real_t>(HUDWEAPON_MOVEX + 1, 0.0);
+									HUDWEAPON_MOVEX = std::min<float>(HUDWEAPON_MOVEX + 1, 0.0);
 								}
 								if ( HUDWEAPON_MOVEY > -1 )
 								{
-									HUDWEAPON_MOVEY = std::max<real_t>(HUDWEAPON_MOVEY - 1, -1.0);
+									HUDWEAPON_MOVEY = std::max<float>(HUDWEAPON_MOVEY - 1, -1.0);
 								}
 								else if ( HUDWEAPON_MOVEY < -1 )
 								{
-									HUDWEAPON_MOVEY = std::min<real_t>(HUDWEAPON_MOVEY + 1, -1.0);
+									HUDWEAPON_MOVEY = std::min<float>(HUDWEAPON_MOVEY + 1, -1.0);
 								}
 								if ( HUDWEAPON_MOVEZ > 0 )
 								{
-									HUDWEAPON_MOVEZ = std::max<real_t>(HUDWEAPON_MOVEZ - 1, 0.0);
+									HUDWEAPON_MOVEZ = std::max<float>(HUDWEAPON_MOVEZ - 1, 0.0);
 								}
 								else if ( HUDWEAPON_MOVEZ < 0 )
 								{
-									HUDWEAPON_MOVEZ = std::min<real_t>(HUDWEAPON_MOVEZ + 1, 0.0);
+									HUDWEAPON_MOVEZ = std::min<float>(HUDWEAPON_MOVEZ + 1, 0.0);
 								}
 								if ( HUDWEAPON_YAW > -.1 )
 								{
-									HUDWEAPON_YAW = std::max<real_t>(HUDWEAPON_YAW - .1, -.1);
+									HUDWEAPON_YAW = std::max<float>(HUDWEAPON_YAW - .1, -.1);
 								}
 								else if ( HUDWEAPON_YAW < -.1 )
 								{
-									HUDWEAPON_YAW = std::min<real_t>(HUDWEAPON_YAW + .1, -.1);
+									HUDWEAPON_YAW = std::min<float>(HUDWEAPON_YAW + .1, -.1);
 								}
 								if ( HUDWEAPON_PITCH > 0 )
 								{
-									HUDWEAPON_PITCH = std::max<real_t>(HUDWEAPON_PITCH - .1, 0.0);
+									HUDWEAPON_PITCH = std::max<float>(HUDWEAPON_PITCH - .1, 0.0);
 								}
 								else if ( HUDWEAPON_PITCH < 0 )
 								{
-									HUDWEAPON_PITCH = std::min<real_t>(HUDWEAPON_PITCH + .1, 0.0);
+									HUDWEAPON_PITCH = std::min<float>(HUDWEAPON_PITCH + .1, 0.0);
 								}
 								if ( HUDWEAPON_ROLL > 0 )
 								{
-									HUDWEAPON_ROLL = std::max<real_t>(HUDWEAPON_ROLL - .1, 0.0);
+									HUDWEAPON_ROLL = std::max<float>(HUDWEAPON_ROLL - .1, 0.0);
 								}
 								else if ( HUDWEAPON_ROLL < 0 )
 								{
-									HUDWEAPON_ROLL = std::min<real_t>(HUDWEAPON_ROLL + .1, 0.0);
+									HUDWEAPON_ROLL = std::min<float>(HUDWEAPON_ROLL + .1, 0.0);
 								}
 							}
 						}
@@ -652,102 +651,102 @@ void actHudWeapon(Entity* my)
 #endif
 						if ( HUDWEAPON_MOVEX > 0 )
 						{
-							HUDWEAPON_MOVEX = std::max<real_t>(HUDWEAPON_MOVEX - 1, 0.0);
+							HUDWEAPON_MOVEX = std::max<float>(HUDWEAPON_MOVEX - 1, 0.0);
 						}
 						else if ( HUDWEAPON_MOVEX < 0 )
 						{
-							HUDWEAPON_MOVEX = std::min<real_t>(HUDWEAPON_MOVEX + 1, 0.0);
+							HUDWEAPON_MOVEX = std::min<float>(HUDWEAPON_MOVEX + 1, 0.0);
 						}
 						if ( HUDWEAPON_MOVEY > 1 )
 						{
-							HUDWEAPON_MOVEY = std::max<real_t>(HUDWEAPON_MOVEY - 1, 1.0);
+							HUDWEAPON_MOVEY = std::max<float>(HUDWEAPON_MOVEY - 1, 1.0);
 						}
 						else if ( HUDWEAPON_MOVEY < 1 )
 						{
-							HUDWEAPON_MOVEY = std::min<real_t>(HUDWEAPON_MOVEY + 1, 1.0);
+							HUDWEAPON_MOVEY = std::min<float>(HUDWEAPON_MOVEY + 1, 1.0);
 						}
 						if ( HUDWEAPON_MOVEZ > 0 )
 						{
-							HUDWEAPON_MOVEZ = std::max<real_t>(HUDWEAPON_MOVEZ - 1, 0.0);
+							HUDWEAPON_MOVEZ = std::max<float>(HUDWEAPON_MOVEZ - 1, 0.0);
 						}
 						else if ( HUDWEAPON_MOVEZ < 0 )
 						{
-							HUDWEAPON_MOVEZ = std::min<real_t>(HUDWEAPON_MOVEZ + 1, 0.0);
+							HUDWEAPON_MOVEZ = std::min<float>(HUDWEAPON_MOVEZ + 1, 0.0);
 						}
 						if ( HUDWEAPON_YAW > -.1 )
 						{
-							HUDWEAPON_YAW = std::max<real_t>(HUDWEAPON_YAW - .1, -.1);
+							HUDWEAPON_YAW = std::max<float>(HUDWEAPON_YAW - .1, -.1);
 						}
 						else if ( HUDWEAPON_YAW < -.1 )
 						{
-							HUDWEAPON_YAW = std::min<real_t>(HUDWEAPON_YAW + .1, -.1);
+							HUDWEAPON_YAW = std::min<float>(HUDWEAPON_YAW + .1, -.1);
 						}
 						if ( HUDWEAPON_PITCH > 0 )
 						{
-							HUDWEAPON_PITCH = std::max<real_t>(HUDWEAPON_PITCH - .1, 0.0);
+							HUDWEAPON_PITCH = std::max<float>(HUDWEAPON_PITCH - .1, 0.0);
 						}
 						else if ( HUDWEAPON_PITCH < 0 )
 						{
-							HUDWEAPON_PITCH = std::min<real_t>(HUDWEAPON_PITCH + .1, 0.0);
+							HUDWEAPON_PITCH = std::min<float>(HUDWEAPON_PITCH + .1, 0.0);
 						}
 						if ( HUDWEAPON_ROLL > -PI / 3 )
 						{
-							HUDWEAPON_ROLL = std::max<real_t>(HUDWEAPON_ROLL - .1, -PI / 3);
+							HUDWEAPON_ROLL = std::max<float>(HUDWEAPON_ROLL - .1, -PI / 3);
 						}
 						else if ( HUDWEAPON_ROLL < -PI / 3 )
 						{
-							HUDWEAPON_ROLL = std::min<real_t>(HUDWEAPON_ROLL + .1, -PI / 3);
+							HUDWEAPON_ROLL = std::min<float>(HUDWEAPON_ROLL + .1, -PI / 3);
 						}
 					}
 					else
 					{
 						if ( HUDWEAPON_MOVEX > 0 )
 						{
-							HUDWEAPON_MOVEX = std::max<real_t>(HUDWEAPON_MOVEX - 1, 0.0);
+							HUDWEAPON_MOVEX = std::max<float>(HUDWEAPON_MOVEX - 1, 0.0);
 						}
 						else if ( HUDWEAPON_MOVEX < 0 )
 						{
-							HUDWEAPON_MOVEX = std::min<real_t>(HUDWEAPON_MOVEX + 1, 0.0);
+							HUDWEAPON_MOVEX = std::min<float>(HUDWEAPON_MOVEX + 1, 0.0);
 						}
 						if ( HUDWEAPON_MOVEY > 0 )
 						{
-							HUDWEAPON_MOVEY = std::max<real_t>(HUDWEAPON_MOVEY - 1, 0.0);
+							HUDWEAPON_MOVEY = std::max<float>(HUDWEAPON_MOVEY - 1, 0.0);
 						}
 						else if ( HUDWEAPON_MOVEY < 0 )
 						{
-							HUDWEAPON_MOVEY = std::min<real_t>(HUDWEAPON_MOVEY + 1, 0.0);
+							HUDWEAPON_MOVEY = std::min<float>(HUDWEAPON_MOVEY + 1, 0.0);
 						}
 						if ( HUDWEAPON_MOVEZ > 0 )
 						{
-							HUDWEAPON_MOVEZ = std::max<real_t>(HUDWEAPON_MOVEZ - 1, 0.0);
+							HUDWEAPON_MOVEZ = std::max<float>(HUDWEAPON_MOVEZ - 1, 0.0);
 						}
 						else if ( HUDWEAPON_MOVEZ < 0 )
 						{
-							HUDWEAPON_MOVEZ = std::min<real_t>(HUDWEAPON_MOVEZ + 1, 0.0);
+							HUDWEAPON_MOVEZ = std::min<float>(HUDWEAPON_MOVEZ + 1, 0.0);
 						}
 						if ( HUDWEAPON_YAW > -.1 )
 						{
-							HUDWEAPON_YAW = std::max<real_t>(HUDWEAPON_YAW - .1, -.1);
+							HUDWEAPON_YAW = std::max<float>(HUDWEAPON_YAW - .1, -.1);
 						}
 						else if ( HUDWEAPON_YAW < -.1 )
 						{
-							HUDWEAPON_YAW = std::min<real_t>(HUDWEAPON_YAW + .1, -.1);
+							HUDWEAPON_YAW = std::min<float>(HUDWEAPON_YAW + .1, -.1);
 						}
 						if ( HUDWEAPON_PITCH > 0 )
 						{
-							HUDWEAPON_PITCH = std::max<real_t>(HUDWEAPON_PITCH - .1, 0.0);
+							HUDWEAPON_PITCH = std::max<float>(HUDWEAPON_PITCH - .1, 0.0);
 						}
 						else if ( HUDWEAPON_PITCH < 0 )
 						{
-							HUDWEAPON_PITCH = std::min<real_t>(HUDWEAPON_PITCH + .1, 0.0);
+							HUDWEAPON_PITCH = std::min<float>(HUDWEAPON_PITCH + .1, 0.0);
 						}
 						if ( HUDWEAPON_ROLL > 0 )
 						{
-							HUDWEAPON_ROLL = std::max<real_t>(HUDWEAPON_ROLL - .1, 0.0);
+							HUDWEAPON_ROLL = std::max<float>(HUDWEAPON_ROLL - .1, 0.0);
 						}
 						else if ( HUDWEAPON_ROLL < 0 )
 						{
-							HUDWEAPON_ROLL = std::min<real_t>(HUDWEAPON_ROLL + .1, 0.0);
+							HUDWEAPON_ROLL = std::min<float>(HUDWEAPON_ROLL + .1, 0.0);
 						}
 					}
 				}
@@ -756,51 +755,51 @@ void actHudWeapon(Entity* my)
 			{
 				if ( HUDWEAPON_MOVEX > 0 )
 				{
-					HUDWEAPON_MOVEX = std::max<real_t>(HUDWEAPON_MOVEX - 1, 0.0);
+					HUDWEAPON_MOVEX = std::max<float>(HUDWEAPON_MOVEX - 1, 0.0);
 				}
 				else if ( HUDWEAPON_MOVEX < 0 )
 				{
-					HUDWEAPON_MOVEX = std::min<real_t>(HUDWEAPON_MOVEX + 1, 0.0);
+					HUDWEAPON_MOVEX = std::min<float>(HUDWEAPON_MOVEX + 1, 0.0);
 				}
 				if ( HUDWEAPON_MOVEY > 1 )
 				{
-					HUDWEAPON_MOVEY = std::max<real_t>(HUDWEAPON_MOVEY - 1, 1.0);
+					HUDWEAPON_MOVEY = std::max<float>(HUDWEAPON_MOVEY - 1, 1.0);
 				}
 				else if ( HUDWEAPON_MOVEY < 1 )
 				{
-					HUDWEAPON_MOVEY = std::min<real_t>(HUDWEAPON_MOVEY + 1, 1.0);
+					HUDWEAPON_MOVEY = std::min<float>(HUDWEAPON_MOVEY + 1, 1.0);
 				}
 				if ( HUDWEAPON_MOVEZ > 1 )
 				{
-					HUDWEAPON_MOVEZ = std::max<real_t>(HUDWEAPON_MOVEZ - 1, 1.0);
+					HUDWEAPON_MOVEZ = std::max<float>(HUDWEAPON_MOVEZ - 1, 1.0);
 				}
 				else if ( HUDWEAPON_MOVEZ < 1 )
 				{
-					HUDWEAPON_MOVEZ = std::min<real_t>(HUDWEAPON_MOVEZ + 1, 1.0);
+					HUDWEAPON_MOVEZ = std::min<float>(HUDWEAPON_MOVEZ + 1, 1.0);
 				}
 				if ( HUDWEAPON_YAW > .1 )
 				{
-					HUDWEAPON_YAW = std::max<real_t>(HUDWEAPON_YAW - .1, .1);
+					HUDWEAPON_YAW = std::max<float>(HUDWEAPON_YAW - .1, .1);
 				}
 				else if ( HUDWEAPON_YAW < .1 )
 				{
-					HUDWEAPON_YAW = std::min<real_t>(HUDWEAPON_YAW + .1, .1);
+					HUDWEAPON_YAW = std::min<float>(HUDWEAPON_YAW + .1, .1);
 				}
 				if ( HUDWEAPON_PITCH > PI / 6 )
 				{
-					HUDWEAPON_PITCH = std::max<real_t>(HUDWEAPON_PITCH - .1, PI / 6);
+					HUDWEAPON_PITCH = std::max<float>(HUDWEAPON_PITCH - .1, PI / 6);
 				}
 				else if ( HUDWEAPON_PITCH < PI / 6 )
 				{
-					HUDWEAPON_PITCH = std::min<real_t>(HUDWEAPON_PITCH + .1, PI / 6);
+					HUDWEAPON_PITCH = std::min<float>(HUDWEAPON_PITCH + .1, PI / 6);
 				}
 				if ( HUDWEAPON_ROLL > PI / 6 )
 				{
-					HUDWEAPON_ROLL = std::max<real_t>(HUDWEAPON_ROLL - .1, PI / 6);
+					HUDWEAPON_ROLL = std::max<float>(HUDWEAPON_ROLL - .1, PI / 6);
 				}
 				else if ( HUDWEAPON_ROLL < PI / 6 )
 				{
-					HUDWEAPON_ROLL = std::min<real_t>(HUDWEAPON_ROLL + .1, PI / 6);
+					HUDWEAPON_ROLL = std::min<float>(HUDWEAPON_ROLL + .1, PI / 6);
 				}
 			}
 		}
@@ -852,7 +851,7 @@ void actHudWeapon(Entity* my)
 				}
 				else
 				{
-					HUDWEAPON_CHARGE = std::min<real_t>(HUDWEAPON_CHARGE + 1, MAXCHARGE);
+					HUDWEAPON_CHARGE = std::min<float>(HUDWEAPON_CHARGE + 1, MAXCHARGE);
 				}
 			}
 		}
@@ -918,51 +917,51 @@ void actHudWeapon(Entity* my)
 			{
 				if ( HUDWEAPON_MOVEX > 0 )
 				{
-					HUDWEAPON_MOVEX = std::max<real_t>(HUDWEAPON_MOVEX - 1, 0.0);
+					HUDWEAPON_MOVEX = std::max<float>(HUDWEAPON_MOVEX - 1, 0.0);
 				}
 				else if ( HUDWEAPON_MOVEX < 0 )
 				{
-					HUDWEAPON_MOVEX = std::min<real_t>(HUDWEAPON_MOVEX + .1, 0.0);
+					HUDWEAPON_MOVEX = std::min<float>(HUDWEAPON_MOVEX + .1, 0.0);
 				}
 				if ( HUDWEAPON_MOVEY > 0 )
 				{
-					HUDWEAPON_MOVEY = std::max<real_t>(HUDWEAPON_MOVEY - 1, 0.0);
+					HUDWEAPON_MOVEY = std::max<float>(HUDWEAPON_MOVEY - 1, 0.0);
 				}
 				else if ( HUDWEAPON_MOVEY < 0 )
 				{
-					HUDWEAPON_MOVEY = std::min<real_t>(HUDWEAPON_MOVEY + 1, 0.0);
+					HUDWEAPON_MOVEY = std::min<float>(HUDWEAPON_MOVEY + 1, 0.0);
 				}
 				if ( HUDWEAPON_MOVEZ > 0 )
 				{
-					HUDWEAPON_MOVEZ = std::max<real_t>(HUDWEAPON_MOVEZ - 1, 0.0);
+					HUDWEAPON_MOVEZ = std::max<float>(HUDWEAPON_MOVEZ - 1, 0.0);
 				}
 				else if ( HUDWEAPON_MOVEZ < 0 )
 				{
-					HUDWEAPON_MOVEZ = std::min<real_t>(HUDWEAPON_MOVEZ + 1, 0.0);
+					HUDWEAPON_MOVEZ = std::min<float>(HUDWEAPON_MOVEZ + 1, 0.0);
 				}
 				if ( HUDWEAPON_YAW > -.1 )
 				{
-					HUDWEAPON_YAW = std::max<real_t>(HUDWEAPON_YAW - .1, -.1);
+					HUDWEAPON_YAW = std::max<float>(HUDWEAPON_YAW - .1, -.1);
 				}
 				else if ( HUDWEAPON_YAW < -.1 )
 				{
-					HUDWEAPON_YAW = std::min<real_t>(HUDWEAPON_YAW + .1, -.1);
+					HUDWEAPON_YAW = std::min<float>(HUDWEAPON_YAW + .1, -.1);
 				}
 				if ( HUDWEAPON_PITCH > 0 )
 				{
-					HUDWEAPON_PITCH = std::max<real_t>(HUDWEAPON_PITCH - .1, 0.0);
+					HUDWEAPON_PITCH = std::max<float>(HUDWEAPON_PITCH - .1, 0.0);
 				}
 				else if ( HUDWEAPON_PITCH < 0 )
 				{
-					HUDWEAPON_PITCH = std::min<real_t>(HUDWEAPON_PITCH + .1, 0.0);
+					HUDWEAPON_PITCH = std::min<float>(HUDWEAPON_PITCH + .1, 0.0);
 				}
 				if ( HUDWEAPON_ROLL > 0 )
 				{
-					HUDWEAPON_ROLL = std::max<real_t>(HUDWEAPON_ROLL - .1, 0.0);
+					HUDWEAPON_ROLL = std::max<float>(HUDWEAPON_ROLL - .1, 0.0);
 				}
 				else if ( HUDWEAPON_ROLL < 0 )
 				{
-					HUDWEAPON_ROLL = std::min<real_t>(HUDWEAPON_ROLL + .1, 0.0);
+					HUDWEAPON_ROLL = std::min<float>(HUDWEAPON_ROLL + .1, 0.0);
 				}
 			}
 			else
@@ -1044,7 +1043,7 @@ void actHudWeapon(Entity* my)
 				}
 				else
 				{
-					HUDWEAPON_CHARGE = std::min<real_t>(HUDWEAPON_CHARGE + 1, MAXCHARGE);
+					HUDWEAPON_CHARGE = std::min<float>(HUDWEAPON_CHARGE + 1, MAXCHARGE);
 				}
 			}
 		}
@@ -1156,7 +1155,7 @@ void actHudWeapon(Entity* my)
 				}
 				else
 				{
-					HUDWEAPON_CHARGE = std::min<real_t>(HUDWEAPON_CHARGE + 1, MAXCHARGE);
+					HUDWEAPON_CHARGE = std::min<float>(HUDWEAPON_CHARGE + 1, MAXCHARGE);
 				}
 			}
 		}
@@ -1535,51 +1534,51 @@ void actHudShield(Entity* my)
 	{
 		if ( HUDSHIELD_MOVEX > 0 )
 		{
-			HUDSHIELD_MOVEX = std::max<real_t>(HUDSHIELD_MOVEX - .5, 0.0);
+			HUDSHIELD_MOVEX = std::max<float>(HUDSHIELD_MOVEX - .5, 0.0);
 		}
 		else if ( HUDSHIELD_MOVEX < 0 )
 		{
-			HUDSHIELD_MOVEX = std::min<real_t>(HUDSHIELD_MOVEX + .5, 0.0);
+			HUDSHIELD_MOVEX = std::min<float>(HUDSHIELD_MOVEX + .5, 0.0);
 		}
 		if ( HUDSHIELD_MOVEY > 0 )
 		{
-			HUDSHIELD_MOVEY = std::max<real_t>(HUDSHIELD_MOVEY - .5, 0.0);
+			HUDSHIELD_MOVEY = std::max<float>(HUDSHIELD_MOVEY - .5, 0.0);
 		}
 		else if ( HUDSHIELD_MOVEY < 0 )
 		{
-			HUDSHIELD_MOVEY = std::min<real_t>(HUDSHIELD_MOVEY + .5, 0.0);
+			HUDSHIELD_MOVEY = std::min<float>(HUDSHIELD_MOVEY + .5, 0.0);
 		}
 		if ( HUDSHIELD_MOVEZ > 0 )
 		{
-			HUDSHIELD_MOVEZ = std::max<real_t>(HUDSHIELD_MOVEZ - .2, 0.0);
+			HUDSHIELD_MOVEZ = std::max<float>(HUDSHIELD_MOVEZ - .2, 0.0);
 		}
 		else if ( HUDSHIELD_MOVEZ < 0 )
 		{
-			HUDSHIELD_MOVEZ = std::min<real_t>(HUDSHIELD_MOVEZ + .2, 0.0);
+			HUDSHIELD_MOVEZ = std::min<float>(HUDSHIELD_MOVEZ + .2, 0.0);
 		}
 		if ( HUDSHIELD_YAW > 0 )
 		{
-			HUDSHIELD_YAW = std::max<real_t>(HUDSHIELD_YAW - .15, 0.0);
+			HUDSHIELD_YAW = std::max<float>(HUDSHIELD_YAW - .15, 0.0);
 		}
 		else if ( HUDSHIELD_YAW < 0 )
 		{
-			HUDSHIELD_YAW = std::min<real_t>(HUDSHIELD_YAW + .15, 0.0);
+			HUDSHIELD_YAW = std::min<float>(HUDSHIELD_YAW + .15, 0.0);
 		}
 		if ( HUDSHIELD_PITCH > 0 )
 		{
-			HUDSHIELD_PITCH = std::max<real_t>(HUDSHIELD_PITCH - .15, 0.0);
+			HUDSHIELD_PITCH = std::max<float>(HUDSHIELD_PITCH - .15, 0.0);
 		}
 		else if ( HUDSHIELD_PITCH < 0 )
 		{
-			HUDSHIELD_PITCH = std::min<real_t>(HUDSHIELD_PITCH + .15, 0.0);
+			HUDSHIELD_PITCH = std::min<float>(HUDSHIELD_PITCH + .15, 0.0);
 		}
 		if ( HUDSHIELD_ROLL > 0 )
 		{
-			HUDSHIELD_ROLL = std::max<real_t>(HUDSHIELD_ROLL - .15, 0);
+			HUDSHIELD_ROLL = std::max<float>(HUDSHIELD_ROLL - .15, 0);
 		}
 		else if ( HUDSHIELD_ROLL < 0 )
 		{
-			HUDSHIELD_ROLL = std::min<real_t>(HUDSHIELD_ROLL + .15, 0);
+			HUDSHIELD_ROLL = std::min<float>(HUDSHIELD_ROLL + .15, 0);
 		}
 	}
 

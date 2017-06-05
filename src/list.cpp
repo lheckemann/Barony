@@ -9,7 +9,6 @@
 
 -------------------------------------------------------------------------------*/
 
-#include "main.hpp"
 #include "entity.hpp"
 /*-------------------------------------------------------------------------------
 
@@ -272,7 +271,7 @@ node_t* list_AddNode(list_t* list, int index)
 
 -------------------------------------------------------------------------------*/
 
-Uint32 list_Size(list_t* list)
+uint32_t list_Size(list_t* list)
 {
 	node_t* node;
 	int c;
@@ -360,7 +359,7 @@ list_t* list_CopyNew(list_t* srclist)
 
 -------------------------------------------------------------------------------*/
 
-Uint32 list_Index(node_t* node)
+uint32_t list_Index(node_t* node)
 {
 	node_t* tempnode;
 	int i;

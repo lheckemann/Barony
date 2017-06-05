@@ -17,13 +17,13 @@
 #define MAXTOPSCORES 10
 typedef struct score_t
 {
-	Sint32 kills[NUMMONSTERS];
+	int32_t kills[NUMMONSTERS];
 	Stat* stats;
-	Sint32 classnum;
-	Sint32 dungeonlevel;
+	int32_t classnum;
+	int32_t dungeonlevel;
 	int victory;
 
-	Uint32 completionTime;
+	uint32_t completionTime;
 	bool conductPenniless;
 	bool conductFoodless;
 	bool conductVegetarian;
@@ -32,14 +32,14 @@ typedef struct score_t
 extern list_t topscores;
 extern int victory;
 
-extern Uint32 completionTime;
+extern uint32_t completionTime;
 extern bool conductPenniless;
 extern bool conductFoodless;
 extern bool conductVegetarian;
 extern bool conductIlliterate;
 extern list_t booksRead;
 extern bool usedClass[10];
-extern Uint32 loadingsavegame;
+extern uint32_t loadingsavegame;
 
 score_t* scoreConstructor();
 void scoreDeconstructor(void* data);
@@ -57,8 +57,8 @@ bool saveGameExists();
 char* getSaveGameName();
 int getSaveGameType();
 int getSaveGameClientnum();
-Uint32 getSaveGameMapSeed();
-Uint32 getSaveGameUniqueGameKey();
+uint32_t getSaveGameMapSeed();
+uint32_t getSaveGameUniqueGameKey();
 
 #define SAVEGAMEFILE "savegame.dat"
 #define SAVEGAMEFILE2 "savegame2.dat" // saves follower data

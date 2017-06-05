@@ -14,7 +14,6 @@
 
 //#include "SDL.h"
 
-#include "main.hpp"
 #include "interface/interface.hpp"
 
 //Time in seconds before the message starts fading.
@@ -77,7 +76,7 @@ extern list_t notification_messages;
 /*
  * Adds a message to the list of messages.
  */
-void addMessage(Uint32 color, char* content, ...);
+void addMessage(uint32_t color, char* content, ...);
 
 /*
  * Updates all the messages; fades them & removes them.

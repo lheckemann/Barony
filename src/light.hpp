@@ -2,15 +2,15 @@
 
 typedef struct light_t
 {
-	Sint32 x, y;
-	Sint32 radius;
-	Sint32 intensity;
-	Sint32* tiles;
+	int32_t x, y;
+	int32_t radius;
+	int32_t intensity;
+	int32_t* tiles;
 
 	// a pointer to the light's location in a list
 	node_t* node;
 } light_t;
 
-light_t* lightSphereShadow(Sint32 x, Sint32 y, Sint32 radius, Sint32 intensity);
-light_t* lightSphere(Sint32 x, Sint32 y, Sint32 radius, Sint32 intensity);
-light_t* newLight(Sint32 x, Sint32 y, Sint32 radius, Sint32 intensity);
+light_t* lightSphereShadow(int32_t x, int32_t y, int32_t radius, int32_t intensity);
+light_t* lightSphere(int32_t x, int32_t y, int32_t radius, int32_t intensity);
+light_t* newLight(int32_t x, int32_t y, int32_t radius, int32_t intensity);

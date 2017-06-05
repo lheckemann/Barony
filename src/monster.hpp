@@ -132,7 +132,7 @@ static double damagetables[NUMMONSTERS][6] =
 #define MONSTER_WEAPONYAW my->fskill[5]
 #define MONSTER_FLIPPEDANGLE my->fskill[6]
 
-void summonMonsterClient(Monster creature, long x, long y, Uint32 uid);
+void summonMonsterClient(Monster creature, long x, long y, uint32_t uid);
 Entity* summonMonster(Monster creature, long x, long y);
 bool monsterMoveAside(Entity* my, Entity* entity);
 

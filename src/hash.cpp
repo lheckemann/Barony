@@ -9,7 +9,8 @@
 
 -------------------------------------------------------------------------------*/
 
-#include "main.hpp"
+#include <SDL.h>
+
 #include "hash.hpp"
 
 unsigned long djb2Hash(char* str)

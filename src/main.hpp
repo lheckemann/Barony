@@ -1,7 +1,6 @@
 /*-------------------------------------------------------------------------------
 
 	BARONY
-	File: main.hpp
 	Desc: contains some prototypes as well as various type definitions
 
 	Copyright 2013-2016 (c) Turning Wheel LLC, all rights reserved.
@@ -9,12 +8,15 @@
 
 -------------------------------------------------------------------------------*/
 
+static const int AVERAGEFRAMES = 32;
+
+#if 0
 #pragma once
 
 #ifdef __arm__
-typedef float real_t;
+typedef float float;
 #else
-typedef double real_t;
+typedef double float;
 #endif
 
 #include <algorithm> //For min and max, because the #define breaks everything in c++.
@@ -221,16 +223,6 @@ static const unsigned UNBOUND_JOYBINDING = 399;
 #define indev_displaytime 7000
 
 // view structure
-typedef struct view_t
-{
-	real_t x, y, z;
-	real_t ang;
-	real_t vang;
-	Sint32 winx, winy, winw, winh;
-} view_t;
-
-extern view_t camera;
-
 class Entity; //TODO: Bugger?
 
 // node structure
@@ -239,25 +231,11 @@ class Entity; //TODO: Bugger?
 extern list_t button_l;
 extern list_t light_l;
 
-// game world structure
-typedef struct map_t
-{
-	char name[32];   // name of the map
-	char author[32]; // author of the map
-	unsigned int width, height;  // size of the map
-	Sint32* tiles;
-	std::unordered_map<Sint32, node_t*> entities_map;
-	list_t* entities;
-} map_t;
-
-#define MAPLAYERS 3 // number of layers contained in a single map
-#define OBSTACLELAYER 1 // obstacle layer in map
-
 // delete entity structure
 typedef struct deleteent_t
 {
-	Uint32 uid;
-	Uint32 tries;
+	uint32_t uid;
+	uint32_t tries;
 } deleteent_t;
 #define MAXTRIES 6 // max number of attempts on a packet
 #define MAXDELETES 2 // max number of packets resent in a frame
@@ -266,29 +244,17 @@ typedef struct deleteent_t
 typedef struct pathnode_t
 {
 	struct pathnode_t* parent;
-	Sint32 x, y;
-	Uint32 g, h;
+	int32_t x, y;
+	uint32_t g, h;
 	node_t* node;
 } pathnode_t;
-
-// hit structure
-#define HORIZONTAL 1
-#define VERTICAL 2
-typedef struct hit_t
-{
-	real_t x, y;
-	int mapx, mapy;
-	Entity* entity;
-	int side;
-} hit_t;
-extern hit_t hit;
 
 // button structure
 typedef struct button_t
 {
 	char label[32];      // button label
-	Sint32 x, y;         // onscreen position
-	Uint32 sizex, sizey; // size of the button
+	int32_t x, y;         // onscreen position
+	uint32_t sizex, sizey; // size of the button
 	Uint8 visible;       // invisible buttons are ignored by the handler
 	Uint8 focused;       // allows this button to function when a subwindow is open
 	SDL_Keycode key;     // key shortcut to activate button
@@ -306,7 +272,7 @@ typedef struct button_t
 // voxel structure
 typedef struct voxel_t
 {
-	Sint32 sizex, sizey, sizez;
+	int32_t sizex, sizey, sizez;
 	Uint8* data;
 	Uint8 palette[256][3];
 } voxel_t;
@@ -314,7 +280,7 @@ typedef struct voxel_t
 // vertex structure
 typedef struct vertex_t
 {
-	real_t x, y, z;
+	float x, y, z;
 } vertex_t;
 
 // quad structure
@@ -333,30 +299,20 @@ typedef struct polytriangle_t
 } polytriangle_t;
 
 // polymodel structure
-typedef struct polymodel_t
-{
-	polytriangle_t* faces;
-	Uint32 numfaces;
-	GLuint vbo;
-	GLuint colors;
-	GLuint colors_shifted;
-	GLuint va;
-} polymodel_t;
-
 // string structure
 typedef struct string_t
 {
-	Uint32 lines;
+	uint32_t lines;
 	char* data;
 	node_t* node;
-	Uint32 color;
+	uint32_t color;
 } string_t;
 
 // door structure (used for map generation)
 typedef struct door_t
 {
-	Sint32 x, y;
-	Sint32 dir; // 0: east, 1: south, 2: west, 3: north
+	int32_t x, y;
+	int32_t dir; // 0: east, 1: south, 2: west, 3: north
 } door_t;
 
 #define CLIPNEAR 2
@@ -378,13 +334,13 @@ extern SDL_Surface* mainsurface;
 extern SDL_Event event;
 extern bool firstmouseevent;
 extern char* window_title;
-extern Sint32 fullscreen;
+extern int32_t fullscreen;
 extern bool smoothlighting;
-extern Sint32 xres;
-extern Sint32 yres;
+extern int32_t xres;
+extern int32_t yres;
 extern int mainloop;
-extern Uint32 ticks;
-extern Uint32 lastkeypressed;
+extern uint32_t ticks;
+extern uint32_t lastkeypressed;
 extern Sint8 keystatus[512];
 extern char* inputstr;
 extern int inputlen;
@@ -392,25 +348,21 @@ extern string lastname;
 static const unsigned NUM_MOUSE_STATUS = 6;
 extern Sint8 mousestatus[NUM_MOUSE_STATUS];
 //extern Sint8 omousestatus[NUM_MOUSE_STATUS];
-const int NUM_JOY_STATUS = 32;
-extern Sint8 joystatus[NUM_JOY_STATUS];
-const int NUM_JOY_TRIGGER_STATUS = 2;
-extern Sint8 joy_trigger_status[NUM_JOY_TRIGGER_STATUS]; //0 = left, 1 = right.
-extern Uint32 cursorflash;
-extern Sint32 camx, camy;
-extern Sint32 newcamx, newcamy;
+extern uint32_t cursorflash;
+extern int32_t camx, camy;
+extern int32_t newcamx, newcamy;
 extern int subwindow;
 extern int subx1, subx2, suby1, suby2;
 extern char subtext[1024];
 extern int rscale;
-extern real_t vidgamma;
+extern float vidgamma;
 extern bool softwaremode;
-extern real_t* zbuffer;
-extern Sint32* lightmap;
+extern float* zbuffer;
+extern int32_t* lightmap;
 extern bool* vismap;
 extern Entity** clickmap;
 extern list_t entitiesdeleted;
-extern Sint32 multiplayer;
+extern int32_t multiplayer;
 extern bool directConnect;
 extern bool client_disconnected[MAXPLAYERS];
 extern int minotaurlevel;
@@ -452,7 +404,6 @@ extern SDLNet_SocketSet tcpset;
 #include "hash.hpp"
 
 // various definitions
-extern map_t map;
 extern list_t ttfTextHash[HASH_SIZE];
 extern TTF_Font* ttf8;
 #define TTF8_WIDTH 7
@@ -471,26 +422,26 @@ extern SDL_Surface** sprites;
 extern SDL_Surface** tiles;
 extern voxel_t** models;
 extern polymodel_t* polymodels;
-extern Uint32 imgref, vboref;
+extern uint32_t imgref, vboref;
 extern GLuint* texid;
 extern bool disablevbos;
-extern Uint32 fov;
+extern uint32_t fov;
 //extern GLuint *vboid, *vaoid;
 extern SDL_Surface** allsurfaces;
-extern Uint32 numsprites;
-extern Uint32 numtiles;
-extern Uint32 nummodels;
-extern Sint32 audio_rate, audio_channels, audio_buffers;
+extern uint32_t numsprites;
+extern uint32_t numtiles;
+extern uint32_t nummodels;
+extern int32_t audio_rate, audio_channels, audio_buffers;
 extern Uint16 audio_format;
 extern int sfxvolume;
 extern bool* animatedtiles, *lavatiles;
 extern char tempstr[1024];
 extern Sint8 minimap[64][64];
-extern Uint32 mapseed;
+extern uint32_t mapseed;
 extern bool* shoparea;
 
 // function prototypes for main.c:
-int sgn(real_t x);
+int sgn(float x);
 int numdigits_sint16(Sint16 x);
 int longestline(char* str);
 int concatedStringLength(char* str, ...);
@@ -504,26 +455,22 @@ void lightDeconstructor(void* data);
 void mapDeconstructor(void* data);
 void stringDeconstructor(void* data);
 void listDeconstructor(void* data);
-Entity* newEntity(Sint32 sprite, Uint32 pos, list_t* entlist);
+Entity* newEntity(int32_t sprite, uint32_t pos, list_t* entlist);
 button_t* newButton(void);
-string_t* newString(list_t* list, Uint32 color, char* content, ...);
-pathnode_t* newPathnode(list_t* list, Sint32 x, Sint32 y, pathnode_t* parent, Sint8 pos);
+string_t* newString(list_t* list, uint32_t color, char* content, ...);
+pathnode_t* newPathnode(list_t* list, int32_t x, int32_t y, pathnode_t* parent, Sint8 pos);
 
 // function prototypes for opengl.c:
 #define REALCOLORS 0
 #define ENTITYUIDS 1
-real_t getLightForEntity(real_t x, real_t y);
+float getLightForEntity(float x, float y);
 void glDrawVoxel(view_t* camera, Entity* entity, int mode);
 void glDrawSprite(view_t* camera, Entity* entity, int mode);
-real_t getLightAt(int x, int y);
+float getLightAt(int x, int y);
 void glDrawWorld(view_t* camera, int mode);
 
 // function prototypes for cursors.c:
 SDL_Cursor* newCursor(char* image[]);
-
-// function prototypes for maps.c:
-int generateDungeon(char* levelset, Uint32 seed);
-void assignActions(map_t* map);
 
 // cursor bitmap definitions
 extern char* cursor_pencil[];
@@ -543,3 +490,5 @@ extern GLuint fbo_ren;
 #endif
 void GO_SwapBuffers(SDL_Window* screen);
 unsigned int GO_GetPixelU32(int x, int y);
+
+#endif

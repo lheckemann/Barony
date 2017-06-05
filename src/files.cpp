@@ -12,7 +12,6 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <dirent.h>
-#include "main.hpp"
 #include "files.hpp"
 #include "sound.hpp"
 #include "entity.hpp"
@@ -158,11 +157,11 @@ voxel_t* loadVoxel(char* filename)
 		}
 		model = (voxel_t*) malloc(sizeof(voxel_t));
 		model->sizex = 0;
-		fread(&model->sizex, sizeof(Sint32), 1, file);
+		fread(&model->sizex, sizeof(int32_t), 1, file);
 		model->sizey = 0;
-		fread(&model->sizey, sizeof(Sint32), 1, file);
+		fread(&model->sizey, sizeof(int32_t), 1, file);
 		model->sizez = 0;
-		fread(&model->sizez, sizeof(Sint32), 1, file);
+		fread(&model->sizez, sizeof(int32_t), 1, file);
 		model->data = (Uint8*) malloc(sizeof(Uint8) * model->sizex * model->sizey * model->sizez);
 		memset(model->data, 0, sizeof(Uint8)*model->sizex * model->sizey * model->sizez);
 		fread(model->data, sizeof(Uint8), model->sizex * model->sizey * model->sizez, file);
@@ -196,11 +195,11 @@ int loadMap(char* filename2, map_t* destmap, list_t* entlist)
 {
 	FILE* fp;
 	char valid_data[11];
-	Uint32 numentities;
-	Uint32 c;
-	Sint32 x, y;
+	uint32_t numentities;
+	uint32_t c;
+	int32_t x, y;
 	Entity* entity;
-	Sint32 sprite;
+	int32_t sprite;
 	char filename[256];
 
 	char oldmapname[64];
@@ -258,17 +257,17 @@ int loadMap(char* filename2, map_t* destmap, list_t* entlist)
 	}
 	fread(destmap->name, sizeof(char), 32, fp); // map name
 	fread(destmap->author, sizeof(char), 32, fp); // map author
-	fread(&destmap->width, sizeof(Uint32), 1, fp); // map width
-	fread(&destmap->height, sizeof(Uint32), 1, fp); // map height
-	destmap->tiles = (Sint32*) malloc(sizeof(Sint32) * destmap->width * destmap->height * MAPLAYERS);
-	fread(destmap->tiles, sizeof(Sint32), destmap->width * destmap->height * MAPLAYERS, fp);
-	fread(&numentities, sizeof(Uint32), 1, fp); // number of entities on the map
+	fread(&destmap->width, sizeof(uint32_t), 1, fp); // map width
+	fread(&destmap->height, sizeof(uint32_t), 1, fp); // map height
+	destmap->tiles = (int32_t*) malloc(sizeof(int32_t) * destmap->width * destmap->height * MAPLAYERS);
+	fread(destmap->tiles, sizeof(int32_t), destmap->width * destmap->height * MAPLAYERS, fp);
+	fread(&numentities, sizeof(uint32_t), 1, fp); // number of entities on the map
 	for (c = 0; c < numentities; c++)
 	{
-		fread(&sprite, sizeof(Sint32), 1, fp);
+		fread(&sprite, sizeof(int32_t), 1, fp);
 		entity = newEntity(sprite, 0, entlist);
-		fread(&x, sizeof(Sint32), 1, fp);
-		fread(&y, sizeof(Sint32), 1, fp);
+		fread(&x, sizeof(int32_t), 1, fp);
+		fread(&y, sizeof(int32_t), 1, fp);
 		entity->x = x;
 		entity->y = y;
 	}
@@ -291,7 +290,7 @@ int loadMap(char* filename2, map_t* destmap, list_t* entlist)
 		{
 			free(lightmap);
 		}
-		lightmap = (int*) malloc(sizeof(Sint32) * destmap->width * destmap->height);
+		lightmap = (int*) malloc(sizeof(int32_t) * destmap->width * destmap->height);
 		if ( strncmp(map.name, "Hell", 4) )
 		{
 			for (c = 0; c < destmap->width * destmap->height; c++ )
@@ -371,11 +370,11 @@ int loadMap(char* filename2, map_t* destmap, list_t* entlist)
 int saveMap(char* filename2)
 {
 	FILE* fp;
-	Uint32 numentities = 0;
+	uint32_t numentities = 0;
 	node_t* node;
 	Entity* entity;
 	char* filename;
-	Sint32 x, y;
+	int32_t x, y;
 
 	if ( filename2 != NULL && strcmp(filename2, "") )
 	{
@@ -396,22 +395,22 @@ int saveMap(char* filename2)
 		fwrite("BARONY", sizeof(char), strlen("BARONY"), fp); // magic code
 		fwrite(map.name, sizeof(char), 32, fp); // map filename
 		fwrite(map.author, sizeof(char), 32, fp); // map author
-		fwrite(&map.width, sizeof(Uint32), 1, fp); // map width
-		fwrite(&map.height, sizeof(Uint32), 1, fp); // map height
-		fwrite(map.tiles, sizeof(Sint32), map.width * map.height * MAPLAYERS, fp);
+		fwrite(&map.width, sizeof(uint32_t), 1, fp); // map width
+		fwrite(&map.height, sizeof(uint32_t), 1, fp); // map height
+		fwrite(map.tiles, sizeof(int32_t), map.width * map.height * MAPLAYERS, fp);
 		for (node = map.entities->first; node != NULL; node = node->next)
 		{
 			numentities++;
 		}
-		fwrite(&numentities, sizeof(Uint32), 1, fp); // number of entities on the map
+		fwrite(&numentities, sizeof(uint32_t), 1, fp); // number of entities on the map
 		for (node = map.entities->first; node != NULL; node = node->next)
 		{
 			entity = (Entity*) node->element;
-			fwrite(&entity->sprite, sizeof(Sint32), 1, fp);
+			fwrite(&entity->sprite, sizeof(int32_t), 1, fp);
 			x = entity->x;
 			y = entity->y;
-			fwrite(&x, sizeof(Sint32), 1, fp);
-			fwrite(&y, sizeof(Sint32), 1, fp);
+			fwrite(&x, sizeof(int32_t), 1, fp);
+			fwrite(&y, sizeof(int32_t), 1, fp);
 		}
 		fclose(fp);
 		free(filename);

@@ -10,7 +10,6 @@
 
 -------------------------------------------------------------------------------*/
 
-#include "main.hpp"
 #include "draw.hpp"
 #include "files.hpp"
 #include "game.hpp"
@@ -528,7 +527,7 @@ void deinitGame()
 	}
 
 	// this short delay makes sure that the disconnect message gets out
-	Uint32 timetoshutdown = SDL_GetTicks();
+	uint32_t timetoshutdown = SDL_GetTicks();
 	while ( SDL_GetTicks() - timetoshutdown < 500 )
 	{
 		// handle network messages

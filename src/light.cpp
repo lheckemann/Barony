@@ -9,8 +9,8 @@
 
 -------------------------------------------------------------------------------*/
 
-#include "main.hpp"
 #include "light.hpp"
+#include "maps.hpp"
 
 /*-------------------------------------------------------------------------------
 
@@ -23,14 +23,14 @@
 
 -------------------------------------------------------------------------------*/
 
-light_t* lightSphereShadow(Sint32 x, Sint32 y, Sint32 radius, Sint32 intensity)
+light_t* lightSphereShadow(int32_t x, int32_t y, int32_t radius, int32_t intensity)
 {
 	light_t* light;
-	Sint32 i;
-	Sint32 u, v, u2, v2;
+	int32_t i;
+	int32_t u, v, u2, v2;
 	double a, b;
-	Sint32 dx, dy;
-	Sint32 dxabs, dyabs;
+	int32_t dx, dy;
+	int32_t dxabs, dyabs;
 	bool wallhit;
 	int index, z;
 
@@ -133,11 +133,11 @@ light_t* lightSphereShadow(Sint32 x, Sint32 y, Sint32 radius, Sint32 intensity)
 
 -------------------------------------------------------------------------------*/
 
-light_t* lightSphere(Sint32 x, Sint32 y, Sint32 radius, Sint32 intensity)
+light_t* lightSphere(int32_t x, int32_t y, int32_t radius, int32_t intensity)
 {
 	light_t* light;
-	Sint32 u, v;
-	Sint32 dx, dy;
+	int32_t u, v;
+	int32_t dx, dy;
 
 	if ( intensity == 0 )
 	{

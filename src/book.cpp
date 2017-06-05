@@ -9,7 +9,6 @@
 
 -------------------------------------------------------------------------------*/
 
-#include "main.hpp"
 #include "files.hpp"
 #include "game.hpp"
 #include "interface/interface.hpp"
@@ -296,7 +295,7 @@ void createBook(book_t* book)
 	book->pages.first = NULL;
 	book->pages.last = NULL;
 
-	Uint32 color = SDL_MapRGBA(mainsurface->format, 0, 0, 0, 255);
+	uint32_t color = SDL_MapRGBA(mainsurface->format, 0, 0, 0, 255);
 	string_t* string = newString(&book->pages, color, NULL);
 	string->data = (char*) malloc(sizeof(char) * (max_characters + 1));
 	memset(string->data, 0, sizeof(char) * (max_characters + 1));

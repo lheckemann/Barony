@@ -11,7 +11,6 @@
 
 #pragma once
 
-#include "main.hpp"
 #include "entity.hpp"
 
 // variables
@@ -236,10 +235,10 @@ public:
 
 	Sint16 beatitude;  // blessedness
 	Sint16 count;      // how many of item
-	Uint32 appearance; // large random static number
+	uint32_t appearance; // large random static number
 	bool identified;   // if the item is identified or not
-	Uint32 uid;        // item uid
-	Sint32 x, y;       // slot coordinates in item grid
+	uint32_t uid;        // item uid
+	int32_t x, y;       // slot coordinates in item grid
 
 	// weight, category and other generic info reported by function calls
 
@@ -257,14 +256,14 @@ public:
 	char* getName();
 
 	//General Functions.
-	Sint32 weaponGetAttack(); //Returns the tohit of the weapon.
-	Sint32 armorGetAC();
+	int32_t weaponGetAttack(); //Returns the tohit of the weapon.
+	int32_t armorGetAC();
 	bool canUnequip(); //Returns true if the item can be unequipped (not cursed), false if it can't (cursed).
 	int buyValue(int player);
 	int sellValue(int player);
 	void apply(int player, Entity* entity);
 };
-extern Uint32 itemuids;
+extern uint32_t itemuids;
 
 static const int INVENTORY_SIZEX = 12;
 static const int INVENTORY_SIZEY = 3;
@@ -333,16 +332,16 @@ void item_Gem(Item* item, int player);
 void item_Spellbook(Item* item, int player);
 
 //General functions.
-Item* newItem(ItemType type, Status status, Sint16 beatitude, Sint16 count, Uint32 appearance, bool identified, list_t* inventory);
-Item* uidToItem(Uint32 uid);
+Item* newItem(ItemType type, Status status, Sint16 beatitude, Sint16 count, uint32_t appearance, bool identified, list_t* inventory);
+Item* uidToItem(uint32_t uid);
 ItemType itemCurve(Category cat);
 Item* newItemFromEntity(Entity* entity); //Make sure to call free(item).
 Entity* dropItemMonster(Item* item, Entity* monster, Stat* monsterStats);
 Item** itemSlot(Stat* myStats, Item* item);
 
 enum Category itemCategory(const Item* item);
-Sint32 itemModel(Item* item);
-Sint32 itemModelFirstperson(Item* item);
+int32_t itemModel(Item* item);
+int32_t itemModelFirstperson(Item* item);
 SDL_Surface* itemSprite(Item* item);
 void consumeItem(Item* item); //NOTE: Items have to be unequipped before calling this function on them.
 int itemCompare(const Item* item1, const Item* item2);

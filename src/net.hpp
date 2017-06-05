@@ -25,7 +25,7 @@ int power(int a, int b);
 int sendPacket(UDPsocket sock, int channel, UDPpacket* packet, int hostnum);
 int sendPacketSafe(UDPsocket sock, int channel, UDPpacket* packet, int hostnum);
 void messagePlayer(int player, char* message, ...);
-void messagePlayerColor(int player, Uint32 color, char* message, ...);
+void messagePlayerColor(int player, uint32_t color, char* message, ...);
 void sendEntityUDP(Entity* entity, int c, bool guarantee);
 void sendEntityTCP(Entity* entity, int c);
 void sendMapSeedTCP(int c);
@@ -46,13 +46,13 @@ bool handleSafePacket();
 void closeNetworkInterfaces();
 
 // server/game flags
-extern Uint32 svFlags;
-const Uint32 NUM_SERVER_FLAGS =  5;
-const Uint32 SV_FLAG_CHEATS  = 1;
-const Uint32 SV_FLAG_FRIENDLYFIRE = 2;
-const Uint32 SV_FLAG_MINOTAURS = 4;
-const Uint32 SV_FLAG_HUNGER  = 8;
-const Uint32 SV_FLAG_TRAPS = 16;
+extern uint32_t svFlags;
+const uint32_t NUM_SERVER_FLAGS =  5;
+const uint32_t SV_FLAG_CHEATS  = 1;
+const uint32_t SV_FLAG_FRIENDLYFIRE = 2;
+const uint32_t SV_FLAG_MINOTAURS = 4;
+const uint32_t SV_FLAG_HUNGER  = 8;
+const uint32_t SV_FLAG_TRAPS = 16;
 
 class SteamPacketWrapper
 {
@@ -97,3 +97,15 @@ public:
 } extern* net_handler;
 
 int steamPacketThread(void* data);
+
+typedef struct packetsend_t
+{
+	UDPsocket sock;
+	int channel;
+	UDPpacket* packet;
+	int num;
+	int tries;
+	int hostnum;
+} packetsend_t;
+extern list_t safePacketsSent, safePacketsReceived[MAXPLAYERS];
+extern bool receivedclientnum;

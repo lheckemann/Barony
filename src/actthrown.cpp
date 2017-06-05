@@ -9,7 +9,6 @@
 
 -------------------------------------------------------------------------------*/
 
-#include "main.hpp"
 #include "game.hpp"
 #include "stat.hpp"
 #include "items.hpp"
@@ -370,7 +369,7 @@ void actThrown(Entity* my)
 						}
 					}
 					hit.entity = ohitentity;
-					Uint32 color = SDL_MapRGB(mainsurface->format, 0, 255, 0);
+					uint32_t color = SDL_MapRGB(mainsurface->format, 0, 255, 0);
 					if ( parent->behavior == &actPlayer )
 					{
 						if ( !strcmp(hitstats->name, "") )
@@ -400,7 +399,7 @@ void actThrown(Entity* my)
 				}
 				else if ( hit.entity->behavior == &actPlayer )
 				{
-					Uint32 color = SDL_MapRGB(mainsurface->format, 255, 0, 0);
+					uint32_t color = SDL_MapRGB(mainsurface->format, 255, 0, 0);
 					messagePlayerColor(hit.entity->skill[2], color, language[588], itemname);
 					if ( damage == 0 )
 					{

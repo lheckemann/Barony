@@ -9,7 +9,6 @@
 
 -------------------------------------------------------------------------------*/
 
-#include "main.hpp"
 #include "draw.hpp"
 #include "game.hpp"
 #include "stat.hpp"
@@ -76,7 +75,7 @@ void segfault_sigaction(int signal, siginfo_t* si, void* arg)
 // undefine SOUND, MUSIC (see sound.h)
 
 int game = 1;
-Uint32 uniqueGameKey = 0;
+uint32_t uniqueGameKey = 0;
 list_t steamAchievements;
 std::vector<std::string> randomPlayerNamesMale;
 std::vector<std::string> randomPlayerNamesFemale;
@@ -91,11 +90,11 @@ std::vector<std::string> randomPlayerNamesFemale;
 
 void gameLogic(void)
 {
-	Uint32 x;
+	uint32_t x;
 	node_t* node, *nextnode, *node2;
 	Entity* entity;
 	int c = 0;
-	Uint32 i = 0, j;
+	uint32_t i = 0, j;
 	FILE* fp;
 	deleteent_t* deleteent;
 	bool entitydeletedself;
@@ -610,7 +609,7 @@ void gameLogic(void)
 						node_t* node;
 						for ( node = stats[c]->FOLLOWERS.first; node != NULL; node = node->next )
 						{
-							Entity* follower = uidToEntity(*((Uint32*)node->element));
+							Entity* follower = uidToEntity(*((uint32_t*)node->element));
 							if ( follower )
 							{
 								Stat* followerStats = follower->getStats();
@@ -801,14 +800,14 @@ void gameLogic(void)
 
 									newNode = list_AddNodeLast(&stats[c]->FOLLOWERS);
 									newNode->deconstructor = &defaultDeconstructor;
-									Uint32* myuid = (Uint32*) malloc(sizeof(Uint32));
+									uint32_t* myuid = (uint32_t*) malloc(sizeof(uint32_t));
 									newNode->element = myuid;
 									*myuid = monster->getUID();
 
 									if ( c > 0 && multiplayer == SERVER )
 									{
 										strcpy((char*)net_packet->data, "LEAD");
-										SDLNet_Write32((Uint32)monster->getUID(), &net_packet->data[4]);
+										SDLNet_Write32((uint32_t)monster->getUID(), &net_packet->data[4]);
 										net_packet->address.host = net_clients[c - 1].host;
 										net_packet->address.port = net_clients[c - 1].port;
 										net_packet->len = 8;
@@ -1616,7 +1615,7 @@ void handleButtons(void)
 		{
 			//Draw golden border.
 			//For such things as which settings tab the controller has presently selected.
-			Uint32 color = SDL_MapRGBA(mainsurface->format, 255, 255, 0, 127);
+			uint32_t color = SDL_MapRGBA(mainsurface->format, 255, 255, 0, 127);
 			SDL_Rect pos;
 			pos.x = button->x;
 			pos.w = button->sizex;
@@ -1933,7 +1932,7 @@ void handleEvents(void)
 
 -------------------------------------------------------------------------------*/
 
-Uint32 timerCallback(Uint32 interval, void* param)
+uint32_t timerCallback(uint32_t interval, void* param)
 {
 	SDL_Event event;
 	SDL_UserEvent userevent;
@@ -2088,12 +2087,12 @@ void pauseGame(int mode, int ignoreplayer)
 -------------------------------------------------------------------------------*/
 
 // records the SDL_GetTicks() value at the moment the mainloop restarted
-Uint32 lastGameTickCount = 0;
+uint32_t lastGameTickCount = 0;
 
-bool frameRateLimit( Uint32 maxFrameRate )
+bool frameRateLimit( uint32_t maxFrameRate )
 {
 	float desiredFrameMilliseconds = 1000.0f / maxFrameRate;
-	Uint32 gameTickCount = SDL_GetTicks();
+	uint32_t gameTickCount = SDL_GetTicks();
 
 	float millisecondsElapsed = (float)(gameTickCount - lastGameTickCount);
 	if ( millisecondsElapsed < desiredFrameMilliseconds )
@@ -2434,7 +2433,7 @@ int main(int argc, char** argv)
 					char* banner_text1 = language[738];
 					char* banner_text2 = "\n\n\n\n\n\n\n - Turning Wheel";
 					ttfPrintText(ttf16, (xres / 2) - longestline(banner_text1)*TTF16_WIDTH / 2, yres / 2 - TTF16_HEIGHT / 2 * 7, banner_text1);
-					Uint32 colorBlue = SDL_MapRGBA(mainsurface->format, 0, 92, 255, 255);
+					uint32_t colorBlue = SDL_MapRGBA(mainsurface->format, 0, 92, 255, 255);
 					ttfPrintTextColor(ttf16, (xres / 2) - longestline(banner_text1)*TTF16_WIDTH / 2, yres / 2 - TTF16_HEIGHT / 2 * 7, colorBlue, true, banner_text2);
 
 					int time_passed = 0;
@@ -2695,7 +2694,7 @@ int main(int argc, char** argv)
 							{
 								// inform server that we're done talking to shopkeeper
 								strcpy((char*)net_packet->data, "SHPC");
-								SDLNet_Write32((Uint32)shopkeeper, &net_packet->data[4]);
+								SDLNet_Write32((uint32_t)shopkeeper, &net_packet->data[4]);
 								net_packet->address.host = net_server.host;
 								net_packet->address.port = net_server.port;
 								net_packet->len = 8;
@@ -2803,7 +2802,7 @@ int main(int argc, char** argv)
 							{
 								// inform server that we're done talking to shopkeeper
 								strcpy((char*)net_packet->data, "SHPC");
-								SDLNet_Write32((Uint32)shopkeeper, &net_packet->data[4]);
+								SDLNet_Write32((uint32_t)shopkeeper, &net_packet->data[4]);
 								net_packet->address.host = net_server.host;
 								net_packet->address.port = net_server.port;
 								net_packet->len = 8;
@@ -2907,7 +2906,7 @@ int main(int argc, char** argv)
 										char chatstring[256];
 										strcpy(chatstring, language[739]);
 										strcat(chatstring, command_str);
-										Uint32 color = SDL_MapRGBA(mainsurface->format, 0, 255, 255, 255);
+										uint32_t color = SDL_MapRGBA(mainsurface->format, 0, 255, 255, 255);
 										messagePlayerColor(clientnum, color, chatstring);
 										playSound(238, 64);
 										if ( multiplayer == SERVER )
@@ -2954,7 +2953,7 @@ int main(int argc, char** argv)
 										char chatstring[256];
 										strcpy(chatstring, language[739]);
 										strcat(chatstring, command_str);
-										Uint32 color = SDL_MapRGBA(mainsurface->format, 0, 255, 255, 255);
+										uint32_t color = SDL_MapRGBA(mainsurface->format, 0, 255, 255, 255);
 										messagePlayerColor(clientnum, color, chatstring);
 										playSound(238, 64);
 
@@ -3054,9 +3053,9 @@ int main(int argc, char** argv)
 							updateBookGUI();
 							//updateRightSidebar();
 
-							Uint32 sec = (completionTime / TICKS_PER_SECOND) % 60;
-							Uint32 min = ((completionTime / TICKS_PER_SECOND) / 60) % 60;
-							Uint32 hour = ((completionTime / TICKS_PER_SECOND) / 60) / 60;
+							uint32_t sec = (completionTime / TICKS_PER_SECOND) % 60;
+							uint32_t min = ((completionTime / TICKS_PER_SECOND) / 60) % 60;
+							uint32_t hour = ((completionTime / TICKS_PER_SECOND) / 60) / 60;
 							printTextFormatted(font12x12_bmp, xres - 12 * 9, 12, "%02d:%02d:%02d", hour, min, sec);
 						}
 						else if (gui_mode == GUI_MODE_MAGIC)

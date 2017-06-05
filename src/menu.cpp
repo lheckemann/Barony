@@ -10,7 +10,6 @@
 -------------------------------------------------------------------------------*/
 
 #include <list>
-#include "main.hpp"
 #include "draw.hpp"
 #include "game.hpp"
 #include "stat.hpp"
@@ -82,15 +81,15 @@ int settings_xres, settings_yres;
 
 typedef std::tuple<int, int> resolution;
 std::list<resolution> resolutions;
-Uint32 settings_fov;
+uint32_t settings_fov;
 bool settings_smoothlighting;
 int settings_fullscreen, settings_shaking, settings_bobbing;
-real_t settings_gamma;
+float settings_gamma;
 int settings_sfxvolume, settings_musvolume;
 int settings_impulses[NUMIMPULSES];
 int settings_joyimpulses[NUM_JOY_IMPULSES];
 int settings_reversemouse;
-real_t settings_mousespeed;
+float settings_mousespeed;
 bool settings_broadcast;
 bool settings_nohud;
 bool settings_colorblind;
@@ -107,7 +106,7 @@ bool settings_right_click_protect = false;
 bool settings_auto_appraise_new_items = true;
 bool playing_random_char = false;
 bool colorblind = false;
-Sint32 oslidery = 0;
+int32_t oslidery = 0;
 
 //Gamepad settings.
 bool settings_gamepad_leftx_invert = false;
@@ -123,7 +122,7 @@ int settings_gamepad_righty_sensitivity = 1;
 int settings_gamepad_menux_sensitivity = 1;
 int settings_gamepad_menuy_sensitivity = 1;
 
-Uint32 colorWhite = 0xFFFFFFFF;
+uint32_t colorWhite = 0xFFFFFFFF;
 
 int firstendmoviealpha[30];
 int secondendmoviealpha[30];
@@ -131,8 +130,8 @@ int intromoviealpha[30];
 int rebindkey = -1;
 int rebindaction = -1;
 
-Sint32 gearrot = 0;
-Sint32 gearsize = 5000;
+int32_t gearrot = 0;
+int32_t gearsize = 5000;
 Uint16 logoalpha = 0;
 int credittime = 0;
 int creditstage = 0;
@@ -142,7 +141,7 @@ int firstendmovietime = 0;
 int firstendmoviestage = 0;
 int secondendmovietime = 0;
 int secondendmoviestage = 0;
-real_t drunkextend = 0;
+float drunkextend = 0;
 bool losingConnection[4] = { false };
 bool subtitleVisible = false;
 int subtitleCurrent = 0;
@@ -151,10 +150,10 @@ int subtitleCurrent = 0;
 bool resolutionChanged = false;
 bool confirmResolutionWindow = false;
 int resolutionConfirmationTimer = 0;
-Sint32 oldXres;
-Sint32 oldYres;
-Sint32 oldFullscreen;
-real_t oldGamma;
+int32_t oldXres;
+int32_t oldYres;
+int32_t oldFullscreen;
+float oldGamma;
 button_t* revertResolutionButton = nullptr;
 
 void buttonCloseSettingsSubwindow(button_t* my);
@@ -387,7 +386,7 @@ void handleMainMenu(bool mode)
 		}
 		if ( mode && subtitleVisible )
 		{
-			Uint32 colorYellow = SDL_MapRGBA(mainsurface->format, 255, 255, 0, 255);
+			uint32_t colorYellow = SDL_MapRGBA(mainsurface->format, 255, 255, 0, 255);
 			ttfPrintTextColor(ttf16, 176, 20 + title_bmp->h - 24, colorYellow, true, language[1910 + subtitleCurrent]);
 		}
 
@@ -471,7 +470,7 @@ void handleMainMenu(bool mode)
 		}
 
 		// gray text color
-		Uint32 colorGray = SDL_MapRGBA(mainsurface->format, 128, 128, 128, 255);
+		uint32_t colorGray = SDL_MapRGBA(mainsurface->format, 128, 128, 128, 255);
 
 		// draw menu
 		if ( mode )
@@ -1113,7 +1112,7 @@ void handleMainMenu(bool mode)
 			{
 				if ( !players[clientnum]->entity->flags[INVISIBLE] )
 				{
-					real_t ofov = fov;
+					float ofov = fov;
 					fov = 50;
 					glDrawVoxel(&camera_charsheet, players[clientnum]->entity, REALCOLORS);
 					fov = ofov;
@@ -1131,7 +1130,7 @@ void handleMainMenu(bool mode)
 					{
 						b = entity->flags[BRIGHT];
 						entity->flags[BRIGHT] = true;
-						real_t ofov = fov;
+						float ofov = fov;
 						fov = 50;
 						glDrawVoxel(&camera_charsheet, entity, REALCOLORS);
 						fov = ofov;
@@ -1478,12 +1477,12 @@ void handleMainMenu(bool mode)
 		drawDepressed(subx2 - 32, suby1 + 24, subx2 - 8, suby2 - 64);
 
 		// slider
-		slidersize = std::min<int>(((suby2 - 65) - (suby1 + 25)), ((suby2 - 65) - (suby1 + 25)) / ((real_t)std::max(numSteamLobbies + 1, 1) / 20));
+		slidersize = std::min<int>(((suby2 - 65) - (suby1 + 25)), ((suby2 - 65) - (suby1 + 25)) / ((float)std::max(numSteamLobbies + 1, 1) / 20));
 		slidery = std::min(std::max(suby1 + 25, slidery), suby2 - 65 - slidersize);
 		drawWindowFancy(subx2 - 31, slidery, subx2 - 9, slidery + slidersize);
 
 		// directory list offset from slider
-		Sint32 y2 = ((real_t)(slidery - suby1 - 20) / ((suby2 - 52) - (suby1 + 20))) * (numSteamLobbies + 1);
+		int32_t y2 = ((float)(slidery - suby1 - 20) / ((suby2 - 52) - (suby1 + 20))) * (numSteamLobbies + 1);
 		if ( mousestatus[SDL_BUTTON_LEFT] && omousex >= subx2 - 32 && omousex < subx2 - 8 && omousey >= suby1 + 24 && omousey < suby2 - 64 )
 		{
 			slidery = oslidery + mousey - omousey;
@@ -1499,7 +1498,7 @@ void handleMainMenu(bool mode)
 			oslidery = slidery;
 		}
 		slidery = std::min(std::max(suby1 + 25, slidery), suby2 - 65 - slidersize);
-		y2 = ((real_t)(slidery - suby1 - 20) / ((suby2 - 52) - (suby1 + 20))) * (numSteamLobbies + 1);
+		y2 = ((float)(slidery - suby1 - 20) / ((suby2 - 52) - (suby1 + 20))) * (numSteamLobbies + 1);
 
 		// server flags tooltip variables
 		SDL_Rect flagsBox;
@@ -1515,7 +1514,7 @@ void handleMainMenu(bool mode)
 			if ( lobbyIDs[hoveringSelection] )
 			{
 				const char* lobbySvFlagsChar = SteamMatchmaking()->GetLobbyData( *static_cast<CSteamID*>(lobbyIDs[hoveringSelection]), "svFlags" );
-				Uint32 lobbySvFlags = atoi(lobbySvFlagsChar);
+				uint32_t lobbySvFlags = atoi(lobbySvFlagsChar);
 
 				int numSvFlags = 0, c;
 				for ( c = 0; c < NUM_SERVER_FLAGS; c++ )
@@ -1567,11 +1566,11 @@ void handleMainMenu(bool mode)
 		drawRect(&pos, SDL_MapRGB(mainsurface->format, 64, 64, 64), 255);
 
 		// print all lobby entries
-		Sint32 x = subx1 + 10;
-		Sint32 y = suby1 + 28;
+		int32_t x = subx1 + 10;
+		int32_t y = suby1 + 28;
 		if ( numSteamLobbies > 0 )
 		{
-			Sint32 z;
+			int32_t z;
 			c = std::min(numSteamLobbies, 18 + y2);
 			for (z = y2; z < c; z++)
 			{
@@ -2340,7 +2339,7 @@ void handleMainMenu(bool mode)
 					newSteamID = NULL;
 				}*/
 				//newSteamID = c_AllocateNew_CSteamID();
-				Uint32 bytesRead = 0;
+				uint32_t bytesRead = 0;
 				if ( !SteamNetworking()->ReadP2PPacket(net_packet->data, packetlen, &bytesRead, &newSteamID, 0) )
 				{
 					continue;
@@ -2394,8 +2393,8 @@ void handleMainMenu(bool mode)
 				}
 				else
 				{
-					Uint32 clientlsg = SDLNet_Read32(&net_packet->data[68]);
-					Uint32 clientms = SDLNet_Read32(&net_packet->data[64]);
+					uint32_t clientlsg = SDLNet_Read32(&net_packet->data[68]);
+					uint32_t clientms = SDLNet_Read32(&net_packet->data[64]);
 					if ( net_packet->data[63] == 0 )
 					{
 						// client will enter any player spot
@@ -2651,7 +2650,7 @@ void handleMainMenu(bool mode)
 						break;
 					}
 					packetlen = std::min<int>(packetlen, NET_PACKET_SIZE - 1);
-					Uint32 bytesRead = 0;
+					uint32_t bytesRead = 0;
 					if ( !SteamNetworking()->ReadP2PPacket(net_packet->data, packetlen, &bytesRead, &newSteamID, 0) || bytesRead != 4 + MAXPLAYERS * (3 + 16) )
 					{
 						continue;
@@ -2869,7 +2868,7 @@ void handleMainMenu(bool mode)
 						break;
 					}
 					packetlen = std::min<int>(packetlen, NET_PACKET_SIZE - 1);
-					Uint32 bytesRead = 0;
+					uint32_t bytesRead = 0;
 					if ( !SteamNetworking()->ReadP2PPacket(net_packet->data, packetlen, &bytesRead, &newSteamID, 0) )
 					{
 						continue;
@@ -3497,7 +3496,7 @@ void handleMainMenu(bool mode)
 				players[clientnum]->entity->flags[BRIGHT] = true;
 				if ( !players[clientnum]->entity->flags[INVISIBLE] )
 				{
-					real_t ofov = fov;
+					float ofov = fov;
 					fov = 50;
 					glDrawVoxel(&camera_charsheet, players[clientnum]->entity, REALCOLORS);
 					fov = ofov;
@@ -3515,7 +3514,7 @@ void handleMainMenu(bool mode)
 					{
 						b = entity->flags[BRIGHT];
 						entity->flags[BRIGHT] = true;
-						real_t ofov = fov;
+						float ofov = fov;
 						fov = 50;
 						glDrawVoxel(&camera_charsheet, entity, REALCOLORS);
 						fov = ofov;
@@ -3572,9 +3571,9 @@ void handleMainMenu(bool mode)
 			ttfPrintTextFormatted(ttf12, subx1 + 456, suby1 + 248, language[1403], statGetCHR(stats[clientnum]), stats[clientnum]->CHR);
 
 			// time
-			Uint32 sec = (completionTime / TICKS_PER_SECOND) % 60;
-			Uint32 min = ((completionTime / TICKS_PER_SECOND) / 60) % 60;
-			Uint32 hour = ((completionTime / TICKS_PER_SECOND) / 60) / 60;
+			uint32_t sec = (completionTime / TICKS_PER_SECOND) % 60;
+			uint32_t min = ((completionTime / TICKS_PER_SECOND) / 60) % 60;
+			uint32_t hour = ((completionTime / TICKS_PER_SECOND) / 60) / 60;
 			ttfPrintTextFormatted(ttf12, subx1 + 32, suby2 - 80, "%s: %02d:%02d:%02d. %s:", language[1405], hour, min, sec, language[1406]);
 			if ( !conductPenniless && !conductFoodless && !conductVegetarian && !conductIlliterate )
 			{
@@ -3872,14 +3871,14 @@ void handleMainMenu(bool mode)
 
 											newNode = list_AddNodeLast(&stats[c]->FOLLOWERS);
 											newNode->deconstructor = &defaultDeconstructor;
-											Uint32* myuid = (Uint32*) malloc(sizeof(Uint32));
+											uint32_t* myuid = (uint32_t*) malloc(sizeof(uint32_t));
 											newNode->element = myuid;
 											*myuid = monster->getUID();
 
 											if ( c > 0 && multiplayer == SERVER )
 											{
 												strcpy((char*)net_packet->data, "LEAD");
-												SDLNet_Write32((Uint32)monster->getUID(), &net_packet->data[4]);
+												SDLNet_Write32((uint32_t)monster->getUID(), &net_packet->data[4]);
 												net_packet->address.host = net_clients[c - 1].host;
 												net_packet->address.port = net_clients[c - 1].port;
 												net_packet->len = 8;
@@ -4412,7 +4411,7 @@ void handleMainMenu(bool mode)
 		}
 
 		// stages
-		Uint32 colorBlue = SDL_MapRGBA(mainsurface->format, 0, 92, 255, 255);
+		uint32_t colorBlue = SDL_MapRGBA(mainsurface->format, 0, 92, 255, 255);
 		if ( creditstage == 1 )
 		{
 			ttfPrintTextFormattedColor(ttf16, xres / 2 - (TTF16_WIDTH / 2)*strlen(language[56]), yres / 2 - 9 - 18, colorBlue, language[56]);
@@ -4515,7 +4514,7 @@ void handleMainMenu(bool mode)
 		pos.x = 0;
 		pos.y = 0;
 		pos.w = xres;
-		pos.h = (((real_t)xres) / backdrop_bmp->w) * backdrop_bmp->h;
+		pos.h = (((float)xres) / backdrop_bmp->w) * backdrop_bmp->h;
 		drawImageScaled(backdrop_bmp, NULL, &pos);
 
 		if ( intromovietime >= 600 || mousestatus[SDL_BUTTON_LEFT] || keystatus[SDL_SCANCODE_ESCAPE] ||
@@ -4541,63 +4540,63 @@ void handleMainMenu(bool mode)
 		if ( intromoviestage >= 1 )
 		{
 			intromoviealpha[8] = std::min(intromoviealpha[8] + 2, 255);
-			Uint32 color = 0x00FFFFFF;
+			uint32_t color = 0x00FFFFFF;
 			color += std::min(std::max(0, intromoviealpha[8]), 255) << 24;
 			ttfPrintTextColor(ttf16, 16, yres - 32, color, true, language[1414]);
 		}
 		if ( intromoviestage >= 2 )
 		{
 			intromoviealpha[0] = std::min(intromoviealpha[0] + 2, 255);
-			Uint32 color = 0x00FFFFFF;
+			uint32_t color = 0x00FFFFFF;
 			color += std::min(std::max(0, intromoviealpha[0]), 255) << 24;
 			ttfPrintTextColor(ttf16, 16 + (xres - 960) / 2, 16 + (yres - 600) / 2, color, true, language[1415]);
 		}
 		if ( intromoviestage >= 3 )
 		{
 			intromoviealpha[1] = std::min(intromoviealpha[1] + 2, 255);
-			Uint32 color = 0x00FFFFFF;
+			uint32_t color = 0x00FFFFFF;
 			color += std::min(std::max(0, intromoviealpha[1]), 255) << 24;
 			ttfPrintTextColor(ttf16, 16 + (xres - 960) / 2, 16 + (yres - 600) / 2, color, true, language[1416]);
 		}
 		if ( intromoviestage >= 4 )
 		{
 			intromoviealpha[2] = std::min(intromoviealpha[2] + 2, 255);
-			Uint32 color = 0x00FFFFFF;
+			uint32_t color = 0x00FFFFFF;
 			color += std::min(std::max(0, intromoviealpha[2]), 255) << 24;
 			ttfPrintTextColor(ttf16, 16 + (xres - 960) / 2, 16 + (yres - 600) / 2, color, true, language[1417]);
 		}
 		if ( intromoviestage >= 5 )
 		{
 			intromoviealpha[3] = std::min(intromoviealpha[3] + 2, 255);
-			Uint32 color = 0x00FFFFFF;
+			uint32_t color = 0x00FFFFFF;
 			color += std::min(std::max(0, intromoviealpha[3]), 255) << 24;
 			ttfPrintTextColor(ttf16, 16 + (xres - 960) / 2, 16 + (yres - 600) / 2, color, true, language[1418]);
 		}
 		if ( intromoviestage >= 6 )
 		{
 			intromoviealpha[4] = std::min(intromoviealpha[4] + 2, 255);
-			Uint32 color = 0x00FFFFFF;
+			uint32_t color = 0x00FFFFFF;
 			color += std::min(std::max(0, intromoviealpha[4]), 255) << 24;
 			ttfPrintTextColor(ttf16, 16 + (xres - 960) / 2, 16 + (yres - 600) / 2, color, true, language[1419]);
 		}
 		if ( intromoviestage >= 7 )
 		{
 			intromoviealpha[5] = std::min(intromoviealpha[5] + 2, 255);
-			Uint32 color = 0x00FFFFFF;
+			uint32_t color = 0x00FFFFFF;
 			color += std::min(std::max(0, intromoviealpha[5]), 255) << 24;
 			ttfPrintTextColor(ttf16, 16 + (xres - 960) / 2, 16 + (yres - 600) / 2, color, true, language[1420]);
 		}
 		if ( intromoviestage >= 8 )
 		{
 			intromoviealpha[6] = std::min(intromoviealpha[6] + 2, 255);
-			Uint32 color = 0x00FFFFFF;
+			uint32_t color = 0x00FFFFFF;
 			color += std::min(std::max(0, intromoviealpha[6]), 255) << 24;
 			ttfPrintTextColor(ttf16, 16 + (xres - 960) / 2, 16 + (yres - 600) / 2, color, true, language[1421]);
 		}
 		if ( intromoviestage == 9 )
 		{
 			intromoviealpha[7] = std::min(intromoviealpha[7] + 2, 255);
-			Uint32 color = 0x00FFFFFF;
+			uint32_t color = 0x00FFFFFF;
 			color += std::min(std::max(0, intromoviealpha[7]), 255) << 24;
 			ttfPrintTextColor(ttf16, 16 + (xres - 960) / 2, 16 + (yres - 600) / 2, color, true, language[1422]);
 		}
@@ -4610,7 +4609,7 @@ void handleMainMenu(bool mode)
 		pos.x = 0;
 		pos.y = 0;
 		pos.w = xres;
-		pos.h = (((real_t)xres) / backdrop_bmp->w) * backdrop_bmp->h;
+		pos.h = (((float)xres) / backdrop_bmp->w) * backdrop_bmp->h;
 		drawImageScaled(backdrop_bmp, NULL, &pos);
 
 		if ( firstendmovietime >= 600 || mousestatus[SDL_BUTTON_LEFT] || keystatus[SDL_SCANCODE_ESCAPE] ||
@@ -4632,35 +4631,35 @@ void handleMainMenu(bool mode)
 		if ( firstendmoviestage >= 1 )
 		{
 			firstendmoviealpha[8] = std::min(firstendmoviealpha[8] + 2, 255);
-			Uint32 color = 0x00FFFFFF;
+			uint32_t color = 0x00FFFFFF;
 			color += std::min(std::max(0, firstendmoviealpha[8]), 255) << 24;
 			ttfPrintTextColor(ttf16, 16, yres - 32, color, true, language[1414]);
 		}
 		if ( firstendmoviestage >= 2 )
 		{
 			firstendmoviealpha[0] = std::min(firstendmoviealpha[0] + 2, 255);
-			Uint32 color = 0x00FFFFFF;
+			uint32_t color = 0x00FFFFFF;
 			color += std::min(std::max(0, firstendmoviealpha[0]), 255) << 24;
 			ttfPrintTextColor(ttf16, 16 + (xres - 960) / 2, 16 + (yres - 600) / 2, color, true, language[1423]);
 		}
 		if ( firstendmoviestage >= 3 )
 		{
 			firstendmoviealpha[1] = std::min(firstendmoviealpha[1] + 2, 255);
-			Uint32 color = 0x00FFFFFF;
+			uint32_t color = 0x00FFFFFF;
 			color += std::min(std::max(0, firstendmoviealpha[1]), 255) << 24;
 			ttfPrintTextColor(ttf16, 16 + (xres - 960) / 2, 16 + (yres - 600) / 2, color, true, language[1424]);
 		}
 		if ( firstendmoviestage >= 4 )
 		{
 			firstendmoviealpha[2] = std::min(firstendmoviealpha[2] + 2, 255);
-			Uint32 color = 0x00FFFFFF;
+			uint32_t color = 0x00FFFFFF;
 			color += std::min(std::max(0, firstendmoviealpha[2]), 255) << 24;
 			ttfPrintTextColor(ttf16, 16 + (xres - 960) / 2, 16 + (yres - 600) / 2, color, true, language[1425]);
 		}
 		if ( firstendmoviestage == 5 )
 		{
 			firstendmoviealpha[3] = std::min(firstendmoviealpha[3] + 2, 255);
-			Uint32 color = 0x00FFFFFF;
+			uint32_t color = 0x00FFFFFF;
 			color += std::min(std::max(0, firstendmoviealpha[3]), 255) << 24;
 			ttfPrintTextColor(ttf16, 16 + (xres - 960) / 2, 16 + (yres - 600) / 2, color, true, language[1426]);
 		}
@@ -4673,7 +4672,7 @@ void handleMainMenu(bool mode)
 		pos.x = 0;
 		pos.y = 0;
 		pos.w = xres;
-		pos.h = (((real_t)xres) / backdrop_bmp->w) * backdrop_bmp->h;
+		pos.h = (((float)xres) / backdrop_bmp->w) * backdrop_bmp->h;
 		drawImageScaled(backdrop_bmp, NULL, &pos);
 
 		if ( secondendmovietime >= 600 || mousestatus[SDL_BUTTON_LEFT] || keystatus[SDL_SCANCODE_ESCAPE] ||
@@ -4695,49 +4694,49 @@ void handleMainMenu(bool mode)
 		if ( secondendmoviestage >= 1 )
 		{
 			secondendmoviealpha[8] = std::min(secondendmoviealpha[8] + 2, 255);
-			Uint32 color = 0x00FFFFFF;
+			uint32_t color = 0x00FFFFFF;
 			color += std::min(std::max(0, secondendmoviealpha[8]), 255) << 24;
 			ttfPrintTextColor(ttf16, 16, yres - 32, color, true, language[1414]);
 		}
 		if ( secondendmoviestage >= 2 )
 		{
 			secondendmoviealpha[0] = std::min(secondendmoviealpha[0] + 2, 255);
-			Uint32 color = 0x00FFFFFF;
+			uint32_t color = 0x00FFFFFF;
 			color += std::min(std::max(0, secondendmoviealpha[0]), 255) << 24;
 			ttfPrintTextColor(ttf16, 16 + (xres - 960) / 2, 16 + (yres - 600) / 22, color, true, language[1427]);
 		}
 		if ( secondendmoviestage >= 3 )
 		{
 			secondendmoviealpha[1] = std::min(secondendmoviealpha[1] + 2, 255);
-			Uint32 color = 0x00FFFFFF;
+			uint32_t color = 0x00FFFFFF;
 			color += std::min(std::max(0, secondendmoviealpha[1]), 255) << 24;
 			ttfPrintTextColor(ttf16, 16 + (xres - 960) / 2, 16 + (yres - 600) / 2, color, true, language[1428]);
 		}
 		if ( secondendmoviestage >= 4 )
 		{
 			secondendmoviealpha[2] = std::min(secondendmoviealpha[2] + 2, 255);
-			Uint32 color = 0x00FFFFFF;
+			uint32_t color = 0x00FFFFFF;
 			color += std::min(std::max(0, secondendmoviealpha[2]), 255) << 24;
 			ttfPrintTextColor(ttf16, 16 + (xres - 960) / 2, 16 + (yres - 600) / 2, color, true, language[1429]);
 		}
 		if ( secondendmoviestage >= 5 )
 		{
 			secondendmoviealpha[3] = std::min(secondendmoviealpha[3] + 2, 255);
-			Uint32 color = 0x00FFFFFF;
+			uint32_t color = 0x00FFFFFF;
 			color += std::min(std::max(0, secondendmoviealpha[3]), 255) << 24;
 			ttfPrintTextColor(ttf16, 16 + (xres - 960) / 2, 16 + (yres - 600) / 2, color, true, language[1430]);
 		}
 		if ( secondendmoviestage >= 6 )
 		{
 			secondendmoviealpha[4] = std::min(secondendmoviealpha[4] + 2, 255);
-			Uint32 color = 0x00FFFFFF;
+			uint32_t color = 0x00FFFFFF;
 			color += std::min(std::max(0, secondendmoviealpha[4]), 255) << 24;
 			ttfPrintTextColor(ttf16, 16 + (xres - 960) / 2, 16 + (yres - 600) / 2, color, true, language[1431]);
 		}
 		if ( secondendmoviestage == 7 )
 		{
 			secondendmoviealpha[5] = std::min(secondendmoviealpha[5] + 2, 255);
-			Uint32 color = 0x00FFFFFF;
+			uint32_t color = 0x00FFFFFF;
 			color += std::min(std::max(0, secondendmoviealpha[5]), 255) << 24;
 			ttfPrintTextColor(ttf16, 16 + (xres - 960) / 2, 16 + (yres - 600) / 2, color, true, language[1432]);
 		}
@@ -4767,7 +4766,7 @@ void openGameoverWindow()
 	// calculate player score
 	char scorenum[16];
 	score_t* score = scoreConstructor();
-	Uint32 total = totalScore(score);
+	uint32_t total = totalScore(score);
 	snprintf(scorenum, 16, "%d\n\n", total);
 	scoreDeconstructor((void*)score);
 
@@ -5578,7 +5577,7 @@ void buttonCloseAndEndGameConfirm(button_t* my)
 	buttonEndGameConfirmSave(my);
 }
 
-Uint32 charcreation_ticks = 0;
+uint32_t charcreation_ticks = 0;
 
 // move player forward through creation dialogue
 void buttonContinue(button_t* my)
@@ -6164,9 +6163,9 @@ void buttonJoinLobby(button_t* my)
 	if ( loadingsavegame )
 	{
 		strncpy((char*)net_packet->data + 19, stats[getSaveGameClientnum()]->name, 22);
-		SDLNet_Write32((Uint32)client_classes[getSaveGameClientnum()], &net_packet->data[42]);
-		SDLNet_Write32((Uint32)stats[getSaveGameClientnum()]->sex, &net_packet->data[46]);
-		SDLNet_Write32((Uint32)stats[getSaveGameClientnum()]->appearance, &net_packet->data[50]);
+		SDLNet_Write32((uint32_t)client_classes[getSaveGameClientnum()], &net_packet->data[42]);
+		SDLNet_Write32((uint32_t)stats[getSaveGameClientnum()]->sex, &net_packet->data[46]);
+		SDLNet_Write32((uint32_t)stats[getSaveGameClientnum()]->appearance, &net_packet->data[50]);
 		strcpy((char*)net_packet->data + 54, VERSION);
 		net_packet->data[62] = 0;
 		net_packet->data[63] = getSaveGameClientnum();
@@ -6174,9 +6173,9 @@ void buttonJoinLobby(button_t* my)
 	else
 	{
 		strncpy((char*)net_packet->data + 19, stats[0]->name, 22);
-		SDLNet_Write32((Uint32)client_classes[0], &net_packet->data[42]);
-		SDLNet_Write32((Uint32)stats[0]->sex, &net_packet->data[46]);
-		SDLNet_Write32((Uint32)stats[0]->appearance, &net_packet->data[50]);
+		SDLNet_Write32((uint32_t)client_classes[0], &net_packet->data[42]);
+		SDLNet_Write32((uint32_t)stats[0]->sex, &net_packet->data[46]);
+		SDLNet_Write32((uint32_t)stats[0]->appearance, &net_packet->data[50]);
 		strcpy((char*)net_packet->data + 54, VERSION);
 		net_packet->data[62] = 0;
 		net_packet->data[63] = 0;
@@ -6414,7 +6413,7 @@ void applySettings()
 		{
 			free(zbuffer);
 		}
-		zbuffer = (real_t*) malloc(sizeof(real_t) * xres * yres);
+		zbuffer = (float*) malloc(sizeof(float) * xres * yres);
 		if ( clickmap != NULL )
 		{
 			free(clickmap);
@@ -6586,7 +6585,7 @@ void buttonSettingsOK(button_t* my)
 // next score button (statistics window)
 void buttonScoreNext(button_t* my)
 {
-	score_window = std::min<int>(score_window + 1, std::max<Uint32>(1, list_Size(&topscores)));
+	score_window = std::min<int>(score_window + 1, std::max<uint32_t>(1, list_Size(&topscores)));
 	loadScore(score_window - 1);
 }
 
@@ -6620,7 +6619,7 @@ void doSlider(int x, int y, int dots, int minvalue, int maxvalue, int increment,
 		{
 			if ( omousey >= y - (slider_font->h / slider_font_char_width) / 2 && omousey < y + ((slider_font->h / slider_font_char_width) / 2) * 3 )
 			{
-				*var = ((real_t)(mousex - x - (slider_font->w / slider_font_char_width) / 2) / sliderLength) * range + minvalue;
+				*var = ((float)(mousex - x - (slider_font->w / slider_font_char_width) / 2) / sliderLength) * range + minvalue;
 				if ( increment )
 				{
 					*var += increment / 2;
@@ -6634,12 +6633,12 @@ void doSlider(int x, int y, int dots, int minvalue, int maxvalue, int increment,
 
 	// draw slider
 	int sliderx = x + (slider_font->w / slider_font_char_width) / 2;
-	sliderx += (((real_t)(*var) - minvalue) / range) * sliderLength;
+	sliderx += (((float)(*var) - minvalue) / range) * sliderLength;
 	drawWindowFancy( sliderx - (slider_font->w / slider_font_char_width) / 2, y - (slider_font->h / slider_font_char_width) / 2, sliderx + (slider_font->w / slider_font_char_width) / 2, y + ((slider_font->h / slider_font_char_width) / 2) * 3);
 }
 
 // handles slider (float)
-void doSliderF(int x, int y, int dots, real_t minvalue, real_t maxvalue, real_t increment, real_t* var)
+void doSliderF(int x, int y, int dots, float minvalue, float maxvalue, float increment, float* var)
 {
 	int c;
 
@@ -6653,7 +6652,7 @@ void doSliderF(int x, int y, int dots, real_t minvalue, real_t maxvalue, real_t 
 	printTextFormatted(SLIDERFONT, x, y, tempstr, *var);
 
 	// control
-	real_t range = maxvalue - minvalue;
+	float range = maxvalue - minvalue;
 	int sliderLength = ((strlen(tempstr) - 6) * (SLIDERFONT->w / 16));
 	if ( mousestatus[SDL_BUTTON_LEFT] )
 	{
@@ -6661,7 +6660,7 @@ void doSliderF(int x, int y, int dots, real_t minvalue, real_t maxvalue, real_t 
 		{
 			if ( omousey >= y - (SLIDERFONT->h / 16) / 2 && omousey < y + ((SLIDERFONT->h / 16) / 2) * 3 )
 			{
-				*var = ((real_t)(mousex - x - (SLIDERFONT->w / 16) / 2) / sliderLength) * range + minvalue;
+				*var = ((float)(mousex - x - (SLIDERFONT->w / 16) / 2) / sliderLength) * range + minvalue;
 				if ( increment )
 				{
 					*var += increment / 2;

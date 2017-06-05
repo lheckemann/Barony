@@ -9,7 +9,6 @@
 
 -------------------------------------------------------------------------------*/
 
-#include "main.hpp"
 #include "game.hpp"
 #include "stat.hpp"
 #include "menu.hpp"
@@ -22,14 +21,14 @@
 // definitions
 list_t topscores;
 int victory = false;
-Uint32 completionTime = 0;
+uint32_t completionTime = 0;
 bool conductPenniless = true;
 bool conductFoodless = true;
 bool conductVegetarian = true;
 bool conductIlliterate = true;
 list_t booksRead;
 bool usedClass[10] = {0};
-Uint32 loadingsavegame = 0;
+uint32_t loadingsavegame = 0;
 
 /*-------------------------------------------------------------------------------
 
@@ -473,12 +472,12 @@ void saveAllScores()
 
 	// header info
 	c = list_Size(&booksRead);
-	fwrite(&c, sizeof(Uint32), 1, fp);
+	fwrite(&c, sizeof(uint32_t), 1, fp);
 	for ( node = booksRead.first; node != NULL; node = node->next )
 	{
 		char* book = (char*)node->element;
 		c = strlen(book);
-		fwrite(&c, sizeof(Uint32), 1, fp);
+		fwrite(&c, sizeof(uint32_t), 1, fp);
 		fputs(book, fp);
 	}
 	for ( c = 0; c < 10; c++ )
@@ -488,48 +487,48 @@ void saveAllScores()
 
 	// score list
 	c = list_Size(&topscores);
-	fwrite(&c, sizeof(Uint32), 1, fp);
+	fwrite(&c, sizeof(uint32_t), 1, fp);
 	for ( node = topscores.first; node != NULL; node = node->next )
 	{
 		score_t* score = (score_t*)node->element;
 		for ( c = 0; c < NUMMONSTERS; c++ )
 		{
-			fwrite(&score->kills[c], sizeof(Sint32), 1, fp);
+			fwrite(&score->kills[c], sizeof(int32_t), 1, fp);
 		}
-		fwrite(&score->completionTime, sizeof(Uint32), 1, fp);
+		fwrite(&score->completionTime, sizeof(uint32_t), 1, fp);
 		fwrite(&score->conductPenniless, sizeof(bool), 1, fp);
 		fwrite(&score->conductFoodless, sizeof(bool), 1, fp);
 		fwrite(&score->conductVegetarian, sizeof(bool), 1, fp);
 		fwrite(&score->conductIlliterate, sizeof(bool), 1, fp);
 		fwrite(&score->stats->type, sizeof(Monster), 1, fp);
 		fwrite(&score->stats->sex, sizeof(sex_t), 1, fp);
-		fwrite(&score->stats->appearance, sizeof(Uint32), 1, fp);
+		fwrite(&score->stats->appearance, sizeof(uint32_t), 1, fp);
 		fwrite(score->stats->name, sizeof(char), 32, fp);
-		fwrite(&score->classnum, sizeof(Sint32), 1, fp);
-		fwrite(&score->dungeonlevel, sizeof(Sint32), 1, fp);
+		fwrite(&score->classnum, sizeof(int32_t), 1, fp);
+		fwrite(&score->dungeonlevel, sizeof(int32_t), 1, fp);
 		fwrite(&score->victory, sizeof(int), 1, fp);
-		fwrite(&score->stats->HP, sizeof(Sint32), 1, fp);
-		fwrite(&score->stats->MAXHP, sizeof(Sint32), 1, fp);
-		fwrite(&score->stats->MP, sizeof(Sint32), 1, fp);
-		fwrite(&score->stats->MAXMP, sizeof(Sint32), 1, fp);
-		fwrite(&score->stats->STR, sizeof(Sint32), 1, fp);
-		fwrite(&score->stats->DEX, sizeof(Sint32), 1, fp);
-		fwrite(&score->stats->CON, sizeof(Sint32), 1, fp);
-		fwrite(&score->stats->INT, sizeof(Sint32), 1, fp);
-		fwrite(&score->stats->PER, sizeof(Sint32), 1, fp);
-		fwrite(&score->stats->CHR, sizeof(Sint32), 1, fp);
-		fwrite(&score->stats->EXP, sizeof(Sint32), 1, fp);
-		fwrite(&score->stats->LVL, sizeof(Sint32), 1, fp);
-		fwrite(&score->stats->GOLD, sizeof(Sint32), 1, fp);
-		fwrite(&score->stats->HUNGER, sizeof(Sint32), 1, fp);
+		fwrite(&score->stats->HP, sizeof(int32_t), 1, fp);
+		fwrite(&score->stats->MAXHP, sizeof(int32_t), 1, fp);
+		fwrite(&score->stats->MP, sizeof(int32_t), 1, fp);
+		fwrite(&score->stats->MAXMP, sizeof(int32_t), 1, fp);
+		fwrite(&score->stats->STR, sizeof(int32_t), 1, fp);
+		fwrite(&score->stats->DEX, sizeof(int32_t), 1, fp);
+		fwrite(&score->stats->CON, sizeof(int32_t), 1, fp);
+		fwrite(&score->stats->INT, sizeof(int32_t), 1, fp);
+		fwrite(&score->stats->PER, sizeof(int32_t), 1, fp);
+		fwrite(&score->stats->CHR, sizeof(int32_t), 1, fp);
+		fwrite(&score->stats->EXP, sizeof(int32_t), 1, fp);
+		fwrite(&score->stats->LVL, sizeof(int32_t), 1, fp);
+		fwrite(&score->stats->GOLD, sizeof(int32_t), 1, fp);
+		fwrite(&score->stats->HUNGER, sizeof(int32_t), 1, fp);
 		for ( c = 0; c < NUMPROFICIENCIES; c++ )
 		{
-			fwrite(&score->stats->PROFICIENCIES[c], sizeof(Sint32), 1, fp);
+			fwrite(&score->stats->PROFICIENCIES[c], sizeof(int32_t), 1, fp);
 		}
 		for ( c = 0; c < NUMEFFECTS; c++ )
 		{
 			fwrite(&score->stats->EFFECTS[c], sizeof(bool), 1, fp);
-			fwrite(&score->stats->EFFECTS_TIMERS[c], sizeof(Sint32), 1, fp);
+			fwrite(&score->stats->EFFECTS_TIMERS[c], sizeof(int32_t), 1, fp);
 		}
 
 		// inventory
@@ -543,7 +542,7 @@ void saveAllScores()
 			fwrite(&item->status, sizeof(Status), 1, fp);
 			fwrite(&item->beatitude, sizeof(Sint16), 1, fp);
 			fwrite(&item->count, sizeof(Sint16), 1, fp);
-			fwrite(&item->appearance, sizeof(Uint32), 1, fp);
+			fwrite(&item->appearance, sizeof(uint32_t), 1, fp);
 			fwrite(&item->identified, sizeof(bool), 1, fp);
 		}
 		if ( score->stats->helmet )
@@ -662,7 +661,7 @@ void saveAllScores()
 void loadAllScores()
 {
 	FILE* fp;
-	Uint32 c, i;
+	uint32_t c, i;
 
 	// clear top scores
 	list_FreeAll(&topscores);
@@ -692,11 +691,11 @@ void loadAllScores()
 
 	// header info
 	list_FreeAll(&booksRead);
-	fread(&c, sizeof(Uint32), 1, fp);
+	fread(&c, sizeof(uint32_t), 1, fp);
 	for ( i = 0; i < c; i++ )
 	{
-		Uint32 booknamelen = 0;
-		fread(&booknamelen, sizeof(Uint32), 1, fp);
+		uint32_t booknamelen = 0;
+		fread(&booknamelen, sizeof(uint32_t), 1, fp);
 		fgets(tempstr, booknamelen + 1, fp);
 
 		char* book = (char*) malloc(sizeof(char) * (strlen(tempstr) + 1));
@@ -713,8 +712,8 @@ void loadAllScores()
 	}
 
 	// read scores
-	Uint32 numscores = 0;
-	fread(&numscores, sizeof(Uint32), 1, fp);
+	uint32_t numscores = 0;
+	fread(&numscores, sizeof(uint32_t), 1, fp);
 	for ( i = 0; i < numscores; i++ )
 	{
 		node_t* node = list_AddNodeLast(&topscores);
@@ -736,42 +735,42 @@ void loadAllScores()
 
 		for ( c = 0; c < NUMMONSTERS; c++ )
 		{
-			fread(&score->kills[c], sizeof(Sint32), 1, fp);
+			fread(&score->kills[c], sizeof(int32_t), 1, fp);
 		}
-		fread(&score->completionTime, sizeof(Uint32), 1, fp);
+		fread(&score->completionTime, sizeof(uint32_t), 1, fp);
 		fread(&score->conductPenniless, sizeof(bool), 1, fp);
 		fread(&score->conductFoodless, sizeof(bool), 1, fp);
 		fread(&score->conductVegetarian, sizeof(bool), 1, fp);
 		fread(&score->conductIlliterate, sizeof(bool), 1, fp);
 		fread(&score->stats->type, sizeof(Monster), 1, fp);
 		fread(&score->stats->sex, sizeof(sex_t), 1, fp);
-		fread(&score->stats->appearance, sizeof(Uint32), 1, fp);
+		fread(&score->stats->appearance, sizeof(uint32_t), 1, fp);
 		fread(&score->stats->name, sizeof(char), 32, fp);
-		fread(&score->classnum, sizeof(Sint32), 1, fp);
-		fread(&score->dungeonlevel, sizeof(Sint32), 1, fp);
+		fread(&score->classnum, sizeof(int32_t), 1, fp);
+		fread(&score->dungeonlevel, sizeof(int32_t), 1, fp);
 		fread(&score->victory, sizeof(int), 1, fp);
-		fread(&score->stats->HP, sizeof(Sint32), 1, fp);
-		fread(&score->stats->MAXHP, sizeof(Sint32), 1, fp);
-		fread(&score->stats->MP, sizeof(Sint32), 1, fp);
-		fread(&score->stats->MAXMP, sizeof(Sint32), 1, fp);
-		fread(&score->stats->STR, sizeof(Sint32), 1, fp);
-		fread(&score->stats->DEX, sizeof(Sint32), 1, fp);
-		fread(&score->stats->CON, sizeof(Sint32), 1, fp);
-		fread(&score->stats->INT, sizeof(Sint32), 1, fp);
-		fread(&score->stats->PER, sizeof(Sint32), 1, fp);
-		fread(&score->stats->CHR, sizeof(Sint32), 1, fp);
-		fread(&score->stats->EXP, sizeof(Sint32), 1, fp);
-		fread(&score->stats->LVL, sizeof(Sint32), 1, fp);
-		fread(&score->stats->GOLD, sizeof(Sint32), 1, fp);
-		fread(&score->stats->HUNGER, sizeof(Sint32), 1, fp);
+		fread(&score->stats->HP, sizeof(int32_t), 1, fp);
+		fread(&score->stats->MAXHP, sizeof(int32_t), 1, fp);
+		fread(&score->stats->MP, sizeof(int32_t), 1, fp);
+		fread(&score->stats->MAXMP, sizeof(int32_t), 1, fp);
+		fread(&score->stats->STR, sizeof(int32_t), 1, fp);
+		fread(&score->stats->DEX, sizeof(int32_t), 1, fp);
+		fread(&score->stats->CON, sizeof(int32_t), 1, fp);
+		fread(&score->stats->INT, sizeof(int32_t), 1, fp);
+		fread(&score->stats->PER, sizeof(int32_t), 1, fp);
+		fread(&score->stats->CHR, sizeof(int32_t), 1, fp);
+		fread(&score->stats->EXP, sizeof(int32_t), 1, fp);
+		fread(&score->stats->LVL, sizeof(int32_t), 1, fp);
+		fread(&score->stats->GOLD, sizeof(int32_t), 1, fp);
+		fread(&score->stats->HUNGER, sizeof(int32_t), 1, fp);
 		for ( c = 0; c < NUMPROFICIENCIES; c++ )
 		{
-			fread(&score->stats->PROFICIENCIES[c], sizeof(Sint32), 1, fp);
+			fread(&score->stats->PROFICIENCIES[c], sizeof(int32_t), 1, fp);
 		}
 		for ( c = 0; c < NUMEFFECTS; c++ )
 		{
 			fread(&score->stats->EFFECTS[c], sizeof(bool), 1, fp);
-			fread(&score->stats->EFFECTS_TIMERS[c], sizeof(Sint32), 1, fp);
+			fread(&score->stats->EFFECTS_TIMERS[c], sizeof(int32_t), 1, fp);
 		}
 
 		score->stats->leader_uid = 0;
@@ -784,7 +783,7 @@ void loadAllScores()
 
 		// inventory
 		int numitems = 0;
-		fread(&numitems, sizeof(Uint32), 1, fp);
+		fread(&numitems, sizeof(uint32_t), 1, fp);
 		score->stats->inventory.first = NULL;
 		score->stats->inventory.last = NULL;
 		for ( c = 0; c < numitems; c++ )
@@ -793,17 +792,17 @@ void loadAllScores()
 			Status status;
 			Sint16 beatitude;
 			Sint16 count;
-			Uint32 appearance;
+			uint32_t appearance;
 			bool identified;
 			fread(&type, sizeof(ItemType), 1, fp);
 			fread(&status, sizeof(Status), 1, fp);
 			fread(&beatitude, sizeof(Sint16), 1, fp);
 			fread(&count, sizeof(Sint16), 1, fp);
-			fread(&appearance, sizeof(Uint32), 1, fp);
+			fread(&appearance, sizeof(uint32_t), 1, fp);
 			fread(&identified, sizeof(bool), 1, fp);
 			newItem(type, status, beatitude, count, appearance, identified, &score->stats->inventory);
 		}
-		fread(&c, sizeof(Uint32), 1, fp);
+		fread(&c, sizeof(uint32_t), 1, fp);
 		node = list_Node(&score->stats->inventory, c);
 		if ( node )
 		{
@@ -813,7 +812,7 @@ void loadAllScores()
 		{
 			score->stats->helmet = NULL;
 		}
-		fread(&c, sizeof(Uint32), 1, fp);
+		fread(&c, sizeof(uint32_t), 1, fp);
 		node = list_Node(&score->stats->inventory, c);
 		if ( node )
 		{
@@ -823,7 +822,7 @@ void loadAllScores()
 		{
 			score->stats->breastplate = NULL;
 		}
-		fread(&c, sizeof(Uint32), 1, fp);
+		fread(&c, sizeof(uint32_t), 1, fp);
 		node = list_Node(&score->stats->inventory, c);
 		if ( node )
 		{
@@ -833,7 +832,7 @@ void loadAllScores()
 		{
 			score->stats->gloves = NULL;
 		}
-		fread(&c, sizeof(Uint32), 1, fp);
+		fread(&c, sizeof(uint32_t), 1, fp);
 		node = list_Node(&score->stats->inventory, c);
 		if ( node )
 		{
@@ -843,7 +842,7 @@ void loadAllScores()
 		{
 			score->stats->shoes = NULL;
 		}
-		fread(&c, sizeof(Uint32), 1, fp);
+		fread(&c, sizeof(uint32_t), 1, fp);
 		node = list_Node(&score->stats->inventory, c);
 		if ( node )
 		{
@@ -853,7 +852,7 @@ void loadAllScores()
 		{
 			score->stats->shield = NULL;
 		}
-		fread(&c, sizeof(Uint32), 1, fp);
+		fread(&c, sizeof(uint32_t), 1, fp);
 		node = list_Node(&score->stats->inventory, c);
 		if ( node )
 		{
@@ -863,7 +862,7 @@ void loadAllScores()
 		{
 			score->stats->weapon = NULL;
 		}
-		fread(&c, sizeof(Uint32), 1, fp);
+		fread(&c, sizeof(uint32_t), 1, fp);
 		node = list_Node(&score->stats->inventory, c);
 		if ( node )
 		{
@@ -873,7 +872,7 @@ void loadAllScores()
 		{
 			score->stats->cloak = NULL;
 		}
-		fread(&c, sizeof(Uint32), 1, fp);
+		fread(&c, sizeof(uint32_t), 1, fp);
 		node = list_Node(&score->stats->inventory, c);
 		if ( node )
 		{
@@ -883,7 +882,7 @@ void loadAllScores()
 		{
 			score->stats->amulet = NULL;
 		}
-		fread(&c, sizeof(Uint32), 1, fp);
+		fread(&c, sizeof(uint32_t), 1, fp);
 		node = list_Node(&score->stats->inventory, c);
 		if ( node )
 		{
@@ -893,7 +892,7 @@ void loadAllScores()
 		{
 			score->stats->ring = NULL;
 		}
-		fread(&c, sizeof(Uint32), 1, fp);
+		fread(&c, sizeof(uint32_t), 1, fp);
 		node = list_Node(&score->stats->inventory, c);
 		if ( node )
 		{
@@ -925,7 +924,7 @@ int saveGame()
 	int player;
 	node_t* node;
 	FILE* fp;
-	Sint32 c;
+	int32_t c;
 
 	// open file
 	if ( !intro )
@@ -941,22 +940,22 @@ int saveGame()
 	// write header info
 	fprintf(fp, "BARONYSAVEGAME");
 	fprintf(fp, VERSION);
-	fwrite(&uniqueGameKey, sizeof(Uint32), 1, fp);
+	fwrite(&uniqueGameKey, sizeof(uint32_t), 1, fp);
 	if ( multiplayer > SINGLE && directConnect)
 	{
 		multiplayer += 2;
-		fwrite(&multiplayer, sizeof(Uint32), 1, fp);
+		fwrite(&multiplayer, sizeof(uint32_t), 1, fp);
 		multiplayer -= 2;
 	}
 	else
 	{
-		fwrite(&multiplayer, sizeof(Uint32), 1, fp);
+		fwrite(&multiplayer, sizeof(uint32_t), 1, fp);
 	}
-	fwrite(&clientnum, sizeof(Uint32), 1, fp);
-	fwrite(&mapseed, sizeof(Uint32), 1, fp);
-	fwrite(&currentlevel, sizeof(Uint32), 1, fp);
+	fwrite(&clientnum, sizeof(uint32_t), 1, fp);
+	fwrite(&mapseed, sizeof(uint32_t), 1, fp);
+	fwrite(&currentlevel, sizeof(uint32_t), 1, fp);
 	fwrite(&secretlevel, sizeof(bool), 1, fp);
-	fwrite(&completionTime, sizeof(Uint32), 1, fp);
+	fwrite(&completionTime, sizeof(uint32_t), 1, fp);
 	fwrite(&conductPenniless, sizeof(bool), 1, fp);
 	fwrite(&conductFoodless, sizeof(bool), 1, fp);
 	fwrite(&conductVegetarian, sizeof(bool), 1, fp);
@@ -971,59 +970,59 @@ int saveGame()
 		{
 			index = list_Index(item->node);
 		}
-		fwrite(&index, sizeof(Uint32), 1, fp);
+		fwrite(&index, sizeof(uint32_t), 1, fp);
 	}
 
 	// write spells
-	Uint32 numspells = list_Size(&spellList);
-	fwrite(&numspells, sizeof(Uint32), 1, fp);
+	uint32_t numspells = list_Size(&spellList);
+	fwrite(&numspells, sizeof(uint32_t), 1, fp);
 	for ( node = spellList.first; node != NULL; node = node->next )
 	{
 		spell_t* spell = (spell_t*)node->element;
-		fwrite(&spell->ID, sizeof(Uint32), 1, fp);
+		fwrite(&spell->ID, sizeof(uint32_t), 1, fp);
 	}
 
 	// player data
 	for ( player = 0; player < MAXPLAYERS; player++ )
 	{
-		fwrite(&client_classes[player], sizeof(Uint32), 1, fp);
+		fwrite(&client_classes[player], sizeof(uint32_t), 1, fp);
 		for ( c = 0; c < NUMMONSTERS; c++ )
 		{
-			fwrite(&kills[c], sizeof(Sint32), 1, fp);
+			fwrite(&kills[c], sizeof(int32_t), 1, fp);
 		}
 		fwrite(&stats[player]->type, sizeof(Monster), 1, fp);
 		fwrite(&stats[player]->sex, sizeof(sex_t), 1, fp);
-		fwrite(&stats[player]->appearance, sizeof(Uint32), 1, fp);
+		fwrite(&stats[player]->appearance, sizeof(uint32_t), 1, fp);
 		fwrite(stats[player]->name, sizeof(char), 32, fp);
-		fwrite(&stats[player]->HP, sizeof(Sint32), 1, fp);
-		fwrite(&stats[player]->MAXHP, sizeof(Sint32), 1, fp);
-		fwrite(&stats[player]->MP, sizeof(Sint32), 1, fp);
-		fwrite(&stats[player]->MAXMP, sizeof(Sint32), 1, fp);
-		fwrite(&stats[player]->STR, sizeof(Sint32), 1, fp);
-		fwrite(&stats[player]->DEX, sizeof(Sint32), 1, fp);
-		fwrite(&stats[player]->CON, sizeof(Sint32), 1, fp);
-		fwrite(&stats[player]->INT, sizeof(Sint32), 1, fp);
-		fwrite(&stats[player]->PER, sizeof(Sint32), 1, fp);
-		fwrite(&stats[player]->CHR, sizeof(Sint32), 1, fp);
-		fwrite(&stats[player]->EXP, sizeof(Sint32), 1, fp);
-		fwrite(&stats[player]->LVL, sizeof(Sint32), 1, fp);
-		fwrite(&stats[player]->GOLD, sizeof(Sint32), 1, fp);
-		fwrite(&stats[player]->HUNGER, sizeof(Sint32), 1, fp);
+		fwrite(&stats[player]->HP, sizeof(int32_t), 1, fp);
+		fwrite(&stats[player]->MAXHP, sizeof(int32_t), 1, fp);
+		fwrite(&stats[player]->MP, sizeof(int32_t), 1, fp);
+		fwrite(&stats[player]->MAXMP, sizeof(int32_t), 1, fp);
+		fwrite(&stats[player]->STR, sizeof(int32_t), 1, fp);
+		fwrite(&stats[player]->DEX, sizeof(int32_t), 1, fp);
+		fwrite(&stats[player]->CON, sizeof(int32_t), 1, fp);
+		fwrite(&stats[player]->INT, sizeof(int32_t), 1, fp);
+		fwrite(&stats[player]->PER, sizeof(int32_t), 1, fp);
+		fwrite(&stats[player]->CHR, sizeof(int32_t), 1, fp);
+		fwrite(&stats[player]->EXP, sizeof(int32_t), 1, fp);
+		fwrite(&stats[player]->LVL, sizeof(int32_t), 1, fp);
+		fwrite(&stats[player]->GOLD, sizeof(int32_t), 1, fp);
+		fwrite(&stats[player]->HUNGER, sizeof(int32_t), 1, fp);
 		for ( c = 0; c < NUMPROFICIENCIES; c++ )
 		{
-			fwrite(&stats[player]->PROFICIENCIES[c], sizeof(Sint32), 1, fp);
+			fwrite(&stats[player]->PROFICIENCIES[c], sizeof(int32_t), 1, fp);
 		}
 		for ( c = 0; c < NUMEFFECTS; c++ )
 		{
 			fwrite(&stats[player]->EFFECTS[c], sizeof(bool), 1, fp);
-			fwrite(&stats[player]->EFFECTS_TIMERS[c], sizeof(Sint32), 1, fp);
+			fwrite(&stats[player]->EFFECTS_TIMERS[c], sizeof(int32_t), 1, fp);
 		}
 
 		// inventory
 		if ( player == clientnum )
 		{
 			c = list_Size(&stats[player]->inventory);
-			fwrite(&c, sizeof(Uint32), 1, fp);
+			fwrite(&c, sizeof(uint32_t), 1, fp);
 			for ( node = stats[player]->inventory.first; node != NULL; node = node->next )
 			{
 				Item* item = (Item*)node->element;
@@ -1031,110 +1030,110 @@ int saveGame()
 				fwrite(&item->status, sizeof(Status), 1, fp);
 				fwrite(&item->beatitude, sizeof(Sint16), 1, fp);
 				fwrite(&item->count, sizeof(Sint16), 1, fp);
-				fwrite(&item->appearance, sizeof(Uint32), 1, fp);
+				fwrite(&item->appearance, sizeof(uint32_t), 1, fp);
 				fwrite(&item->identified, sizeof(bool), 1, fp);
-				fwrite(&item->x, sizeof(Sint32), 1, fp);
-				fwrite(&item->y, sizeof(Sint32), 1, fp);
+				fwrite(&item->x, sizeof(int32_t), 1, fp);
+				fwrite(&item->y, sizeof(int32_t), 1, fp);
 			}
 			if ( stats[player]->helmet )
 			{
 				c = list_Index(stats[player]->helmet->node);
-				fwrite(&c, sizeof(Uint32), 1, fp);
+				fwrite(&c, sizeof(uint32_t), 1, fp);
 			}
 			else
 			{
 				c = list_Size(&stats[player]->inventory);
-				fwrite(&c, sizeof(Uint32), 1, fp);
+				fwrite(&c, sizeof(uint32_t), 1, fp);
 			}
 			if ( stats[player]->breastplate )
 			{
 				c = list_Index(stats[player]->breastplate->node);
-				fwrite(&c, sizeof(Uint32), 1, fp);
+				fwrite(&c, sizeof(uint32_t), 1, fp);
 			}
 			else
 			{
 				c = list_Size(&stats[player]->inventory);
-				fwrite(&c, sizeof(Uint32), 1, fp);
+				fwrite(&c, sizeof(uint32_t), 1, fp);
 			}
 			if ( stats[player]->gloves )
 			{
 				c = list_Index(stats[player]->gloves->node);
-				fwrite(&c, sizeof(Uint32), 1, fp);
+				fwrite(&c, sizeof(uint32_t), 1, fp);
 			}
 			else
 			{
 				c = list_Size(&stats[player]->inventory);
-				fwrite(&c, sizeof(Uint32), 1, fp);
+				fwrite(&c, sizeof(uint32_t), 1, fp);
 			}
 			if ( stats[player]->shoes )
 			{
 				c = list_Index(stats[player]->shoes->node);
-				fwrite(&c, sizeof(Uint32), 1, fp);
+				fwrite(&c, sizeof(uint32_t), 1, fp);
 			}
 			else
 			{
 				c = list_Size(&stats[player]->inventory);
-				fwrite(&c, sizeof(Uint32), 1, fp);
+				fwrite(&c, sizeof(uint32_t), 1, fp);
 			}
 			if ( stats[player]->shield )
 			{
 				c = list_Index(stats[player]->shield->node);
-				fwrite(&c, sizeof(Uint32), 1, fp);
+				fwrite(&c, sizeof(uint32_t), 1, fp);
 			}
 			else
 			{
 				c = list_Size(&stats[player]->inventory);
-				fwrite(&c, sizeof(Uint32), 1, fp);
+				fwrite(&c, sizeof(uint32_t), 1, fp);
 			}
 			if ( stats[player]->weapon )
 			{
 				c = list_Index(stats[player]->weapon->node);
-				fwrite(&c, sizeof(Uint32), 1, fp);
+				fwrite(&c, sizeof(uint32_t), 1, fp);
 			}
 			else
 			{
 				c = list_Size(&stats[player]->inventory);
-				fwrite(&c, sizeof(Uint32), 1, fp);
+				fwrite(&c, sizeof(uint32_t), 1, fp);
 			}
 			if ( stats[player]->cloak )
 			{
 				c = list_Index(stats[player]->cloak->node);
-				fwrite(&c, sizeof(Uint32), 1, fp);
+				fwrite(&c, sizeof(uint32_t), 1, fp);
 			}
 			else
 			{
 				c = list_Size(&stats[player]->inventory);
-				fwrite(&c, sizeof(Uint32), 1, fp);
+				fwrite(&c, sizeof(uint32_t), 1, fp);
 			}
 			if ( stats[player]->amulet )
 			{
 				c = list_Index(stats[player]->amulet->node);
-				fwrite(&c, sizeof(Uint32), 1, fp);
+				fwrite(&c, sizeof(uint32_t), 1, fp);
 			}
 			else
 			{
 				c = list_Size(&stats[player]->inventory);
-				fwrite(&c, sizeof(Uint32), 1, fp);
+				fwrite(&c, sizeof(uint32_t), 1, fp);
 			}
 			if ( stats[player]->ring )
 			{
 				c = list_Index(stats[player]->ring->node);
-				fwrite(&c, sizeof(Uint32), 1, fp);
+				fwrite(&c, sizeof(uint32_t), 1, fp);
 			}
 			else
 			{
 				c = list_Size(&stats[player]->inventory);
-				fwrite(&c, sizeof(Uint32), 1, fp);
+				fwrite(&c, sizeof(uint32_t), 1, fp);
 			}
 			if ( stats[player]->mask )
 			{
 				c = list_Index(stats[player]->mask->node);
-				fwrite(&c, sizeof(Uint32), 1, fp);
+				fwrite(&c, sizeof(uint32_t), 1, fp);
 			}
 			else
 			{
 				c = list_Size(&stats[player]->inventory);
-				fwrite(&c, sizeof(Uint32), 1, fp);
+				fwrite(&c, sizeof(uint32_t), 1, fp);
 			}
 		}
 		else
@@ -1148,7 +1147,7 @@ int saveGame()
 					fwrite(&item->status, sizeof(Status), 1, fp);
 					fwrite(&item->beatitude, sizeof(Sint16), 1, fp);
 					fwrite(&item->count, sizeof(Sint16), 1, fp);
-					fwrite(&item->appearance, sizeof(Uint32), 1, fp);
+					fwrite(&item->appearance, sizeof(uint32_t), 1, fp);
 					fwrite(&item->identified, sizeof(bool), 1, fp);
 				}
 				else
@@ -1163,7 +1162,7 @@ int saveGame()
 					fwrite(&item->status, sizeof(Status), 1, fp);
 					fwrite(&item->beatitude, sizeof(Sint16), 1, fp);
 					fwrite(&item->count, sizeof(Sint16), 1, fp);
-					fwrite(&item->appearance, sizeof(Uint32), 1, fp);
+					fwrite(&item->appearance, sizeof(uint32_t), 1, fp);
 					fwrite(&item->identified, sizeof(bool), 1, fp);
 				}
 				else
@@ -1178,7 +1177,7 @@ int saveGame()
 					fwrite(&item->status, sizeof(Status), 1, fp);
 					fwrite(&item->beatitude, sizeof(Sint16), 1, fp);
 					fwrite(&item->count, sizeof(Sint16), 1, fp);
-					fwrite(&item->appearance, sizeof(Uint32), 1, fp);
+					fwrite(&item->appearance, sizeof(uint32_t), 1, fp);
 					fwrite(&item->identified, sizeof(bool), 1, fp);
 				}
 				else
@@ -1193,7 +1192,7 @@ int saveGame()
 					fwrite(&item->status, sizeof(Status), 1, fp);
 					fwrite(&item->beatitude, sizeof(Sint16), 1, fp);
 					fwrite(&item->count, sizeof(Sint16), 1, fp);
-					fwrite(&item->appearance, sizeof(Uint32), 1, fp);
+					fwrite(&item->appearance, sizeof(uint32_t), 1, fp);
 					fwrite(&item->identified, sizeof(bool), 1, fp);
 				}
 				else
@@ -1208,7 +1207,7 @@ int saveGame()
 					fwrite(&item->status, sizeof(Status), 1, fp);
 					fwrite(&item->beatitude, sizeof(Sint16), 1, fp);
 					fwrite(&item->count, sizeof(Sint16), 1, fp);
-					fwrite(&item->appearance, sizeof(Uint32), 1, fp);
+					fwrite(&item->appearance, sizeof(uint32_t), 1, fp);
 					fwrite(&item->identified, sizeof(bool), 1, fp);
 				}
 				else
@@ -1223,7 +1222,7 @@ int saveGame()
 					fwrite(&item->status, sizeof(Status), 1, fp);
 					fwrite(&item->beatitude, sizeof(Sint16), 1, fp);
 					fwrite(&item->count, sizeof(Sint16), 1, fp);
-					fwrite(&item->appearance, sizeof(Uint32), 1, fp);
+					fwrite(&item->appearance, sizeof(uint32_t), 1, fp);
 					fwrite(&item->identified, sizeof(bool), 1, fp);
 				}
 				else
@@ -1238,7 +1237,7 @@ int saveGame()
 					fwrite(&item->status, sizeof(Status), 1, fp);
 					fwrite(&item->beatitude, sizeof(Sint16), 1, fp);
 					fwrite(&item->count, sizeof(Sint16), 1, fp);
-					fwrite(&item->appearance, sizeof(Uint32), 1, fp);
+					fwrite(&item->appearance, sizeof(uint32_t), 1, fp);
 					fwrite(&item->identified, sizeof(bool), 1, fp);
 				}
 				else
@@ -1253,7 +1252,7 @@ int saveGame()
 					fwrite(&item->status, sizeof(Status), 1, fp);
 					fwrite(&item->beatitude, sizeof(Sint16), 1, fp);
 					fwrite(&item->count, sizeof(Sint16), 1, fp);
-					fwrite(&item->appearance, sizeof(Uint32), 1, fp);
+					fwrite(&item->appearance, sizeof(uint32_t), 1, fp);
 					fwrite(&item->identified, sizeof(bool), 1, fp);
 				}
 				else
@@ -1268,7 +1267,7 @@ int saveGame()
 					fwrite(&item->status, sizeof(Status), 1, fp);
 					fwrite(&item->beatitude, sizeof(Sint16), 1, fp);
 					fwrite(&item->count, sizeof(Sint16), 1, fp);
-					fwrite(&item->appearance, sizeof(Uint32), 1, fp);
+					fwrite(&item->appearance, sizeof(uint32_t), 1, fp);
 					fwrite(&item->identified, sizeof(bool), 1, fp);
 				}
 				else
@@ -1283,7 +1282,7 @@ int saveGame()
 					fwrite(&item->status, sizeof(Status), 1, fp);
 					fwrite(&item->beatitude, sizeof(Sint16), 1, fp);
 					fwrite(&item->count, sizeof(Sint16), 1, fp);
-					fwrite(&item->appearance, sizeof(Uint32), 1, fp);
+					fwrite(&item->appearance, sizeof(uint32_t), 1, fp);
 					fwrite(&item->identified, sizeof(bool), 1, fp);
 				}
 				else
@@ -1320,8 +1319,8 @@ int saveGame()
 	for ( c = 0; c < MAXPLAYERS; c++ )
 	{
 		// record number of followers for this player
-		Uint32 size = list_Size(&stats[c]->FOLLOWERS);
-		fwrite(&size, sizeof(Uint32), 1, fp);
+		uint32_t size = list_Size(&stats[c]->FOLLOWERS);
+		fwrite(&size, sizeof(uint32_t), 1, fp);
 
 		// get followerStats
 		int i;
@@ -1330,44 +1329,44 @@ int saveGame()
 			node_t* node = list_Node(&stats[c]->FOLLOWERS, i);
 			if ( node )
 			{
-				Entity* follower = uidToEntity(*((Uint32*)node->element));
+				Entity* follower = uidToEntity(*((uint32_t*)node->element));
 				Stat* followerStats = (follower) ? follower->getStats() : NULL;
 				if ( followerStats )
 				{
 					// record follower stats
 					fwrite(&followerStats->type, sizeof(Monster), 1, fp);
 					fwrite(&followerStats->sex, sizeof(sex_t), 1, fp);
-					fwrite(&followerStats->appearance, sizeof(Uint32), 1, fp);
+					fwrite(&followerStats->appearance, sizeof(uint32_t), 1, fp);
 					fwrite(followerStats->name, sizeof(char), 32, fp);
-					fwrite(&followerStats->HP, sizeof(Sint32), 1, fp);
-					fwrite(&followerStats->MAXHP, sizeof(Sint32), 1, fp);
-					fwrite(&followerStats->MP, sizeof(Sint32), 1, fp);
-					fwrite(&followerStats->MAXMP, sizeof(Sint32), 1, fp);
-					fwrite(&followerStats->STR, sizeof(Sint32), 1, fp);
-					fwrite(&followerStats->DEX, sizeof(Sint32), 1, fp);
-					fwrite(&followerStats->CON, sizeof(Sint32), 1, fp);
-					fwrite(&followerStats->INT, sizeof(Sint32), 1, fp);
-					fwrite(&followerStats->PER, sizeof(Sint32), 1, fp);
-					fwrite(&followerStats->CHR, sizeof(Sint32), 1, fp);
-					fwrite(&followerStats->EXP, sizeof(Sint32), 1, fp);
-					fwrite(&followerStats->LVL, sizeof(Sint32), 1, fp);
-					fwrite(&followerStats->GOLD, sizeof(Sint32), 1, fp);
-					fwrite(&followerStats->HUNGER, sizeof(Sint32), 1, fp);
+					fwrite(&followerStats->HP, sizeof(int32_t), 1, fp);
+					fwrite(&followerStats->MAXHP, sizeof(int32_t), 1, fp);
+					fwrite(&followerStats->MP, sizeof(int32_t), 1, fp);
+					fwrite(&followerStats->MAXMP, sizeof(int32_t), 1, fp);
+					fwrite(&followerStats->STR, sizeof(int32_t), 1, fp);
+					fwrite(&followerStats->DEX, sizeof(int32_t), 1, fp);
+					fwrite(&followerStats->CON, sizeof(int32_t), 1, fp);
+					fwrite(&followerStats->INT, sizeof(int32_t), 1, fp);
+					fwrite(&followerStats->PER, sizeof(int32_t), 1, fp);
+					fwrite(&followerStats->CHR, sizeof(int32_t), 1, fp);
+					fwrite(&followerStats->EXP, sizeof(int32_t), 1, fp);
+					fwrite(&followerStats->LVL, sizeof(int32_t), 1, fp);
+					fwrite(&followerStats->GOLD, sizeof(int32_t), 1, fp);
+					fwrite(&followerStats->HUNGER, sizeof(int32_t), 1, fp);
 
 					int j;
 					for ( j = 0; j < NUMPROFICIENCIES; j++ )
 					{
-						fwrite(&followerStats->PROFICIENCIES[j], sizeof(Sint32), 1, fp);
+						fwrite(&followerStats->PROFICIENCIES[j], sizeof(int32_t), 1, fp);
 					}
 					for ( j = 0; j < NUMEFFECTS; j++ )
 					{
 						fwrite(&followerStats->EFFECTS[j], sizeof(bool), 1, fp);
-						fwrite(&followerStats->EFFECTS_TIMERS[j], sizeof(Sint32), 1, fp);
+						fwrite(&followerStats->EFFECTS_TIMERS[j], sizeof(int32_t), 1, fp);
 					}
 
 					// record follower inventory
-					Uint32 invSize = list_Size(&followerStats->inventory);
-					fwrite(&invSize, sizeof(Uint32), 1, fp);
+					uint32_t invSize = list_Size(&followerStats->inventory);
+					fwrite(&invSize, sizeof(uint32_t), 1, fp);
 					for ( node = followerStats->inventory.first; node != NULL; node = node->next )
 					{
 						Item* item = (Item*)node->element;
@@ -1375,10 +1374,10 @@ int saveGame()
 						fwrite(&item->status, sizeof(Status), 1, fp);
 						fwrite(&item->beatitude, sizeof(Sint16), 1, fp);
 						fwrite(&item->count, sizeof(Sint16), 1, fp);
-						fwrite(&item->appearance, sizeof(Uint32), 1, fp);
+						fwrite(&item->appearance, sizeof(uint32_t), 1, fp);
 						fwrite(&item->identified, sizeof(bool), 1, fp);
-						fwrite(&item->x, sizeof(Sint32), 1, fp);
-						fwrite(&item->y, sizeof(Sint32), 1, fp);
+						fwrite(&item->x, sizeof(int32_t), 1, fp);
+						fwrite(&item->y, sizeof(int32_t), 1, fp);
 					}
 
 					// record follower equipment (since NPCs never store equipment as inventory)
@@ -1389,7 +1388,7 @@ int saveGame()
 						fwrite(&item->status, sizeof(Status), 1, fp);
 						fwrite(&item->beatitude, sizeof(Sint16), 1, fp);
 						fwrite(&item->count, sizeof(Sint16), 1, fp);
-						fwrite(&item->appearance, sizeof(Uint32), 1, fp);
+						fwrite(&item->appearance, sizeof(uint32_t), 1, fp);
 						fwrite(&item->identified, sizeof(bool), 1, fp);
 					}
 					else
@@ -1404,7 +1403,7 @@ int saveGame()
 						fwrite(&item->status, sizeof(Status), 1, fp);
 						fwrite(&item->beatitude, sizeof(Sint16), 1, fp);
 						fwrite(&item->count, sizeof(Sint16), 1, fp);
-						fwrite(&item->appearance, sizeof(Uint32), 1, fp);
+						fwrite(&item->appearance, sizeof(uint32_t), 1, fp);
 						fwrite(&item->identified, sizeof(bool), 1, fp);
 					}
 					else
@@ -1419,7 +1418,7 @@ int saveGame()
 						fwrite(&item->status, sizeof(Status), 1, fp);
 						fwrite(&item->beatitude, sizeof(Sint16), 1, fp);
 						fwrite(&item->count, sizeof(Sint16), 1, fp);
-						fwrite(&item->appearance, sizeof(Uint32), 1, fp);
+						fwrite(&item->appearance, sizeof(uint32_t), 1, fp);
 						fwrite(&item->identified, sizeof(bool), 1, fp);
 					}
 					else
@@ -1434,7 +1433,7 @@ int saveGame()
 						fwrite(&item->status, sizeof(Status), 1, fp);
 						fwrite(&item->beatitude, sizeof(Sint16), 1, fp);
 						fwrite(&item->count, sizeof(Sint16), 1, fp);
-						fwrite(&item->appearance, sizeof(Uint32), 1, fp);
+						fwrite(&item->appearance, sizeof(uint32_t), 1, fp);
 						fwrite(&item->identified, sizeof(bool), 1, fp);
 					}
 					else
@@ -1449,7 +1448,7 @@ int saveGame()
 						fwrite(&item->status, sizeof(Status), 1, fp);
 						fwrite(&item->beatitude, sizeof(Sint16), 1, fp);
 						fwrite(&item->count, sizeof(Sint16), 1, fp);
-						fwrite(&item->appearance, sizeof(Uint32), 1, fp);
+						fwrite(&item->appearance, sizeof(uint32_t), 1, fp);
 						fwrite(&item->identified, sizeof(bool), 1, fp);
 					}
 					else
@@ -1464,7 +1463,7 @@ int saveGame()
 						fwrite(&item->status, sizeof(Status), 1, fp);
 						fwrite(&item->beatitude, sizeof(Sint16), 1, fp);
 						fwrite(&item->count, sizeof(Sint16), 1, fp);
-						fwrite(&item->appearance, sizeof(Uint32), 1, fp);
+						fwrite(&item->appearance, sizeof(uint32_t), 1, fp);
 						fwrite(&item->identified, sizeof(bool), 1, fp);
 					}
 					else
@@ -1479,7 +1478,7 @@ int saveGame()
 						fwrite(&item->status, sizeof(Status), 1, fp);
 						fwrite(&item->beatitude, sizeof(Sint16), 1, fp);
 						fwrite(&item->count, sizeof(Sint16), 1, fp);
-						fwrite(&item->appearance, sizeof(Uint32), 1, fp);
+						fwrite(&item->appearance, sizeof(uint32_t), 1, fp);
 						fwrite(&item->identified, sizeof(bool), 1, fp);
 					}
 					else
@@ -1494,7 +1493,7 @@ int saveGame()
 						fwrite(&item->status, sizeof(Status), 1, fp);
 						fwrite(&item->beatitude, sizeof(Sint16), 1, fp);
 						fwrite(&item->count, sizeof(Sint16), 1, fp);
-						fwrite(&item->appearance, sizeof(Uint32), 1, fp);
+						fwrite(&item->appearance, sizeof(uint32_t), 1, fp);
 						fwrite(&item->identified, sizeof(bool), 1, fp);
 					}
 					else
@@ -1509,7 +1508,7 @@ int saveGame()
 						fwrite(&item->status, sizeof(Status), 1, fp);
 						fwrite(&item->beatitude, sizeof(Sint16), 1, fp);
 						fwrite(&item->count, sizeof(Sint16), 1, fp);
-						fwrite(&item->appearance, sizeof(Uint32), 1, fp);
+						fwrite(&item->appearance, sizeof(uint32_t), 1, fp);
 						fwrite(&item->identified, sizeof(bool), 1, fp);
 					}
 					else
@@ -1524,7 +1523,7 @@ int saveGame()
 						fwrite(&item->status, sizeof(Status), 1, fp);
 						fwrite(&item->beatitude, sizeof(Sint16), 1, fp);
 						fwrite(&item->count, sizeof(Sint16), 1, fp);
-						fwrite(&item->appearance, sizeof(Uint32), 1, fp);
+						fwrite(&item->appearance, sizeof(uint32_t), 1, fp);
 						fwrite(&item->identified, sizeof(bool), 1, fp);
 					}
 					else
@@ -1552,7 +1551,7 @@ int saveGame()
 
 int loadGame(int player)
 {
-	Sint32 mul;
+	int32_t mul;
 	node_t* node;
 	FILE* fp;
 	int c;
@@ -1582,33 +1581,33 @@ int loadGame(int player)
 	}
 
 	// read basic header info
-	fread(&uniqueGameKey, sizeof(Uint32), 1, fp);
-	fread(&mul, sizeof(Uint32), 1, fp);
-	fread(&clientnum, sizeof(Uint32), 1, fp);
-	fread(&mapseed, sizeof(Uint32), 1, fp);
-	fread(&currentlevel, sizeof(Uint32), 1, fp);
+	fread(&uniqueGameKey, sizeof(uint32_t), 1, fp);
+	fread(&mul, sizeof(uint32_t), 1, fp);
+	fread(&clientnum, sizeof(uint32_t), 1, fp);
+	fread(&mapseed, sizeof(uint32_t), 1, fp);
+	fread(&currentlevel, sizeof(uint32_t), 1, fp);
 	fread(&secretlevel, sizeof(bool), 1, fp);
-	fread(&completionTime, sizeof(Uint32), 1, fp);
+	fread(&completionTime, sizeof(uint32_t), 1, fp);
 	fread(&conductPenniless, sizeof(bool), 1, fp);
 	fread(&conductFoodless, sizeof(bool), 1, fp);
 	fread(&conductVegetarian, sizeof(bool), 1, fp);
 	fread(&conductIlliterate, sizeof(bool), 1, fp);
 
 	// read hotbar item offsets
-	Uint32 temp_hotbar[NUM_HOTBAR_SLOTS];
+	uint32_t temp_hotbar[NUM_HOTBAR_SLOTS];
 	for ( c = 0; c < NUM_HOTBAR_SLOTS; c++ )
 	{
-		fread(&temp_hotbar[c], sizeof(Uint32), 1, fp);
+		fread(&temp_hotbar[c], sizeof(uint32_t), 1, fp);
 	}
 
 	// read spells
 	list_FreeAll(&spellList);
-	Uint32 numspells = 0;
-	fread(&numspells, sizeof(Uint32), 1, fp);
+	uint32_t numspells = 0;
+	fread(&numspells, sizeof(uint32_t), 1, fp);
 	for ( c = 0; c < numspells; c++ )
 	{
 		int spellnum = 0;
-		fread(&spellnum, sizeof(Uint32), 1, fp);
+		fread(&spellnum, sizeof(uint32_t), 1, fp);
 		spell_t* spell = copySpell(getSpellFromID(spellnum));
 
 		node = list_AddNodeLast(&spellList);
@@ -1620,29 +1619,29 @@ int loadGame(int player)
 	// skip through other player data until you get to the correct player
 	for ( c = 0; c < player; c++ )
 	{
-		fseek(fp, sizeof(Uint32), SEEK_CUR);
-		fseek(fp, NUMMONSTERS * sizeof(Sint32), SEEK_CUR);
+		fseek(fp, sizeof(uint32_t), SEEK_CUR);
+		fseek(fp, NUMMONSTERS * sizeof(int32_t), SEEK_CUR);
 		fseek(fp, sizeof(Monster), SEEK_CUR);
 		fseek(fp, sizeof(sex_t), SEEK_CUR);
-		fseek(fp, sizeof(Uint32), SEEK_CUR);
+		fseek(fp, sizeof(uint32_t), SEEK_CUR);
 		fseek(fp, sizeof(char) * 32, SEEK_CUR);
-		fseek(fp, sizeof(Sint32), SEEK_CUR);
-		fseek(fp, sizeof(Sint32), SEEK_CUR);
-		fseek(fp, sizeof(Sint32), SEEK_CUR);
-		fseek(fp, sizeof(Sint32), SEEK_CUR);
-		fseek(fp, sizeof(Sint32), SEEK_CUR);
-		fseek(fp, sizeof(Sint32), SEEK_CUR);
-		fseek(fp, sizeof(Sint32), SEEK_CUR);
-		fseek(fp, sizeof(Sint32), SEEK_CUR);
-		fseek(fp, sizeof(Sint32), SEEK_CUR);
-		fseek(fp, sizeof(Sint32), SEEK_CUR);
-		fseek(fp, sizeof(Sint32), SEEK_CUR);
-		fseek(fp, sizeof(Sint32), SEEK_CUR);
-		fseek(fp, sizeof(Sint32), SEEK_CUR);
-		fseek(fp, sizeof(Sint32), SEEK_CUR);
-		fseek(fp, sizeof(Sint32)*NUMPROFICIENCIES, SEEK_CUR);
+		fseek(fp, sizeof(int32_t), SEEK_CUR);
+		fseek(fp, sizeof(int32_t), SEEK_CUR);
+		fseek(fp, sizeof(int32_t), SEEK_CUR);
+		fseek(fp, sizeof(int32_t), SEEK_CUR);
+		fseek(fp, sizeof(int32_t), SEEK_CUR);
+		fseek(fp, sizeof(int32_t), SEEK_CUR);
+		fseek(fp, sizeof(int32_t), SEEK_CUR);
+		fseek(fp, sizeof(int32_t), SEEK_CUR);
+		fseek(fp, sizeof(int32_t), SEEK_CUR);
+		fseek(fp, sizeof(int32_t), SEEK_CUR);
+		fseek(fp, sizeof(int32_t), SEEK_CUR);
+		fseek(fp, sizeof(int32_t), SEEK_CUR);
+		fseek(fp, sizeof(int32_t), SEEK_CUR);
+		fseek(fp, sizeof(int32_t), SEEK_CUR);
+		fseek(fp, sizeof(int32_t)*NUMPROFICIENCIES, SEEK_CUR);
 		fseek(fp, sizeof(bool)*NUMEFFECTS, SEEK_CUR);
-		fseek(fp, sizeof(Sint32)*NUMEFFECTS, SEEK_CUR);
+		fseek(fp, sizeof(int32_t)*NUMEFFECTS, SEEK_CUR);
 
 		if ( clientnum == 0 && c != 0 )
 		{
@@ -1657,7 +1656,7 @@ int loadGame(int player)
 					fseek(fp, sizeof(Status), SEEK_CUR);
 					fseek(fp, sizeof(Sint16), SEEK_CUR);
 					fseek(fp, sizeof(Sint16), SEEK_CUR);
-					fseek(fp, sizeof(Uint32), SEEK_CUR);
+					fseek(fp, sizeof(uint32_t), SEEK_CUR);
 					fseek(fp, sizeof(bool), SEEK_CUR);
 				}
 			}
@@ -1673,7 +1672,7 @@ int loadGame(int player)
 			{
 				// server needs to skip past its inventory
 				int numitems = 0;
-				fread(&numitems, sizeof(Uint32), 1, fp);
+				fread(&numitems, sizeof(uint32_t), 1, fp);
 
 				int i;
 				for ( i = 0; i < numitems; i++ )
@@ -1682,56 +1681,56 @@ int loadGame(int player)
 					fseek(fp, sizeof(Status), SEEK_CUR);
 					fseek(fp, sizeof(Sint16), SEEK_CUR);
 					fseek(fp, sizeof(Sint16), SEEK_CUR);
-					fseek(fp, sizeof(Uint32), SEEK_CUR);
+					fseek(fp, sizeof(uint32_t), SEEK_CUR);
 					fseek(fp, sizeof(bool), SEEK_CUR);
-					fseek(fp, sizeof(Sint32), SEEK_CUR);
-					fseek(fp, sizeof(Sint32), SEEK_CUR);
+					fseek(fp, sizeof(int32_t), SEEK_CUR);
+					fseek(fp, sizeof(int32_t), SEEK_CUR);
 				}
-				fseek(fp, sizeof(Uint32) * 10, SEEK_CUR); // equipment slots
+				fseek(fp, sizeof(uint32_t) * 10, SEEK_CUR); // equipment slots
 			}
 		}
 	}
 
 	// read in player data
 	stats[player]->clearStats();
-	fread(&client_classes[player], sizeof(Uint32), 1, fp);
+	fread(&client_classes[player], sizeof(uint32_t), 1, fp);
 	for ( c = 0; c < NUMMONSTERS; c++ )
 	{
-		fread(&kills[c], sizeof(Sint32), 1, fp);
+		fread(&kills[c], sizeof(int32_t), 1, fp);
 	}
 	fread(&stats[player]->type, sizeof(Monster), 1, fp);
 	fread(&stats[player]->sex, sizeof(sex_t), 1, fp);
-	fread(&stats[player]->appearance, sizeof(Uint32), 1, fp);
+	fread(&stats[player]->appearance, sizeof(uint32_t), 1, fp);
 	fread(&stats[player]->name, sizeof(char), 32, fp);
-	fread(&stats[player]->HP, sizeof(Sint32), 1, fp);
-	fread(&stats[player]->MAXHP, sizeof(Sint32), 1, fp);
-	fread(&stats[player]->MP, sizeof(Sint32), 1, fp);
-	fread(&stats[player]->MAXMP, sizeof(Sint32), 1, fp);
-	fread(&stats[player]->STR, sizeof(Sint32), 1, fp);
-	fread(&stats[player]->DEX, sizeof(Sint32), 1, fp);
-	fread(&stats[player]->CON, sizeof(Sint32), 1, fp);
-	fread(&stats[player]->INT, sizeof(Sint32), 1, fp);
-	fread(&stats[player]->PER, sizeof(Sint32), 1, fp);
-	fread(&stats[player]->CHR, sizeof(Sint32), 1, fp);
-	fread(&stats[player]->EXP, sizeof(Sint32), 1, fp);
-	fread(&stats[player]->LVL, sizeof(Sint32), 1, fp);
-	fread(&stats[player]->GOLD, sizeof(Sint32), 1, fp);
-	fread(&stats[player]->HUNGER, sizeof(Sint32), 1, fp);
+	fread(&stats[player]->HP, sizeof(int32_t), 1, fp);
+	fread(&stats[player]->MAXHP, sizeof(int32_t), 1, fp);
+	fread(&stats[player]->MP, sizeof(int32_t), 1, fp);
+	fread(&stats[player]->MAXMP, sizeof(int32_t), 1, fp);
+	fread(&stats[player]->STR, sizeof(int32_t), 1, fp);
+	fread(&stats[player]->DEX, sizeof(int32_t), 1, fp);
+	fread(&stats[player]->CON, sizeof(int32_t), 1, fp);
+	fread(&stats[player]->INT, sizeof(int32_t), 1, fp);
+	fread(&stats[player]->PER, sizeof(int32_t), 1, fp);
+	fread(&stats[player]->CHR, sizeof(int32_t), 1, fp);
+	fread(&stats[player]->EXP, sizeof(int32_t), 1, fp);
+	fread(&stats[player]->LVL, sizeof(int32_t), 1, fp);
+	fread(&stats[player]->GOLD, sizeof(int32_t), 1, fp);
+	fread(&stats[player]->HUNGER, sizeof(int32_t), 1, fp);
 	for ( c = 0; c < NUMPROFICIENCIES; c++ )
 	{
-		fread(&stats[player]->PROFICIENCIES[c], sizeof(Sint32), 1, fp);
+		fread(&stats[player]->PROFICIENCIES[c], sizeof(int32_t), 1, fp);
 	}
 	for ( c = 0; c < NUMEFFECTS; c++ )
 	{
 		fread(&stats[player]->EFFECTS[c], sizeof(bool), 1, fp);
-		fread(&stats[player]->EFFECTS_TIMERS[c], sizeof(Sint32), 1, fp);
+		fread(&stats[player]->EFFECTS_TIMERS[c], sizeof(int32_t), 1, fp);
 	}
 
 	if ( player == clientnum )
 	{
 		// inventory
 		int numitems = 0;
-		fread(&numitems, sizeof(Uint32), 1, fp);
+		fread(&numitems, sizeof(uint32_t), 1, fp);
 		stats[player]->inventory.first = NULL;
 		stats[player]->inventory.last = NULL;
 		for ( c = 0; c < numitems; c++ )
@@ -1740,21 +1739,21 @@ int loadGame(int player)
 			Status status;
 			Sint16 beatitude;
 			Sint16 count;
-			Uint32 appearance;
+			uint32_t appearance;
 			bool identified;
 			fread(&type, sizeof(ItemType), 1, fp);
 			fread(&status, sizeof(Status), 1, fp);
 			fread(&beatitude, sizeof(Sint16), 1, fp);
 			fread(&count, sizeof(Sint16), 1, fp);
-			fread(&appearance, sizeof(Uint32), 1, fp);
+			fread(&appearance, sizeof(uint32_t), 1, fp);
 			fread(&identified, sizeof(bool), 1, fp);
 			Item* item = newItem(type, status, beatitude, count, appearance, identified, &stats[player]->inventory);
-			fread(&item->x, sizeof(Sint32), 1, fp);
-			fread(&item->y, sizeof(Sint32), 1, fp);
+			fread(&item->x, sizeof(int32_t), 1, fp);
+			fread(&item->y, sizeof(int32_t), 1, fp);
 		}
 
 		// equipment
-		fread(&c, sizeof(Uint32), 1, fp);
+		fread(&c, sizeof(uint32_t), 1, fp);
 		node = list_Node(&stats[player]->inventory, c);
 		if ( node )
 		{
@@ -1764,7 +1763,7 @@ int loadGame(int player)
 		{
 			stats[player]->helmet = NULL;
 		}
-		fread(&c, sizeof(Uint32), 1, fp);
+		fread(&c, sizeof(uint32_t), 1, fp);
 		node = list_Node(&stats[player]->inventory, c);
 		if ( node )
 		{
@@ -1774,7 +1773,7 @@ int loadGame(int player)
 		{
 			stats[player]->breastplate = NULL;
 		}
-		fread(&c, sizeof(Uint32), 1, fp);
+		fread(&c, sizeof(uint32_t), 1, fp);
 		node = list_Node(&stats[player]->inventory, c);
 		if ( node )
 		{
@@ -1784,7 +1783,7 @@ int loadGame(int player)
 		{
 			stats[player]->gloves = NULL;
 		}
-		fread(&c, sizeof(Uint32), 1, fp);
+		fread(&c, sizeof(uint32_t), 1, fp);
 		node = list_Node(&stats[player]->inventory, c);
 		if ( node )
 		{
@@ -1794,7 +1793,7 @@ int loadGame(int player)
 		{
 			stats[player]->shoes = NULL;
 		}
-		fread(&c, sizeof(Uint32), 1, fp);
+		fread(&c, sizeof(uint32_t), 1, fp);
 		node = list_Node(&stats[player]->inventory, c);
 		if ( node )
 		{
@@ -1804,7 +1803,7 @@ int loadGame(int player)
 		{
 			stats[player]->shield = NULL;
 		}
-		fread(&c, sizeof(Uint32), 1, fp);
+		fread(&c, sizeof(uint32_t), 1, fp);
 		node = list_Node(&stats[player]->inventory, c);
 		if ( node )
 		{
@@ -1814,7 +1813,7 @@ int loadGame(int player)
 		{
 			stats[player]->weapon = NULL;
 		}
-		fread(&c, sizeof(Uint32), 1, fp);
+		fread(&c, sizeof(uint32_t), 1, fp);
 		node = list_Node(&stats[player]->inventory, c);
 		if ( node )
 		{
@@ -1824,7 +1823,7 @@ int loadGame(int player)
 		{
 			stats[player]->cloak = NULL;
 		}
-		fread(&c, sizeof(Uint32), 1, fp);
+		fread(&c, sizeof(uint32_t), 1, fp);
 		node = list_Node(&stats[player]->inventory, c);
 		if ( node )
 		{
@@ -1834,7 +1833,7 @@ int loadGame(int player)
 		{
 			stats[player]->amulet = NULL;
 		}
-		fread(&c, sizeof(Uint32), 1, fp);
+		fread(&c, sizeof(uint32_t), 1, fp);
 		node = list_Node(&stats[player]->inventory, c);
 		if ( node )
 		{
@@ -1844,7 +1843,7 @@ int loadGame(int player)
 		{
 			stats[player]->ring = NULL;
 		}
-		fread(&c, sizeof(Uint32), 1, fp);
+		fread(&c, sizeof(uint32_t), 1, fp);
 		node = list_Node(&stats[player]->inventory, c);
 		if ( node )
 		{
@@ -1878,7 +1877,7 @@ int loadGame(int player)
 				Status status;
 				Sint16 beatitude;
 				Sint16 count;
-				Uint32 appearance;
+				uint32_t appearance;
 				bool identified;
 
 				fread(&type, sizeof(ItemType), 1, fp);
@@ -1887,7 +1886,7 @@ int loadGame(int player)
 					fread(&status, sizeof(Status), 1, fp);
 					fread(&beatitude, sizeof(Sint16), 1, fp);
 					fread(&count, sizeof(Sint16), 1, fp);
-					fread(&appearance, sizeof(Uint32), 1, fp);
+					fread(&appearance, sizeof(uint32_t), 1, fp);
 					fread(&identified, sizeof(bool), 1, fp);
 
 					Item* item = newItem(type, status, beatitude, count, appearance, identified, NULL);
@@ -2014,8 +2013,8 @@ list_t* loadGameFollowers()
 		node->size = sizeof(list_t);
 
 		// number of followers for this player
-		Uint32 numFollowers = 0;
-		fread(&numFollowers, sizeof(Uint32), 1, fp);
+		uint32_t numFollowers = 0;
+		fread(&numFollowers, sizeof(uint32_t), 1, fp);
 
 		int i;
 		for ( i = 0; i < numFollowers; i++ )
@@ -2030,32 +2029,32 @@ list_t* loadGameFollowers()
 			// read follower attributes
 			fread(&followerStats->type, sizeof(Monster), 1, fp);
 			fread(&followerStats->sex, sizeof(sex_t), 1, fp);
-			fread(&followerStats->appearance, sizeof(Uint32), 1, fp);
+			fread(&followerStats->appearance, sizeof(uint32_t), 1, fp);
 			fread(&followerStats->name, sizeof(char), 32, fp);
-			fread(&followerStats->HP, sizeof(Sint32), 1, fp);
-			fread(&followerStats->MAXHP, sizeof(Sint32), 1, fp);
-			fread(&followerStats->MP, sizeof(Sint32), 1, fp);
-			fread(&followerStats->MAXMP, sizeof(Sint32), 1, fp);
-			fread(&followerStats->STR, sizeof(Sint32), 1, fp);
-			fread(&followerStats->DEX, sizeof(Sint32), 1, fp);
-			fread(&followerStats->CON, sizeof(Sint32), 1, fp);
-			fread(&followerStats->INT, sizeof(Sint32), 1, fp);
-			fread(&followerStats->PER, sizeof(Sint32), 1, fp);
-			fread(&followerStats->CHR, sizeof(Sint32), 1, fp);
-			fread(&followerStats->EXP, sizeof(Sint32), 1, fp);
-			fread(&followerStats->LVL, sizeof(Sint32), 1, fp);
-			fread(&followerStats->GOLD, sizeof(Sint32), 1, fp);
-			fread(&followerStats->HUNGER, sizeof(Sint32), 1, fp);
+			fread(&followerStats->HP, sizeof(int32_t), 1, fp);
+			fread(&followerStats->MAXHP, sizeof(int32_t), 1, fp);
+			fread(&followerStats->MP, sizeof(int32_t), 1, fp);
+			fread(&followerStats->MAXMP, sizeof(int32_t), 1, fp);
+			fread(&followerStats->STR, sizeof(int32_t), 1, fp);
+			fread(&followerStats->DEX, sizeof(int32_t), 1, fp);
+			fread(&followerStats->CON, sizeof(int32_t), 1, fp);
+			fread(&followerStats->INT, sizeof(int32_t), 1, fp);
+			fread(&followerStats->PER, sizeof(int32_t), 1, fp);
+			fread(&followerStats->CHR, sizeof(int32_t), 1, fp);
+			fread(&followerStats->EXP, sizeof(int32_t), 1, fp);
+			fread(&followerStats->LVL, sizeof(int32_t), 1, fp);
+			fread(&followerStats->GOLD, sizeof(int32_t), 1, fp);
+			fread(&followerStats->HUNGER, sizeof(int32_t), 1, fp);
 
 			int j;
 			for ( j = 0; j < NUMPROFICIENCIES; j++ )
 			{
-				fread(&followerStats->PROFICIENCIES[j], sizeof(Sint32), 1, fp);
+				fread(&followerStats->PROFICIENCIES[j], sizeof(int32_t), 1, fp);
 			}
 			for ( j = 0; j < NUMEFFECTS; j++ )
 			{
 				fread(&followerStats->EFFECTS[j], sizeof(bool), 1, fp);
-				fread(&followerStats->EFFECTS_TIMERS[j], sizeof(Sint32), 1, fp);
+				fread(&followerStats->EFFECTS_TIMERS[j], sizeof(int32_t), 1, fp);
 			}
 
 			/*printlog("\n\n ** FOLLOWER #%d **\n", i + 1);
@@ -2068,24 +2067,24 @@ list_t* loadGameFollowers()
 			Status status;
 			Sint16 beatitude;
 			Sint16 count;
-			Uint32 appearance;
+			uint32_t appearance;
 			bool identified;
 
 			// read follower inventory
-			Uint32 invSize = 0;
-			fread(&invSize, sizeof(Uint32), 1, fp);
+			uint32_t invSize = 0;
+			fread(&invSize, sizeof(uint32_t), 1, fp);
 			for ( j = 0; j < invSize; j++ )
 			{
 				fread(&type, sizeof(ItemType), 1, fp);
 				fread(&status, sizeof(Status), 1, fp);
 				fread(&beatitude, sizeof(Sint16), 1, fp);
 				fread(&count, sizeof(Sint16), 1, fp);
-				fread(&appearance, sizeof(Uint32), 1, fp);
+				fread(&appearance, sizeof(uint32_t), 1, fp);
 				fread(&identified, sizeof(bool), 1, fp);
 
 				Item* item = newItem(type, status, beatitude, count, appearance, identified, &followerStats->inventory);
-				fread(&item->x, sizeof(Sint32), 1, fp);
-				fread(&item->y, sizeof(Sint32), 1, fp);
+				fread(&item->x, sizeof(int32_t), 1, fp);
+				fread(&item->y, sizeof(int32_t), 1, fp);
 			}
 
 			// read follower equipment
@@ -2098,7 +2097,7 @@ list_t* loadGameFollowers()
 					fread(&status, sizeof(Status), 1, fp);
 					fread(&beatitude, sizeof(Sint16), 1, fp);
 					fread(&count, sizeof(Sint16), 1, fp);
-					fread(&appearance, sizeof(Uint32), 1, fp);
+					fread(&appearance, sizeof(uint32_t), 1, fp);
 					fread(&identified, sizeof(bool), 1, fp);
 
 					Item* item = newItem(type, status, beatitude, count, appearance, identified, NULL);
@@ -2269,52 +2268,52 @@ char* getSaveGameName()
 		return NULL;
 	}
 
-	fseek(fp, sizeof(Uint32), SEEK_CUR);
-	fread(&mul, sizeof(Uint32), 1, fp);
-	fread(&plnum, sizeof(Uint32), 1, fp);
-	fseek(fp, sizeof(Uint32) + sizeof(Uint32) + sizeof(bool), SEEK_CUR);
-	fseek(fp, sizeof(Uint32)*NUM_HOTBAR_SLOTS, SEEK_CUR);
-	fseek(fp, sizeof(Uint32) + sizeof(bool) + sizeof(bool) + sizeof(bool) + sizeof(bool), SEEK_CUR);
+	fseek(fp, sizeof(uint32_t), SEEK_CUR);
+	fread(&mul, sizeof(uint32_t), 1, fp);
+	fread(&plnum, sizeof(uint32_t), 1, fp);
+	fseek(fp, sizeof(uint32_t) + sizeof(uint32_t) + sizeof(bool), SEEK_CUR);
+	fseek(fp, sizeof(uint32_t)*NUM_HOTBAR_SLOTS, SEEK_CUR);
+	fseek(fp, sizeof(uint32_t) + sizeof(bool) + sizeof(bool) + sizeof(bool) + sizeof(bool), SEEK_CUR);
 
 	int numspells = 0;
-	fread(&numspells, sizeof(Uint32), 1, fp);
+	fread(&numspells, sizeof(uint32_t), 1, fp);
 	for ( c = 0; c < numspells; c++ )
 	{
-		fseek(fp, sizeof(Uint32), SEEK_CUR);
+		fseek(fp, sizeof(uint32_t), SEEK_CUR);
 	}
 
 	// skip through other player data until you get to the correct player
 	for ( c = 0; c < plnum; c++ )
 	{
-		fseek(fp, sizeof(Uint32), SEEK_CUR);
-		fseek(fp, NUMMONSTERS * sizeof(Sint32), SEEK_CUR);
+		fseek(fp, sizeof(uint32_t), SEEK_CUR);
+		fseek(fp, NUMMONSTERS * sizeof(int32_t), SEEK_CUR);
 		fseek(fp, sizeof(Monster), SEEK_CUR);
 		fseek(fp, sizeof(sex_t), SEEK_CUR);
-		fseek(fp, sizeof(Uint32), SEEK_CUR);
+		fseek(fp, sizeof(uint32_t), SEEK_CUR);
 		fseek(fp, sizeof(char) * 32, SEEK_CUR);
-		fseek(fp, sizeof(Sint32), SEEK_CUR);
-		fseek(fp, sizeof(Sint32), SEEK_CUR);
-		fseek(fp, sizeof(Sint32), SEEK_CUR);
-		fseek(fp, sizeof(Sint32), SEEK_CUR);
-		fseek(fp, sizeof(Sint32), SEEK_CUR);
-		fseek(fp, sizeof(Sint32), SEEK_CUR);
-		fseek(fp, sizeof(Sint32), SEEK_CUR);
-		fseek(fp, sizeof(Sint32), SEEK_CUR);
-		fseek(fp, sizeof(Sint32), SEEK_CUR);
-		fseek(fp, sizeof(Sint32), SEEK_CUR);
-		fseek(fp, sizeof(Sint32), SEEK_CUR);
-		fseek(fp, sizeof(Sint32), SEEK_CUR);
-		fseek(fp, sizeof(Sint32), SEEK_CUR);
-		fseek(fp, sizeof(Sint32), SEEK_CUR);
-		fseek(fp, sizeof(Sint32)*NUMPROFICIENCIES, SEEK_CUR);
+		fseek(fp, sizeof(int32_t), SEEK_CUR);
+		fseek(fp, sizeof(int32_t), SEEK_CUR);
+		fseek(fp, sizeof(int32_t), SEEK_CUR);
+		fseek(fp, sizeof(int32_t), SEEK_CUR);
+		fseek(fp, sizeof(int32_t), SEEK_CUR);
+		fseek(fp, sizeof(int32_t), SEEK_CUR);
+		fseek(fp, sizeof(int32_t), SEEK_CUR);
+		fseek(fp, sizeof(int32_t), SEEK_CUR);
+		fseek(fp, sizeof(int32_t), SEEK_CUR);
+		fseek(fp, sizeof(int32_t), SEEK_CUR);
+		fseek(fp, sizeof(int32_t), SEEK_CUR);
+		fseek(fp, sizeof(int32_t), SEEK_CUR);
+		fseek(fp, sizeof(int32_t), SEEK_CUR);
+		fseek(fp, sizeof(int32_t), SEEK_CUR);
+		fseek(fp, sizeof(int32_t)*NUMPROFICIENCIES, SEEK_CUR);
 		fseek(fp, sizeof(bool)*NUMEFFECTS, SEEK_CUR);
-		fseek(fp, sizeof(Sint32)*NUMEFFECTS, SEEK_CUR);
+		fseek(fp, sizeof(int32_t)*NUMEFFECTS, SEEK_CUR);
 
 		if ( plnum == 0 )
 		{
 			// server needs to skip past its inventory
 			int numitems = 0;
-			fread(&numitems, sizeof(Uint32), 1, fp);
+			fread(&numitems, sizeof(uint32_t), 1, fp);
 
 			int i;
 			for ( i = 0; i < numitems; i++ )
@@ -2323,12 +2322,12 @@ char* getSaveGameName()
 				fseek(fp, sizeof(Status), SEEK_CUR);
 				fseek(fp, sizeof(Sint16), SEEK_CUR);
 				fseek(fp, sizeof(Sint16), SEEK_CUR);
-				fseek(fp, sizeof(Uint32), SEEK_CUR);
+				fseek(fp, sizeof(uint32_t), SEEK_CUR);
 				fseek(fp, sizeof(bool), SEEK_CUR);
-				fseek(fp, sizeof(Sint32), SEEK_CUR);
-				fseek(fp, sizeof(Sint32), SEEK_CUR);
+				fseek(fp, sizeof(int32_t), SEEK_CUR);
+				fseek(fp, sizeof(int32_t), SEEK_CUR);
 			}
-			fseek(fp, sizeof(Uint32) * 10, SEEK_CUR); // equipment slots
+			fseek(fp, sizeof(uint32_t) * 10, SEEK_CUR); // equipment slots
 		}
 		else
 		{
@@ -2337,16 +2336,16 @@ char* getSaveGameName()
 		}
 	}
 
-	fread(&class_, sizeof(Uint32), 1, fp);
+	fread(&class_, sizeof(uint32_t), 1, fp);
 	for ( c = 0; c < NUMMONSTERS; c++ )
 	{
-		fseek(fp, sizeof(Sint32), SEEK_CUR);
+		fseek(fp, sizeof(int32_t), SEEK_CUR);
 	}
-	fseek(fp, sizeof(Monster) + sizeof(sex_t) + sizeof(Uint32), SEEK_CUR);
+	fseek(fp, sizeof(Monster) + sizeof(sex_t) + sizeof(uint32_t), SEEK_CUR);
 	fread(&name, sizeof(char), 32, fp);
 	name[32] = 0;
-	fseek(fp, sizeof(Sint32) * 11, SEEK_CUR);
-	fread(&level, sizeof(Sint32), 1, fp);
+	fseek(fp, sizeof(int32_t) * 11, SEEK_CUR);
+	fread(&level, sizeof(int32_t), 1, fp);
 
 	// assemble string
 	snprintf(tempstr, 1024, language[1540 + mul], name, level, language[1900 + class_], plnum);
@@ -2365,10 +2364,10 @@ char* getSaveGameName()
 
 -------------------------------------------------------------------------------*/
 
-Uint32 getSaveGameUniqueGameKey()
+uint32_t getSaveGameUniqueGameKey()
 {
 	FILE* fp;
-	Uint32 gameKey;
+	uint32_t gameKey;
 
 	// open file
 	if ( (fp = fopen(SAVEGAMEFILE, "rb")) == NULL )
@@ -2394,7 +2393,7 @@ Uint32 getSaveGameUniqueGameKey()
 		return 0;
 	}
 
-	fread(&gameKey, sizeof(Uint32), 1, fp);
+	fread(&gameKey, sizeof(uint32_t), 1, fp);
 
 	// close file
 	fclose(fp);
@@ -2438,8 +2437,8 @@ int getSaveGameType()
 		return 0;
 	}
 
-	fseek(fp, sizeof(Uint32), SEEK_CUR);
-	fread(&mul, sizeof(Uint32), 1, fp);
+	fseek(fp, sizeof(uint32_t), SEEK_CUR);
+	fread(&mul, sizeof(uint32_t), 1, fp);
 
 	// close file
 	fclose(fp);
@@ -2483,9 +2482,9 @@ int getSaveGameClientnum()
 		return 0;
 	}
 
-	fseek(fp, sizeof(Uint32), SEEK_CUR);
-	fseek(fp, sizeof(Uint32), SEEK_CUR);
-	fread(&clientnum, sizeof(Uint32), 1, fp);
+	fseek(fp, sizeof(uint32_t), SEEK_CUR);
+	fseek(fp, sizeof(uint32_t), SEEK_CUR);
+	fread(&clientnum, sizeof(uint32_t), 1, fp);
 
 	// close file
 	fclose(fp);
@@ -2500,10 +2499,10 @@ int getSaveGameClientnum()
 
 -------------------------------------------------------------------------------*/
 
-Uint32 getSaveGameMapSeed()
+uint32_t getSaveGameMapSeed()
 {
 	FILE* fp;
-	Uint32 seed;
+	uint32_t seed;
 
 	// open file
 	if ( (fp = fopen(SAVEGAMEFILE, "rb")) == NULL )
@@ -2529,10 +2528,10 @@ Uint32 getSaveGameMapSeed()
 		return 0;
 	}
 
-	fseek(fp, sizeof(Uint32), SEEK_CUR);
-	fseek(fp, sizeof(Uint32), SEEK_CUR);
-	fseek(fp, sizeof(Uint32), SEEK_CUR);
-	fread(&seed, sizeof(Uint32), 1, fp);
+	fseek(fp, sizeof(uint32_t), SEEK_CUR);
+	fseek(fp, sizeof(uint32_t), SEEK_CUR);
+	fseek(fp, sizeof(uint32_t), SEEK_CUR);
+	fread(&seed, sizeof(uint32_t), 1, fp);
 
 	// close file
 	fclose(fp);

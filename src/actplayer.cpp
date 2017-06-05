@@ -9,7 +9,6 @@
 
 -------------------------------------------------------------------------------*/
 
-#include "main.hpp"
 #include "game.hpp"
 #include "stat.hpp"
 #include "messages.hpp"
@@ -488,7 +487,7 @@ void actPlayer(Entity* my)
 		node->deconstructor = &emptyDeconstructor;
 		node->size = sizeof(Entity*);
 	}
-	Uint32 color = SDL_MapRGB(mainsurface->format, 255, 0, 255);
+	uint32_t color = SDL_MapRGB(mainsurface->format, 255, 0, 255);
 
 	if ( !intro )
 	{
@@ -1085,7 +1084,7 @@ void actPlayer(Entity* my)
 					net_packet->data[4] = PLAYER_NUM;
 					if (selectedEntity->behavior == &actPlayerLimb)
 					{
-						SDLNet_Write32((Uint32)players[selectedEntity->skill[2]]->entity->getUID(), &net_packet->data[5]);
+						SDLNet_Write32((uint32_t)players[selectedEntity->skill[2]]->entity->getUID(), &net_packet->data[5]);
 					}
 					else
 					{
@@ -1094,16 +1093,16 @@ void actPlayer(Entity* my)
 						{
 							if (tempEntity->behavior == &actMonster)
 							{
-								SDLNet_Write32((Uint32)tempEntity->getUID(), &net_packet->data[5]);
+								SDLNet_Write32((uint32_t)tempEntity->getUID(), &net_packet->data[5]);
 							}
 							else
 							{
-								SDLNet_Write32((Uint32)selectedEntity->getUID(), &net_packet->data[5]);
+								SDLNet_Write32((uint32_t)selectedEntity->getUID(), &net_packet->data[5]);
 							}
 						}
 						else
 						{
-							SDLNet_Write32((Uint32)selectedEntity->getUID(), &net_packet->data[5]);
+							SDLNet_Write32((uint32_t)selectedEntity->getUID(), &net_packet->data[5]);
 						}
 					}
 					net_packet->address.host = net_server.host;
@@ -1310,7 +1309,7 @@ void actPlayer(Entity* my)
 						snprintf(whatever, 255, "%s %s", stats[PLAYER_NUM]->name, stats[PLAYER_NUM]->obituary);
 						messagePlayer(c, whatever);
 					}
-					Uint32 color = SDL_MapRGB(mainsurface->format, 255, 0, 0);
+					uint32_t color = SDL_MapRGB(mainsurface->format, 255, 0, 0);
 					messagePlayerColor(PLAYER_NUM, color, language[577]);
 					/* //TODO: Eventually.
 					{

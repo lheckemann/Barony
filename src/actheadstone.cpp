@@ -9,7 +9,6 @@
 
 -------------------------------------------------------------------------------*/
 
-#include "main.hpp"
 #include "game.hpp"
 #include "stat.hpp"
 #include "entity.hpp"
@@ -100,7 +99,7 @@ void actHeadstone(Entity* my)
 					if ( HEADSTONE_GHOUL && !HEADSTONE_FIRED )
 					{
 						shouldspawn = true;
-						Uint32 color = SDL_MapRGB(mainsurface->format, 255, 128, 0);
+						uint32_t color = SDL_MapRGB(mainsurface->format, 255, 128, 0);
 						messagePlayerColor(i, color, language[502]);
 					}
 				}

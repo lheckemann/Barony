@@ -50,7 +50,7 @@ extern bool devilmusicplaying;
 extern bool olddarkmap;
 
 extern FMOD_SOUND** sounds;
-extern Uint32 numsounds;
+extern uint32_t numsounds;
 extern FMOD_SOUND** minesmusic;
 #define NUMMINESMUSIC 4
 extern FMOD_SOUND** swampmusic;
@@ -83,12 +83,12 @@ bool FMODErrorCheck();
 //Updates FMOD and whatnot.
 void sound_update();
 
-FMOD_CHANNEL* playSoundPlayer(int player, Uint32 snd, int vol);
-FMOD_CHANNEL* playSoundPos(real_t x, real_t y, Uint32 snd, int vol);
-FMOD_CHANNEL* playSoundPosLocal(real_t x, real_t y, Uint32 snd, int vol);
-FMOD_CHANNEL* playSoundEntity(Entity* entity, Uint32 snd, int vol);
-FMOD_CHANNEL* playSoundEntityLocal(Entity* entity, Uint32 snd, int vol);
-FMOD_CHANNEL* playSound(Uint32 snd, int vol);
+FMOD_CHANNEL* playSoundPlayer(int player, uint32_t snd, int vol);
+FMOD_CHANNEL* playSoundPos(float x, float y, uint32_t snd, int vol);
+FMOD_CHANNEL* playSoundPosLocal(float x, float y, uint32_t snd, int vol);
+FMOD_CHANNEL* playSoundEntity(Entity* entity, uint32_t snd, int vol);
+FMOD_CHANNEL* playSoundEntityLocal(Entity* entity, uint32_t snd, int vol);
+FMOD_CHANNEL* playSound(uint32_t snd, int vol);
 FMOD_CHANNEL* playSoundVelocity(); //TODO: Write.
 
 void playmusic(FMOD_SOUND* sound, bool loop, bool crossfade, bool resume); //Automatically crossfades. NOTE: Resets fadein and fadeout increments to the defualts every time it is called. You'll have to change the fadein and fadeout increments AFTER calling this function.
@@ -126,7 +126,7 @@ struct FMOD_VECTOR {
 };
 
 extern OPENAL_BUFFER** sounds;
-extern Uint32 numsounds;
+extern uint32_t numsounds;
 extern OPENAL_BUFFER** minesmusic;
 #define NUMMINESMUSIC 4
 extern OPENAL_BUFFER** swampmusic;
@@ -155,12 +155,12 @@ int closeOPENAL();
 //Updates OpenAL and whatnot (dummy function)
 void sound_update();
 
-OPENAL_SOUND* playSoundPlayer(int player, Uint32 snd, int vol);
-OPENAL_SOUND* playSoundPos(real_t x, real_t y, Uint32 snd, int vol);
-OPENAL_SOUND* playSoundPosLocal(real_t x, real_t y, Uint32 snd, int vol);
-OPENAL_SOUND* playSoundEntity(Entity* entity, Uint32 snd, int vol);
-OPENAL_SOUND* playSoundEntityLocal(Entity* entity, Uint32 snd, int vol);
-OPENAL_SOUND* playSound(Uint32 snd, int vol);
+OPENAL_SOUND* playSoundPlayer(int player, uint32_t snd, int vol);
+OPENAL_SOUND* playSoundPos(float x, float y, uint32_t snd, int vol);
+OPENAL_SOUND* playSoundPosLocal(float x, float y, uint32_t snd, int vol);
+OPENAL_SOUND* playSoundEntity(Entity* entity, uint32_t snd, int vol);
+OPENAL_SOUND* playSoundEntityLocal(Entity* entity, uint32_t snd, int vol);
+OPENAL_SOUND* playSound(uint32_t snd, int vol);
 OPENAL_SOUND* playSoundVelocity(); //TODO: Write.
 
 void playmusic(OPENAL_BUFFER* sound, bool loop, bool crossfade, bool resume); //Automatically crossfades. NOTE: Resets fadein and fadeout increments to the defualts every time it is called. You'll have to change the fadein and fadeout increments AFTER calling this function.
@@ -188,10 +188,10 @@ void OPENAL_Sound_Release(OPENAL_BUFFER* buffer);
 
 extern float fadein_increment, fadeout_increment, default_fadein_increment, default_fadeout_increment;
 #else
-void* playSound(Uint32, int);
-void* playSoundPos(real_t x, real_t y, Uint32, int);
-void* playSoundPosLocal(real_t, real_t, Uint32, int);
-void* playSoundEntity(Entity*, Uint32, int);
-void* playSoundEntityLocal(Entity*, Uint32, int);
-void* playSoundPlayer(int, Uint32, int);
+void* playSound(uint32_t, int);
+void* playSoundPos(float x, float y, uint32_t, int);
+void* playSoundPosLocal(float, float, uint32_t, int);
+void* playSoundEntity(Entity*, uint32_t, int);
+void* playSoundEntityLocal(Entity*, uint32_t, int);
+void* playSoundPlayer(int, uint32_t, int);
 #endif

@@ -9,7 +9,6 @@
 
 -------------------------------------------------------------------------------*/
 
-#include "main.hpp"
 #include "game.hpp"
 #include "stat.hpp"
 #include "entity.hpp"
@@ -53,7 +52,7 @@ int boulderCheckAgainstEntity(Entity* my, Entity* entity)
 			{
 				if ( entity->behavior == &actPlayer )
 				{
-					Uint32 color = SDL_MapRGB(mainsurface->format, 255, 0, 0);
+					uint32_t color = SDL_MapRGB(mainsurface->format, 255, 0, 0);
 					messagePlayerColor(entity->skill[2], color, language[455]);
 					if ( entity->skill[2] == clientnum )
 					{
@@ -128,7 +127,7 @@ int boulderCheckAgainstEntity(Entity* my, Entity* entity)
 							int c;
 							for ( c = 0; c < MAXPLAYERS; c++ )
 							{
-								Uint32 color = SDL_MapRGB(mainsurface->format, 255, 128, 0);
+								uint32_t color = SDL_MapRGB(mainsurface->format, 255, 128, 0);
 								messagePlayerColor(c, color, language[406]);
 							}
 						}
@@ -199,7 +198,7 @@ void actBoulder(Entity* my)
 	bool noground = false;
 	int x = std::min<int>(std::max(0, (int)(my->x / 16)), map.width);
 	int y = std::min<int>(std::max(0, (int)(my->y / 16)), map.height);
-	Uint32 index = y * MAPLAYERS + x * MAPLAYERS * map.height;
+	uint32_t index = y * MAPLAYERS + x * MAPLAYERS * map.height;
 	if ( !map.tiles[index] || animatedtiles[map.tiles[index]] )
 	{
 		noground = true;
@@ -214,7 +213,7 @@ void actBoulder(Entity* my)
 		}
 	if ( my->z < 0 || BOULDER_NOGROUND )
 	{
-		my->vel_z = std::min<real_t>(my->vel_z + .1, 3.0);
+		my->vel_z = std::min<float>(my->vel_z + .1, 3.0);
 		my->vel_x *= 0.85f;
 		my->vel_y *= 0.85f;
 		nobounce = true;

@@ -11,7 +11,6 @@
 
 #pragma once
 
-#include "main.hpp"
 
 //TODO: The book name will need to be replaced with books[item->appearnce%numbooks]->name as opposed to item->name in the inventory.
 typedef struct book_t

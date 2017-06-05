@@ -23,42 +23,34 @@ class Entity;
 
 extern list_t steamAchievements;
 
+static const int MAXPLAYERS = 4;
+
 #define DEBUG 1
 #define ENTITY_PACKET_LENGTH 46
 #define NET_PACKET_SIZE 512
 
 // impulses (bound keystrokes, mousestrokes, and joystick/game controller strokes) //TODO: Player-by-player basis.
-extern Uint32 impulses[NUMIMPULSES];
-extern Uint32 joyimpulses[NUM_JOY_IMPULSES]; //Joystick/gamepad only impulses.
+#define NUMIMPULSES 16
+static const unsigned NUM_JOY_IMPULSES = 33;
+extern uint32_t impulses[NUMIMPULSES];
+extern uint32_t joyimpulses[NUM_JOY_IMPULSES]; //Joystick/gamepad only impulses.
 extern int reversemouse;
-extern real_t mousespeed;
+extern float mousespeed;
 
 void handleEvents(void);
 void startMessages();
 
-extern real_t camera_shakex;
-extern real_t camera_shakex2;
+extern float camera_shakex;
+extern float camera_shakex2;
 extern int camera_shakey;
 extern int camera_shakey2;
 
-// net packet send
-typedef struct packetsend_t
-{
-	UDPsocket sock;
-	int channel;
-	UDPpacket* packet;
-	int num;
-	int tries;
-	int hostnum;
-} packetsend_t;
-extern list_t safePacketsSent, safePacketsReceived[MAXPLAYERS];
-extern bool receivedclientnum;
 
 extern Entity* hudweapon, *hudarm;
 
-extern Uint32 clientplayer;
-extern Sint32 numplayers;
-extern Sint32 clientnum;
+extern uint32_t clientplayer;
+extern int32_t numplayers;
+extern int32_t clientnum;
 extern bool intro;
 extern int introstage;
 extern bool gamePaused;
@@ -67,9 +59,9 @@ extern int fadealpha;
 extern Entity* client_selected[MAXPLAYERS];
 extern bool inrange[MAXPLAYERS];
 extern bool deleteallbuttons;
-extern Sint32 client_classes[MAXPLAYERS];
-extern Uint32 client_keepalive[MAXPLAYERS];
-extern Uint32 portnumber;
+extern int32_t client_classes[MAXPLAYERS];
+extern uint32_t client_keepalive[MAXPLAYERS];
+extern uint32_t portnumber;
 extern list_t messages;
 extern list_t command_history;
 extern node_t* chosen_command;
@@ -86,14 +78,14 @@ extern char maptoload[256], configtoload[256];
 extern bool loadingmap, loadingconfig;
 extern int startfloor;
 extern bool skipintro;
-extern Uint32 uniqueGameKey;
+extern uint32_t uniqueGameKey;
 
 // definitions
 extern bool showfps;
-extern real_t t, ot, frameval[AVERAGEFRAMES];
-extern Uint32 cycles, pingtime;
-extern Uint32 timesync;
-extern real_t fps;
+extern float t, ot, frameval[AVERAGEFRAMES];
+extern uint32_t cycles, pingtime;
+extern uint32_t timesync;
+extern float fps;
 extern bool shootmode;
 #define NUMCLASSES 10
 extern char classnames[10][10];
@@ -116,7 +108,7 @@ void freePlayerEquipment(int x);
 void pauseGame(int mode, int ignoreplayer);
 int initGame();
 void deinitGame();
-Uint32 timerCallback(Uint32 interval, void* param);
+uint32_t timerCallback(uint32_t interval, void* param);
 void handleButtons(void);
 void gameLogic(void);
 

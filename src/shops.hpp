@@ -11,15 +11,14 @@
 
 #pragma once
 
-#include "main.hpp"
 #include "game.hpp"
 #include "items.hpp"
 
 #define NUMCHITCHAT 20
 
 extern list_t* shopInv;
-extern Uint32 shopkeeper;
-extern Uint32 shoptimer;
+extern uint32_t shopkeeper;
+extern uint32_t shoptimer;
 extern char* shopspeech;
 extern int shopinventorycategory;
 extern int shopitemscroll;

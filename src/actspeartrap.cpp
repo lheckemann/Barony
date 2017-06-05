@@ -9,7 +9,6 @@
 
 -------------------------------------------------------------------------------*/
 
-#include "main.hpp"
 #include "game.hpp"
 #include "stat.hpp"
 #include "entity.hpp"
@@ -128,7 +127,7 @@ void actSpearTrap(Entity* my)
 								// do damage!
 								if ( entity->behavior == &actPlayer )
 								{
-									Uint32 color = SDL_MapRGB(mainsurface->format, 255, 0, 0);
+									uint32_t color = SDL_MapRGB(mainsurface->format, 255, 0, 0);
 									messagePlayerColor(entity->skill[2], color, language[586]);
 									if ( entity->skill[2] == clientnum )
 									{

@@ -9,7 +9,6 @@
 
 -------------------------------------------------------------------------------*/
 
-#include "main.hpp"
 #include "game.hpp"
 #include "stat.hpp"
 #include "entity.hpp"
@@ -126,7 +125,7 @@ void actFountain(Entity* my)
 							playSoundEntity(players[i]->entity, 52, 64);
 
 							//Spawn succubus.
-							Uint32 color = SDL_MapRGB(mainsurface->format, 255, 128, 0);
+							uint32_t color = SDL_MapRGB(mainsurface->format, 255, 128, 0);
 							messagePlayerColor(i, color, language[469]);
 							summonMonster(SUCCUBUS, my->x, my->y);
 							break;
@@ -150,7 +149,7 @@ void actFountain(Entity* my)
 						{
 							// bless equipment
 							playSoundEntity(players[i]->entity, 52, 64);
-							Uint32 textcolor = SDL_MapRGB(mainsurface->format, 0, 255, 255);
+							uint32_t textcolor = SDL_MapRGB(mainsurface->format, 0, 255, 255);
 							messagePlayerColor(i, textcolor, language[471]);
 							messagePlayer(i, language[473]);
 							if ( stats[i]->helmet )

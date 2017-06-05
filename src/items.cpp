@@ -9,7 +9,6 @@
 
 -------------------------------------------------------------------------------*/
 
-#include "main.hpp"
 #include "game.hpp"
 #include "stat.hpp"
 #include "items.hpp"
@@ -25,7 +24,7 @@
 #include "net.hpp"
 #include "player.hpp"
 
-Uint32 itemuids = 1;
+uint32_t itemuids = 1;
 ItemGeneric items[NUMITEMS];
 
 /*-------------------------------------------------------------------------------
@@ -36,7 +35,7 @@ ItemGeneric items[NUMITEMS];
 
 -------------------------------------------------------------------------------*/
 
-Item* newItem(ItemType type, Status status, Sint16 beatitude, Sint16 count, Uint32 appearance, bool identified, list_t* inventory)
+Item* newItem(ItemType type, Status status, Sint16 beatitude, Sint16 count, uint32_t appearance, bool identified, list_t* inventory)
 {
 	Item* item;
 
@@ -161,7 +160,7 @@ Item* newItem(ItemType type, Status status, Sint16 beatitude, Sint16 count, Uint
 
 -------------------------------------------------------------------------------*/
 
-Item* uidToItem(Uint32 uid)
+Item* uidToItem(uint32_t uid)
 {
 	node_t* node;
 	for ( node = stats[clientnum]->inventory.first; node != NULL; node = node->next )
@@ -197,15 +196,15 @@ ItemType itemCurve(Category cat)
 	}
 
 	// find highest value of items in category
-	Uint32 highestvalue = 0;
-	Uint32 lowestvalue = 0;
-	Uint32 numoftype = 0;
+	uint32_t highestvalue = 0;
+	uint32_t lowestvalue = 0;
+	uint32_t numoftype = 0;
 	for ( c = 0; c < numitems; c++ )
 	{
 		if ( items[c].category == cat )
 		{
-			highestvalue = std::max<Uint32>(highestvalue, items[c].value); //TODO: Why are Uint32 and int being compared?
-			lowestvalue = std::min<Uint32>(lowestvalue, items[c].value); //TODO: Why are Uint32 and int being compared?
+			highestvalue = std::max<uint32_t>(highestvalue, items[c].value); //TODO: Why are uint32_t and int being compared?
+			lowestvalue = std::min<uint32_t>(lowestvalue, items[c].value); //TODO: Why are uint32_t and int being compared?
 			numoftype++;
 		}
 	}
@@ -262,7 +261,7 @@ ItemType itemCurve(Category cat)
 	else
 	{
 		// other categories get a special chance algorithm based on item value and dungeon level
-		int acceptablehigh = std::max<Uint32>(highestvalue * fmin(1.0, (currentlevel + 10) / 25.0), lowestvalue); //TODO: Why are double and Uint32 being compared?
+		int acceptablehigh = std::max<uint32_t>(highestvalue * fmin(1.0, (currentlevel + 10) / 25.0), lowestvalue); //TODO: Why are double and uint32_t being compared?
 		for ( c = 0; c < numitems; c++ )
 		{
 			chances[c] = false;
@@ -274,7 +273,7 @@ ItemType itemCurve(Category cat)
 	}
 
 	// calculate number of items left
-	Uint32 numleft = 0;
+	uint32_t numleft = 0;
 	for ( c = 0; c < numitems; c++ )
 	{
 		if ( chances[c] == true )
@@ -597,7 +596,7 @@ char* Item::getName()
 
 -------------------------------------------------------------------------------*/
 
-Sint32 itemModel(Item* item)
+int32_t itemModel(Item* item)
 {
 	if ( !item )
 	{
@@ -614,7 +613,7 @@ Sint32 itemModel(Item* item)
 
 -------------------------------------------------------------------------------*/
 
-Sint32 itemModelFirstperson(Item* item)
+int32_t itemModelFirstperson(Item* item)
 {
 	if ( !item )
 	{
@@ -755,11 +754,11 @@ void dropItem(Item* item, int player)
 	if ( multiplayer == CLIENT )
 	{
 		strcpy((char*)net_packet->data, "DROP");
-		SDLNet_Write32((Uint32)item->type, &net_packet->data[4]);
-		SDLNet_Write32((Uint32)item->status, &net_packet->data[8]);
-		SDLNet_Write32((Uint32)item->beatitude, &net_packet->data[12]);
-		SDLNet_Write32((Uint32)item->count, &net_packet->data[16]);
-		SDLNet_Write32((Uint32)item->appearance, &net_packet->data[20]);
+		SDLNet_Write32((uint32_t)item->type, &net_packet->data[4]);
+		SDLNet_Write32((uint32_t)item->status, &net_packet->data[8]);
+		SDLNet_Write32((uint32_t)item->beatitude, &net_packet->data[12]);
+		SDLNet_Write32((uint32_t)item->count, &net_packet->data[16]);
+		SDLNet_Write32((uint32_t)item->appearance, &net_packet->data[20]);
 		net_packet->data[24] = item->identified;
 		net_packet->data[25] = clientnum;
 		net_packet->address.host = net_server.host;
@@ -1233,11 +1232,11 @@ void useItem(Item* item, int player)
 	if ( multiplayer == CLIENT && !intro )
 	{
 		strcpy((char*)net_packet->data, "USEI");
-		SDLNet_Write32((Uint32)item->type, &net_packet->data[4]);
-		SDLNet_Write32((Uint32)item->status, &net_packet->data[8]);
-		SDLNet_Write32((Uint32)item->beatitude, &net_packet->data[12]);
-		SDLNet_Write32((Uint32)item->count, &net_packet->data[16]);
-		SDLNet_Write32((Uint32)item->appearance, &net_packet->data[20]);
+		SDLNet_Write32((uint32_t)item->type, &net_packet->data[4]);
+		SDLNet_Write32((uint32_t)item->status, &net_packet->data[8]);
+		SDLNet_Write32((uint32_t)item->beatitude, &net_packet->data[12]);
+		SDLNet_Write32((uint32_t)item->count, &net_packet->data[16]);
+		SDLNet_Write32((uint32_t)item->appearance, &net_packet->data[20]);
 		net_packet->data[24] = item->identified;
 		net_packet->data[25] = clientnum;
 		net_packet->address.host = net_server.host;
@@ -1659,11 +1658,11 @@ Item* itemPickup(int player, Item* item)
 	{
 		// send the client info on the item it just picked up
 		strcpy((char*)net_packet->data, "ITEM");
-		SDLNet_Write32((Uint32)item->type, &net_packet->data[4]);
-		SDLNet_Write32((Uint32)item->status, &net_packet->data[8]);
-		SDLNet_Write32((Uint32)item->beatitude, &net_packet->data[12]);
-		SDLNet_Write32((Uint32)item->count, &net_packet->data[16]);
-		SDLNet_Write32((Uint32)item->appearance, &net_packet->data[20]);
+		SDLNet_Write32((uint32_t)item->type, &net_packet->data[4]);
+		SDLNet_Write32((uint32_t)item->status, &net_packet->data[8]);
+		SDLNet_Write32((uint32_t)item->beatitude, &net_packet->data[12]);
+		SDLNet_Write32((uint32_t)item->count, &net_packet->data[16]);
+		SDLNet_Write32((uint32_t)item->appearance, &net_packet->data[20]);
 		net_packet->data[24] = item->identified;
 		net_packet->address.host = net_clients[player - 1].host;
 		net_packet->address.port = net_clients[player - 1].port;
@@ -1826,9 +1825,9 @@ bool itemIsEquipped(const Item* item, int player)
 
 -------------------------------------------------------------------------------*/
 
-Sint32 Item::weaponGetAttack()
+int32_t Item::weaponGetAttack()
 {
-	Sint32 attack = beatitude;
+	int32_t attack = beatitude;
 	if ( itemCategory(this) == MAGICSTAFF )
 	{
 		attack += 6;
@@ -1926,9 +1925,9 @@ Sint32 Item::weaponGetAttack()
 
 -------------------------------------------------------------------------------*/
 
-Sint32 Item::armorGetAC()
+int32_t Item::armorGetAC()
 {
-	Sint32 armor = beatitude;
+	int32_t armor = beatitude;
 	if ( type == LEATHER_HELM )
 	{
 		armor += 1;
@@ -2134,14 +2133,14 @@ void Item::apply(int player, Entity* entity)
 	if ( multiplayer == CLIENT )
 	{
 		strcpy((char*)net_packet->data, "APIT");
-		SDLNet_Write32((Uint32)type, &net_packet->data[4]);
-		SDLNet_Write32((Uint32)status, &net_packet->data[8]);
-		SDLNet_Write32((Uint32)beatitude, &net_packet->data[12]);
-		SDLNet_Write32((Uint32)count, &net_packet->data[16]);
-		SDLNet_Write32((Uint32)appearance, &net_packet->data[20]);
+		SDLNet_Write32((uint32_t)type, &net_packet->data[4]);
+		SDLNet_Write32((uint32_t)status, &net_packet->data[8]);
+		SDLNet_Write32((uint32_t)beatitude, &net_packet->data[12]);
+		SDLNet_Write32((uint32_t)count, &net_packet->data[16]);
+		SDLNet_Write32((uint32_t)appearance, &net_packet->data[20]);
 		net_packet->data[24] = identified;
 		net_packet->data[25] = player;
-		SDLNet_Write32((Uint32)entity->getUID(), &net_packet->data[26]);
+		SDLNet_Write32((uint32_t)entity->getUID(), &net_packet->data[26]);
 		net_packet->address.host = net_server.host;
 		net_packet->address.port = net_server.port;
 		net_packet->len = 30;

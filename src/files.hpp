@@ -1,4 +1,5 @@
 #pragma once
+#include "maps.hpp"
 
 void glLoadTexture(SDL_Surface* image, int texnum);
 SDL_Surface* loadImage(char* filename);

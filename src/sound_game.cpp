@@ -11,7 +11,6 @@
 
 -------------------------------------------------------------------------------*/
 
-#include "main.hpp"
 #include "game.hpp"
 #include "stat.hpp"
 #include "sound.hpp"
@@ -29,7 +28,7 @@
 -------------------------------------------------------------------------------*/
 
 #ifdef HAVE_FMOD
-FMOD_CHANNEL* playSoundPlayer(int player, Uint32 snd, int vol)
+FMOD_CHANNEL* playSoundPlayer(int player, uint32_t snd, int vol)
 {
 	if (no_sound)
 	{
@@ -53,7 +52,7 @@ FMOD_CHANNEL* playSoundPlayer(int player, Uint32 snd, int vol)
 		}
 		strcpy((char*)net_packet->data, "SNDG");
 		SDLNet_Write32(snd, &net_packet->data[4]);
-		SDLNet_Write32((Uint32)vol, &net_packet->data[8]);
+		SDLNet_Write32((uint32_t)vol, &net_packet->data[8]);
 		net_packet->address.host = net_clients[player - 1].host;
 		net_packet->address.port = net_clients[player - 1].port;
 		net_packet->len = 12;
@@ -73,7 +72,7 @@ FMOD_CHANNEL* playSoundPlayer(int player, Uint32 snd, int vol)
 
 -------------------------------------------------------------------------------*/
 
-FMOD_CHANNEL* playSoundPos(real_t x, real_t y, Uint32 snd, int vol)
+FMOD_CHANNEL* playSoundPos(float x, float y, uint32_t snd, int vol)
 {
 	if (no_sound)
 	{
@@ -112,7 +111,7 @@ FMOD_CHANNEL* playSoundPos(real_t x, real_t y, Uint32 snd, int vol)
 			SDLNet_Write32(x, &net_packet->data[4]);
 			SDLNet_Write32(y, &net_packet->data[8]);
 			SDLNet_Write32(snd, &net_packet->data[12]);
-			SDLNet_Write32((Uint32)vol, &net_packet->data[16]);
+			SDLNet_Write32((uint32_t)vol, &net_packet->data[16]);
 			net_packet->address.host = net_clients[c - 1].host;
 			net_packet->address.port = net_clients[c - 1].port;
 			net_packet->len = 20;
@@ -142,7 +141,7 @@ FMOD_CHANNEL* playSoundPos(real_t x, real_t y, Uint32 snd, int vol)
 	return channel;
 }
 
-FMOD_CHANNEL* playSoundPosLocal(real_t x, real_t y, Uint32 snd, int vol)
+FMOD_CHANNEL* playSoundPosLocal(float x, float y, uint32_t snd, int vol)
 {
 	if (no_sound)
 	{
@@ -199,7 +198,7 @@ FMOD_CHANNEL* playSoundPosLocal(real_t x, real_t y, Uint32 snd, int vol)
 
 -------------------------------------------------------------------------------*/
 
-FMOD_CHANNEL* playSoundEntity(Entity* entity, Uint32 snd, int vol)
+FMOD_CHANNEL* playSoundEntity(Entity* entity, uint32_t snd, int vol)
 {
 	if (no_sound)
 	{
@@ -213,7 +212,7 @@ FMOD_CHANNEL* playSoundEntity(Entity* entity, Uint32 snd, int vol)
 	return playSoundPos(entity->x, entity->y, snd, vol);
 }
 
-FMOD_CHANNEL* playSoundEntityLocal(Entity* entity, Uint32 snd, int vol)
+FMOD_CHANNEL* playSoundEntityLocal(Entity* entity, uint32_t snd, int vol)
 {
 	if ( entity == NULL )
 	{
@@ -231,7 +230,7 @@ FMOD_CHANNEL* playSoundEntityLocal(Entity* entity, Uint32 snd, int vol)
 
 -------------------------------------------------------------------------------*/
 
-FMOD_CHANNEL* playSound(Uint32 snd, int vol)
+FMOD_CHANNEL* playSound(uint32_t snd, int vol)
 {
 	if (no_sound)
 	{
@@ -606,7 +605,7 @@ void handleLevelMusic()
 }
 
 #elif defined HAVE_OPENAL
-OPENAL_SOUND* playSoundPlayer(int player, Uint32 snd, int vol)
+OPENAL_SOUND* playSoundPlayer(int player, uint32_t snd, int vol)
 {
 	if (no_sound)
 	{
@@ -630,7 +629,7 @@ OPENAL_SOUND* playSoundPlayer(int player, Uint32 snd, int vol)
 		}
 		strcpy((char*)net_packet->data, "SNDG");
 		SDLNet_Write32(snd, &net_packet->data[4]);
-		SDLNet_Write32((Uint32)vol, &net_packet->data[8]);
+		SDLNet_Write32((uint32_t)vol, &net_packet->data[8]);
 		net_packet->address.host = net_clients[player - 1].host;
 		net_packet->address.port = net_clients[player - 1].port;
 		net_packet->len = 12;
@@ -650,7 +649,7 @@ OPENAL_SOUND* playSoundPlayer(int player, Uint32 snd, int vol)
 
 -------------------------------------------------------------------------------*/
 
-OPENAL_SOUND* playSoundPos(real_t x, real_t y, Uint32 snd, int vol)
+OPENAL_SOUND* playSoundPos(float x, float y, uint32_t snd, int vol)
 {
 	if (no_sound)
 	{
@@ -689,7 +688,7 @@ OPENAL_SOUND* playSoundPos(real_t x, real_t y, Uint32 snd, int vol)
 			SDLNet_Write32(x, &net_packet->data[4]);
 			SDLNet_Write32(y, &net_packet->data[8]);
 			SDLNet_Write32(snd, &net_packet->data[12]);
-			SDLNet_Write32((Uint32)vol, &net_packet->data[16]);
+			SDLNet_Write32((uint32_t)vol, &net_packet->data[16]);
 			net_packet->address.host = net_clients[c - 1].host;
 			net_packet->address.port = net_clients[c - 1].port;
 			net_packet->len = 20;
@@ -711,7 +710,7 @@ OPENAL_SOUND* playSoundPos(real_t x, real_t y, Uint32 snd, int vol)
 	return channel;
 }
 
-OPENAL_SOUND* playSoundPosLocal(real_t x, real_t y, Uint32 snd, int vol)
+OPENAL_SOUND* playSoundPosLocal(float x, float y, uint32_t snd, int vol)
 {
 	if (no_sound)
 	{
@@ -760,7 +759,7 @@ OPENAL_SOUND* playSoundPosLocal(real_t x, real_t y, Uint32 snd, int vol)
 
 -------------------------------------------------------------------------------*/
 
-OPENAL_SOUND* playSoundEntity(Entity* entity, Uint32 snd, int vol)
+OPENAL_SOUND* playSoundEntity(Entity* entity, uint32_t snd, int vol)
 {
 	if (no_sound)
 	{
@@ -774,7 +773,7 @@ OPENAL_SOUND* playSoundEntity(Entity* entity, Uint32 snd, int vol)
 	return playSoundPos(entity->x, entity->y, snd, vol);
 }
 
-OPENAL_SOUND* playSoundEntityLocal(Entity* entity, Uint32 snd, int vol)
+OPENAL_SOUND* playSoundEntityLocal(Entity* entity, uint32_t snd, int vol)
 {
 	if ( entity == NULL )
 	{
@@ -792,7 +791,7 @@ OPENAL_SOUND* playSoundEntityLocal(Entity* entity, Uint32 snd, int vol)
 
 -------------------------------------------------------------------------------*/
 
-OPENAL_SOUND* playSound(Uint32 snd, int vol)
+OPENAL_SOUND* playSound(uint32_t snd, int vol)
 {
 	if (no_sound)
 	{
@@ -1159,12 +1158,12 @@ void handleLevelMusic()
 	position; returns the channel that the sound is playing in
 
 -------------------------------------------------------------------------------*/
-void* playSound(Uint32 snd, int vol)
+void* playSound(uint32_t snd, int vol)
 {
 	return NULL;
 }
 
-void* playSoundPos(real_t x, real_t y, Uint32 snd, int vol)
+void* playSoundPos(float x, float y, uint32_t snd, int vol)
 {
 	int c;
 
@@ -1185,7 +1184,7 @@ void* playSoundPos(real_t x, real_t y, Uint32 snd, int vol)
 			SDLNet_Write32(x, &net_packet->data[4]);
 			SDLNet_Write32(y, &net_packet->data[8]);
 			SDLNet_Write32(snd, &net_packet->data[12]);
-			SDLNet_Write32((Uint32)vol, &net_packet->data[16]);
+			SDLNet_Write32((uint32_t)vol, &net_packet->data[16]);
 			net_packet->address.host = net_clients[c - 1].host;
 			net_packet->address.port = net_clients[c - 1].port;
 			net_packet->len = 20;
@@ -1196,12 +1195,12 @@ void* playSoundPos(real_t x, real_t y, Uint32 snd, int vol)
 	return NULL;
 }
 
-void* playSoundPosLocal(real_t x, real_t y, Uint32 snd, int vol)
+void* playSoundPosLocal(float x, float y, uint32_t snd, int vol)
 {
 	return NULL;
 }
 
-void* playSoundEntity(Entity* entity, Uint32 snd, int vol)
+void* playSoundEntity(Entity* entity, uint32_t snd, int vol)
 {
 	if (entity == NULL)
 	{
@@ -1210,7 +1209,7 @@ void* playSoundEntity(Entity* entity, Uint32 snd, int vol)
 	return playSoundPos(entity->x, entity->y, snd, vol);
 }
 
-void* playSoundEntityLocal(Entity* entity, Uint32 snd, int vol)
+void* playSoundEntityLocal(Entity* entity, uint32_t snd, int vol)
 {
 	if ( entity == NULL )
 	{
@@ -1219,7 +1218,7 @@ void* playSoundEntityLocal(Entity* entity, Uint32 snd, int vol)
 	return playSoundPosLocal(entity->x, entity->y, snd, vol);
 }
 
-void* playSoundPlayer(int player, Uint32 snd, int vol)
+void* playSoundPlayer(int player, uint32_t snd, int vol)
 {
 	int c;
 
@@ -1239,7 +1238,7 @@ void* playSoundPlayer(int player, Uint32 snd, int vol)
 		}
 		strcpy((char*)net_packet->data, "SNDG");
 		SDLNet_Write32(snd, &net_packet->data[4]);
-		SDLNet_Write32((Uint32)vol, &net_packet->data[8]);
+		SDLNet_Write32((uint32_t)vol, &net_packet->data[8]);
 		net_packet->address.host = net_clients[player - 1].host;
 		net_packet->address.port = net_clients[player - 1].port;
 		net_packet->len = 12;

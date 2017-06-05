@@ -9,7 +9,6 @@
 
 -------------------------------------------------------------------------------*/
 
-#include "main.hpp"
 #include "editor.hpp"
 #include "entity.hpp"
 #include "files.hpp"
@@ -250,7 +249,7 @@ void buttonNewConfirm(button_t* my)
 	{
 		free(lightmap);
 	}
-	lightmap = (int*) malloc(sizeof(Sint32) * map.width * map.height);
+	lightmap = (int*) malloc(sizeof(int32_t) * map.width * map.height);
 	for (c = 0; c < map.width * map.height; c++ )
 	{
 		lightmap[c] = 0;
@@ -571,8 +570,8 @@ void buttonCopy(button_t* my)
 		{
 			free(copymap.tiles);
 		}
-		copymap.tiles = (Sint32*) malloc(sizeof(Sint32) * copymap.width * copymap.height * MAPLAYERS);
-		memset(copymap.tiles, 0, sizeof(Sint32)*copymap.width * copymap.height * MAPLAYERS);
+		copymap.tiles = (int32_t*) malloc(sizeof(int32_t) * copymap.width * copymap.height * MAPLAYERS);
+		memset(copymap.tiles, 0, sizeof(int32_t)*copymap.width * copymap.height * MAPLAYERS);
 		for ( x = 0; x < copymap.width; x++ )
 		{
 			for ( y = 0; y < copymap.height; y++ )
@@ -801,7 +800,7 @@ void buttonAttributesConfirm(button_t* my)
 	{
 		free(lightmap);
 	}
-	lightmap = (int*) malloc(sizeof(Sint32) * map.width * map.height);
+	lightmap = (int*) malloc(sizeof(int32_t) * map.width * map.height);
 	for (c = 0; c < map.width * map.height; c++ )
 	{
 		lightmap[c] = 0;

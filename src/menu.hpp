@@ -20,8 +20,8 @@ void handleMainMenu(bool mode);
 extern int subtitleCurrent;
 extern bool subtitleVisible;
 
-extern Sint32 gearrot;
-extern Sint32 gearsize;
+extern int32_t gearrot;
+extern int32_t gearsize;
 extern Uint16 logoalpha;
 extern int credittime;
 extern int creditstage;
@@ -31,7 +31,7 @@ extern int firstendmovietime;
 extern int firstendmoviestage;
 extern int secondendmovietime;
 extern int secondendmoviestage;
-extern real_t drunkextend;
+extern float drunkextend;
 extern bool losingConnection[4];
 extern int rebindaction;
 
@@ -81,31 +81,31 @@ void openGameoverWindow();
 void openSteamLobbyBrowserWindow(button_t* my);
 void openLoadGameWindow(button_t* my);
 void doSlider(int x, int y, int dots, int minvalue, int maxvalue, int increment, int* var, SDL_Surface* slider_font = SLIDERFONT, int slider_font_char_width = 16);
-void doSliderF(int x, int y, int dots, real_t minvalue, real_t maxvalue, real_t increment, real_t* var);
+void doSliderF(int x, int y, int dots, float minvalue, float maxvalue, float increment, float* var);
 
 // menu variables
 extern bool settings_window;
 extern int charcreation_step;
-extern Uint32 charcreation_ticks;
+extern uint32_t charcreation_ticks;
 extern bool playing_random_char;
 extern int settings_tab;
 extern int connect_window;
 extern bool lobby_window;
 extern int score_window;
 
-extern Sint32 slidery, slidersize, oslidery;
+extern int32_t slidery, slidersize, oslidery;
 
 // settings window
-extern Uint32 settings_fov;
+extern uint32_t settings_fov;
 extern int settings_xres, settings_yres;
 extern bool settings_smoothlighting;
 extern int settings_fullscreen, settings_shaking, settings_bobbing;
-extern real_t settings_gamma;
+extern float settings_gamma;
 extern int settings_sfxvolume, settings_musvolume;
 extern int settings_impulses[NUMIMPULSES];
 extern int settings_reversemouse;
 extern bool settings_smoothmouse;
-extern real_t settings_mousespeed;
+extern float settings_mousespeed;
 extern bool settings_broadcast;
 extern bool settings_nohud;
 extern bool settings_colorblind;
@@ -139,8 +139,8 @@ extern bool resolutionChanged;
 extern bool confirmResolutionWindow;
 extern int resolutionConfirmationTimer;
 static const int RESOLUTION_CONFIRMATION_TIME = 10000; //Time in milliseconds before resolution reverts.
-extern Sint32 oldXres;
-extern Sint32 oldYres;
+extern int32_t oldXres;
+extern int32_t oldYres;
 extern button_t* revertResolutionButton;
 
 void applySettings();

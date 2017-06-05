@@ -9,7 +9,6 @@
 
 -------------------------------------------------------------------------------*/
 
-#include "main.hpp"
 #include "draw.hpp"
 #include "editor.hpp"
 #include "entity.hpp"
@@ -21,15 +20,15 @@
 //#include "player.hpp"
 
 Entity* selectedEntity = nullptr;
-Sint32 mousex = 0, mousey = 0;
-Sint32 omousex = 0, omousey = 0;
-Sint32 mousexrel = 0, mouseyrel = 0;
+int32_t mousex = 0, mousey = 0;
+int32_t omousex = 0, omousey = 0;
+int32_t mousexrel = 0, mouseyrel = 0;
 
 bool splitscreen = false; //Unused variable, for game only.
 
 int game = 0;
 // function prototypes
-Uint32 timerCallback(Uint32 interval, void* param);
+uint32_t timerCallback(uint32_t interval, void* param);
 void handleEvents(void);
 void mainLogic(void);
 
@@ -71,8 +70,8 @@ void mainLogic(void)
 		{
 			if ( omousey >= 24 && omousey < 136 )
 			{
-				camx = ((long)map.width << TEXTUREPOWER) * (real_t)(mousex - xres + 120) / 112 - xres / 2;
-				camy = ((long)map.height << TEXTUREPOWER) * (real_t)(mousey - 24) / 112 - yres / 2;
+				camx = ((long)map.width << TEXTUREPOWER) * (float)(mousex - xres + 120) / 112 - xres / 2;
+				camy = ((long)map.height << TEXTUREPOWER) * (float)(mousey - 24) / 112 - yres / 2;
 			}
 		}
 	}
@@ -293,7 +292,7 @@ void handleButtons(void)
 
 void handleEvents(void)
 {
-	real_t d;
+	float d;
 	int j;
 
 	// calculate app rate
@@ -418,7 +417,7 @@ void handleEvents(void)
 					{
 						free(zbuffer);
 					}
-					zbuffer = (real_t*) malloc(sizeof(real_t) * xres * yres);
+					zbuffer = (float*) malloc(sizeof(float) * xres * yres);
 					if ( clickmap != NULL )
 					{
 						free(clickmap);
@@ -455,7 +454,7 @@ void handleEvents(void)
 
 -------------------------------------------------------------------------------*/
 
-Uint32 timerCallback(Uint32 interval, void* param)
+uint32_t timerCallback(uint32_t interval, void* param)
 {
 	SDL_Event event;
 	SDL_UserEvent userevent;
@@ -592,8 +591,8 @@ void makeUndo()
 	strcpy(undomap->name, map.name);
 	undomap->width = map.width;
 	undomap->height = map.height;
-	undomap->tiles = (Sint32*) malloc(sizeof(Sint32) * undomap->width * undomap->height * MAPLAYERS);
-	memcpy(undomap->tiles, map.tiles, sizeof(Sint32)*undomap->width * undomap->height * MAPLAYERS);
+	undomap->tiles = (int32_t*) malloc(sizeof(int32_t) * undomap->width * undomap->height * MAPLAYERS);
+	memcpy(undomap->tiles, map.tiles, sizeof(int32_t)*undomap->width * undomap->height * MAPLAYERS);
 	undomap->entities = (list_t*) malloc(sizeof(list_t));
 	undomap->entities->first = NULL;
 	undomap->entities->last = NULL;
@@ -650,8 +649,8 @@ void undo()
 	map_t* undomap = (map_t*)undospot->element;
 	map.width = undomap->width;
 	map.height = undomap->height;
-	map.tiles = (Sint32*) malloc(sizeof(Sint32) * map.width * map.height * MAPLAYERS);
-	memcpy(map.tiles, undomap->tiles, sizeof(Sint32)*undomap->width * undomap->height * MAPLAYERS);
+	map.tiles = (int32_t*) malloc(sizeof(int32_t) * map.width * map.height * MAPLAYERS);
+	memcpy(map.tiles, undomap->tiles, sizeof(int32_t)*undomap->width * undomap->height * MAPLAYERS);
 	list_FreeAll(map.entities);
 	for ( node = undomap->entities->first; node != NULL; node = node->next )
 	{
@@ -683,8 +682,8 @@ void redo()
 	map_t* undomap = (map_t*)redospot->element;
 	map.width = undomap->width;
 	map.height = undomap->height;
-	map.tiles = (Sint32*) malloc(sizeof(Sint32) * map.width * map.height * MAPLAYERS);
-	memcpy(map.tiles, undomap->tiles, sizeof(Sint32)*undomap->width * undomap->height * MAPLAYERS);
+	map.tiles = (int32_t*) malloc(sizeof(int32_t) * map.width * map.height * MAPLAYERS);
+	memcpy(map.tiles, undomap->tiles, sizeof(int32_t)*undomap->width * undomap->height * MAPLAYERS);
 	list_FreeAll(map.entities);
 	for ( node = undomap->entities->first; node != NULL; node = node->next )
 	{
@@ -861,7 +860,7 @@ int main(int argc, char** argv)
 		}
 	}
 	vismap = (bool*) malloc(sizeof(bool) * map.width * map.height);
-	lightmap = (int*) malloc(sizeof(Sint32) * map.width * map.height);
+	lightmap = (int*) malloc(sizeof(int32_t) * map.width * map.height);
 	for (c = 0; c < map.width * map.height; c++ )
 	{
 		lightmap[c] = 0;
@@ -1749,17 +1748,17 @@ int main(int argc, char** argv)
 				{
 					drawDepressed(subx1 + 4, suby1 + 20, subx2 - 20, suby2 - 52);
 					drawDepressed(subx2 - 20, suby1 + 20, subx2 - 4, suby2 - 52);
-					slidersize = std::min<int>(((suby2 - 53) - (suby1 + 21)), ((suby2 - 53) - (suby1 + 21)) / ((real_t)d_names_length / 20)); //TODO: Why are int and real_t being compared?
+					slidersize = std::min<int>(((suby2 - 53) - (suby1 + 21)), ((suby2 - 53) - (suby1 + 21)) / ((float)d_names_length / 20)); //TODO: Why are int and float being compared?
 					slidery = std::min(std::max(suby1 + 21, slidery), suby2 - 53 - slidersize);
 					drawWindowFancy(subx2 - 19, slidery, subx2 - 5, slidery + slidersize);
 
 					// directory list offset from slider
-					y2 = ((real_t)(slidery - suby1 - 20) / ((suby2 - 52) - (suby1 + 20))) * d_names_length;
+					y2 = ((float)(slidery - suby1 - 20) / ((suby2 - 52) - (suby1 + 20))) * d_names_length;
 					if ( scroll )
 					{
 						slidery -= 8 * scroll;
 						slidery = std::min(std::max(suby1 + 21, slidery), suby2 - 53 - slidersize);
-						y2 = ((real_t)(slidery - suby1 - 20) / ((suby2 - 52) - (suby1 + 20))) * d_names_length;
+						y2 = ((float)(slidery - suby1 - 20) / ((suby2 - 52) - (suby1 + 20))) * d_names_length;
 						selectedFile = std::min<long unsigned int>(std::max(y2, selectedFile), std::min<long unsigned int>(d_names_length - 1, y2 + 19)); //TODO: Why are long unsigned int and int being compared? TWICE. On the same line.
 						strcpy(filename, d_names[selectedFile]);
 						inputstr = filename;
@@ -1769,7 +1768,7 @@ int main(int argc, char** argv)
 					{
 						slidery = oslidery + mousey - omousey;
 						slidery = std::min(std::max(suby1 + 21, slidery), suby2 - 53 - slidersize);
-						y2 = ((real_t)(slidery - suby1 - 20) / ((suby2 - 52) - (suby1 + 20))) * d_names_length;
+						y2 = ((float)(slidery - suby1 - 20) / ((suby2 - 52) - (suby1 + 20))) * d_names_length;
 						mclick = 1;
 						selectedFile = std::min<long unsigned int>(std::max(y2, selectedFile), std::min<long unsigned int>(d_names_length - 1, y2 + 19)); //TODO: Why are long unsigned int and int being compared? TWICE. On the same line.
 						strcpy(filename, d_names[selectedFile]);

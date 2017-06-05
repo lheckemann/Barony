@@ -9,7 +9,6 @@
 
 -------------------------------------------------------------------------------*/
 
-#include "main.hpp"
 #include "game.hpp"
 #include "stat.hpp"
 #include "entity.hpp"
@@ -190,23 +189,23 @@ int monsterCurve(int level)
 
 -------------------------------------------------------------------------------*/
 
-int generateDungeon(char* levelset, Uint32 seed)
+int generateDungeon(char* levelset, uint32_t seed)
 {
 	char* sublevelname, *fullname;
 	char sublevelnum[3];
 	map_t* tempMap;
 	list_t mapList, *newList;
 	node_t* node, *node2, *node3, *nextnode;
-	Sint32 c, i, j;
-	Sint32 numlevels, levelnum, levelnum2;
-	Sint32 x, y, z;
-	Sint32 x0, y0, x1, y1;
+	int32_t c, i, j;
+	int32_t numlevels, levelnum, levelnum2;
+	int32_t x, y, z;
+	int32_t x0, y0, x1, y1;
 	door_t* door, *newDoor;
 	bool* possiblelocations, *possiblelocations2, *possiblerooms;
 	bool* firstroomtile;
-	Sint32 numpossiblelocations, pickedlocation;
+	int32_t numpossiblelocations, pickedlocation;
 	Entity* entity, *entity2, *childEntity;
-	Uint32 levellimit;
+	uint32_t levellimit;
 	list_t doorList;
 	node_t* doorNode;
 	bool shoplevel = false;
@@ -1148,7 +1147,7 @@ int generateDungeon(char* levelset, Uint32 seed)
 			}
 		}
 	}
-	j = std::min<Uint32>(30 + prng_get_uint() % 10, numpossiblelocations); //TODO: Why are Uint32 and Sin32 being compared?
+	j = std::min<uint32_t>(30 + prng_get_uint() % 10, numpossiblelocations); //TODO: Why are uint32_t and Sin32 being compared?
 	//printlog("j: %d\n",j);
 	//printlog("numpossiblelocations: %d\n",numpossiblelocations);
 	for ( c = 0; c < std::min(j, numpossiblelocations); c++ )
@@ -1402,8 +1401,8 @@ int generateDungeon(char* levelset, Uint32 seed)
 
 void assignActions(map_t* map)
 {
-	Sint32 x, y, c;
-	//Sint32 z;
+	int32_t x, y, c;
+	//int32_t z;
 	node_t* node, *nextnode;
 	Entity* entity, *childEntity;
 	Item* item;

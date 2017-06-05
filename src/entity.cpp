@@ -9,7 +9,6 @@
 
 -------------------------------------------------------------------------------*/
 
-#include "main.hpp"
 #include "game.hpp"
 #include "stat.hpp"
 #include "entity.hpp"
@@ -29,6 +28,19 @@
 #include <arm_neon.h>
 #endif
 
+// hit structure
+#define HORIZONTAL 1
+#define VERTICAL 2
+typedef struct hit_t
+{
+	float x, y;
+	int mapx, mapy;
+	Entity* entity;
+	int side;
+} hit_t;
+static hit_t hit;
+
+
 /*-------------------------------------------------------------------------------
 
 	Entity::Entity)
@@ -37,7 +49,7 @@
 
 -------------------------------------------------------------------------------*/
 
-Entity::Entity(Sint32 in_sprite, Uint32 pos, list_t* entlist) :
+Entity::Entity(int32_t in_sprite, uint32_t pos, list_t* entlist) :
 	char_gonnavomit(skill[26]),
 	char_heal(skill[22]),
 	char_energize(skill[23]),
@@ -133,7 +145,7 @@ Entity::Entity(Sint32 in_sprite, Uint32 pos, list_t* entlist) :
 	path = NULL;
 }
 
-void Entity::setUID(Uint32 new_uid) {
+void Entity::setUID(uint32_t new_uid) {
 	if ( mynode->list == map.entities ) {
 		map.entities_map.erase(uid);
 		map.entities_map.insert({new_uid, mynode});
@@ -190,7 +202,7 @@ Entity::~Entity()
 
 				// send the delete entity command to the client
 				strcpy((char*)net_packet->data, "ENTD");
-				SDLNet_Write32((Uint32)uid, &net_packet->data[4]);
+				SDLNet_Write32((uint32_t)uid, &net_packet->data[4]);
 				net_packet->address.host = net_clients[i - 1].host;
 				net_packet->address.port = net_clients[i - 1].port;
 				net_packet->len = 8;
@@ -687,7 +699,7 @@ void Entity::increaseSkill(int skill)
 		player = this->skill[2];
 	}
 
-	Uint32 color = SDL_MapRGB(mainsurface->format, 255, 255, 0);
+	uint32_t color = SDL_MapRGB(mainsurface->format, 255, 255, 0);
 	if ( myStats->PROFICIENCIES[skill] < 100 )
 	{
 		myStats->PROFICIENCIES[skill]++;
@@ -1096,7 +1108,7 @@ void Entity::checkBetterEquipment(Stat* myStats)
 
 -------------------------------------------------------------------------------*/
 
-Entity* uidToEntity(Sint32 uidnum)
+Entity* uidToEntity(int32_t uidnum)
 {
 	node_t* node;
 	Entity* entity;
@@ -1140,8 +1152,8 @@ void Entity::setHP(int amount)
 			{
 				// tell the client its HP changed
 				strcpy((char*)net_packet->data, "UPHP");
-				SDLNet_Write32((Uint32)entitystats->HP, &net_packet->data[4]);
-				SDLNet_Write32((Uint32)NOTHING, &net_packet->data[8]);
+				SDLNet_Write32((uint32_t)entitystats->HP, &net_packet->data[4]);
+				SDLNet_Write32((uint32_t)NOTHING, &net_packet->data[8]);
 				net_packet->address.host = net_clients[i - 1].host;
 				net_packet->address.port = net_clients[i - 1].port;
 				net_packet->len = 12;
@@ -1206,7 +1218,7 @@ void Entity::setMP(int amount)
 			{
 				// tell the client its MP just changed
 				strcpy((char*)net_packet->data, "UPMP");
-				SDLNet_Write32((Uint32)entitystats->MP, &net_packet->data[4]);
+				SDLNet_Write32((uint32_t)entitystats->MP, &net_packet->data[4]);
 				net_packet->address.host = net_clients[i - 1].host;
 				net_packet->address.port = net_clients[i - 1].port;
 				net_packet->len = 8;
@@ -1285,8 +1297,8 @@ void Entity::drainMP(int amount)
 			{
 				//It is. Tell the client its MP just changed.
 				strcpy((char*)net_packet->data, "UPMP");
-				SDLNet_Write32((Uint32)entitystats->MP, &net_packet->data[4]);
-				SDLNet_Write32((Uint32)stats[i]->type, &net_packet->data[8]);
+				SDLNet_Write32((uint32_t)entitystats->MP, &net_packet->data[4]);
+				SDLNet_Write32((uint32_t)stats[i]->type, &net_packet->data[8]);
 				net_packet->address.host = net_clients[i - 1].host;
 				net_packet->address.port = net_clients[i - 1].port;
 				net_packet->len = 12;
@@ -1301,8 +1313,8 @@ void Entity::drainMP(int amount)
 			//It's the player entity. Tell the server its MP changed.
 			strcpy((char*)net_packet->data, "UPMP");
 			net_packet->data[4] = clientnum;
-			SDLNet_Write32((Uint32)entitystats->MP, &net_packet->data[5]);
-			SDLNet_Write32((Uint32)stats[clientnum]->type, &net_packet->data[9]);
+			SDLNet_Write32((uint32_t)entitystats->MP, &net_packet->data[5]);
+			SDLNet_Write32((uint32_t)stats[clientnum]->type, &net_packet->data[9]);
 			net_packet->address.host = net_server.host;
 			net_packet->address.port = net_server.port;
 			net_packet->len = 13;
@@ -1314,7 +1326,7 @@ void Entity::drainMP(int amount)
 	{
 		if (player >= 0)
 		{
-			Uint32 color = SDL_MapRGB(mainsurface->format, 255, 255, 0);
+			uint32_t color = SDL_MapRGB(mainsurface->format, 255, 255, 0);
 			messagePlayerColor(player, color, language[621]);
 		}
 		this->modHP(overdrawn); //Drain the extra magic from health.
@@ -1409,7 +1421,7 @@ void Entity::handleEffects(Stat* myStats)
 	{
 		myStats->EXP -= 100;
 		myStats->LVL++;
-		Uint32 color = SDL_MapRGB(mainsurface->format, 255, 255, 0);
+		uint32_t color = SDL_MapRGB(mainsurface->format, 255, 255, 0);
 		messagePlayerColor(player, color, language[622]);
 		playSoundPlayer(player, 97, 128);
 
@@ -2151,10 +2163,10 @@ void Entity::handleEffects(Stat* myStats)
 
 -------------------------------------------------------------------------------*/
 
-Sint32 Entity::getAttack()
+int32_t Entity::getAttack()
 {
 	Stat* entitystats;
-	Sint32 attack = 0;
+	int32_t attack = 0;
 
 	if ( (entitystats = this->getStats()) == NULL )
 	{
@@ -2179,7 +2191,7 @@ Sint32 Entity::getAttack()
 
 -------------------------------------------------------------------------------*/
 
-Sint32 Entity::getSTR()
+int32_t Entity::getSTR()
 {
 	Stat* entitystats;
 
@@ -2190,9 +2202,9 @@ Sint32 Entity::getSTR()
 	return statGetSTR(entitystats);
 }
 
-Sint32 statGetSTR(Stat* entitystats)
+int32_t statGetSTR(Stat* entitystats)
 {
-	Sint32 STR;
+	int32_t STR;
 
 	STR = entitystats->STR;
 	if ( entitystats->HUNGER >= 1500 )
@@ -2241,7 +2253,7 @@ Sint32 statGetSTR(Stat* entitystats)
 
 -------------------------------------------------------------------------------*/
 
-Sint32 Entity::getDEX()
+int32_t Entity::getDEX()
 {
 	Stat* entitystats;
 
@@ -2252,9 +2264,9 @@ Sint32 Entity::getDEX()
 	return statGetDEX(entitystats);
 }
 
-Sint32 statGetDEX(Stat* entitystats)
+int32_t statGetDEX(Stat* entitystats)
 {
-	Sint32 DEX;
+	int32_t DEX;
 
 	// paralyzed
 	if ( entitystats->EFFECTS[EFF_PARALYZED] )
@@ -2316,7 +2328,7 @@ Sint32 statGetDEX(Stat* entitystats)
 
 -------------------------------------------------------------------------------*/
 
-Sint32 Entity::getCON()
+int32_t Entity::getCON()
 {
 	Stat* entitystats;
 
@@ -2327,9 +2339,9 @@ Sint32 Entity::getCON()
 	return statGetCON(entitystats);
 }
 
-Sint32 statGetCON(Stat* entitystats)
+int32_t statGetCON(Stat* entitystats)
 {
-	Sint32 CON;
+	int32_t CON;
 
 	CON = entitystats->CON;
 	if ( entitystats->ring != NULL )
@@ -2371,7 +2383,7 @@ Sint32 statGetCON(Stat* entitystats)
 
 -------------------------------------------------------------------------------*/
 
-Sint32 Entity::getINT()
+int32_t Entity::getINT()
 {
 	Stat* entitystats;
 
@@ -2382,9 +2394,9 @@ Sint32 Entity::getINT()
 	return statGetINT(entitystats);
 }
 
-Sint32 statGetINT(Stat* entitystats)
+int32_t statGetINT(Stat* entitystats)
 {
-	Sint32 INT;
+	int32_t INT;
 
 	INT = entitystats->INT;
 	if ( entitystats->HUNGER <= 50 )
@@ -2407,7 +2419,7 @@ Sint32 statGetINT(Stat* entitystats)
 
 -------------------------------------------------------------------------------*/
 
-Sint32 Entity::getPER()
+int32_t Entity::getPER()
 {
 	Stat* entitystats;
 
@@ -2418,9 +2430,9 @@ Sint32 Entity::getPER()
 	return statGetPER(entitystats);
 }
 
-Sint32 statGetPER(Stat* entitystats)
+int32_t statGetPER(Stat* entitystats)
 {
-	Sint32 PER;
+	int32_t PER;
 
 	PER = entitystats->PER;
 	if ( entitystats->HUNGER <= 50 )
@@ -2443,7 +2455,7 @@ Sint32 statGetPER(Stat* entitystats)
 
 -------------------------------------------------------------------------------*/
 
-Sint32 Entity::getCHR()
+int32_t Entity::getCHR()
 {
 	Stat* entitystats;
 
@@ -2454,9 +2466,9 @@ Sint32 Entity::getCHR()
 	return statGetCHR(entitystats);
 }
 
-Sint32 statGetCHR(Stat* entitystats)
+int32_t statGetCHR(Stat* entitystats)
 {
-	Sint32 CHR;
+	int32_t CHR;
 
 	CHR = entitystats->CHR;
 	if ( entitystats->helmet != NULL )
@@ -2906,7 +2918,7 @@ void Entity::attack(int pose, int charge)
 						myStats->MP--;
 						if( multiplayer==SERVER && player!=clientnum ) {
 							strcpy((char *)net_packet->data,"UPMP");
-							SDLNet_Write32((Uint32)myStats->MP,&net_packet->data[4]);
+							SDLNet_Write32((uint32_t)myStats->MP,&net_packet->data[4]);
 							net_packet->address.host = net_clients[player-1].host;
 							net_packet->address.port = net_clients[player-1].port;
 							net_packet->len = 8;
@@ -3125,7 +3137,7 @@ void Entity::attack(int pose, int charge)
 								int c;
 								for ( c = 0; c < MAXPLAYERS; c++ )
 								{
-									Uint32 color = SDL_MapRGB(mainsurface->format, 255, 128, 0);
+									uint32_t color = SDL_MapRGB(mainsurface->format, 255, 128, 0);
 									messagePlayerColor(c, color, language[406]);
 								}
 							}
@@ -3202,7 +3214,7 @@ void Entity::attack(int pose, int charge)
 				// alert the player's followers!
 				for ( node = hitstats->FOLLOWERS.first; node != NULL; node = node->next )
 				{
-					Uint32* c = (Uint32*)node->element;
+					uint32_t* c = (uint32_t*)node->element;
 					entity = uidToEntity(*c);
 					Entity* ohitentity = hit.entity;
 					if ( entity )
@@ -3755,12 +3767,12 @@ void Entity::attack(int pose, int charge)
 						{
 							if ( damage > olddamage )
 							{
-								Uint32 color = SDL_MapRGB(mainsurface->format, 0, 255, 0);
+								uint32_t color = SDL_MapRGB(mainsurface->format, 0, 255, 0);
 								messagePlayerColor(player, color, language[689], language[90 + hitstats->type]);
 							}
 							else
 							{
-								Uint32 color = SDL_MapRGB(mainsurface->format, 0, 255, 0);
+								uint32_t color = SDL_MapRGB(mainsurface->format, 0, 255, 0);
 								messagePlayerColor(player, color, language[690], language[90 + hitstats->type]);
 							}
 							if ( damage == 0 )
@@ -3770,7 +3782,7 @@ void Entity::attack(int pose, int charge)
 						}
 						else
 						{
-							Uint32 color = SDL_MapRGB(mainsurface->format, 0, 255, 0);
+							uint32_t color = SDL_MapRGB(mainsurface->format, 0, 255, 0);
 							messagePlayerColor(player, color, language[692], language[90 + hitstats->type]);
 							awardXP( hit.entity, true, true );
 						}
@@ -3781,12 +3793,12 @@ void Entity::attack(int pose, int charge)
 						{
 							if ( damage > olddamage )
 							{
-								Uint32 color = SDL_MapRGB(mainsurface->format, 0, 255, 0);
+								uint32_t color = SDL_MapRGB(mainsurface->format, 0, 255, 0);
 								messagePlayerColor(player, color, language[693], hitstats->name);
 							}
 							else
 							{
-								Uint32 color = SDL_MapRGB(mainsurface->format, 0, 255, 0);
+								uint32_t color = SDL_MapRGB(mainsurface->format, 0, 255, 0);
 								messagePlayerColor(player, color, language[694], hitstats->name);
 							}
 							if ( damage == 0 )
@@ -3803,7 +3815,7 @@ void Entity::attack(int pose, int charge)
 						}
 						else
 						{
-							Uint32 color = SDL_MapRGB(mainsurface->format, 0, 255, 0);
+							uint32_t color = SDL_MapRGB(mainsurface->format, 0, 255, 0);
 							messagePlayerColor(player, color, language[697], hitstats->name);
 							awardXP( hit.entity, true, true );
 						}
@@ -3811,8 +3823,8 @@ void Entity::attack(int pose, int charge)
 					if ( playerhit > 0 && multiplayer == SERVER )
 					{
 						strcpy((char*)net_packet->data, "UPHP");
-						SDLNet_Write32((Uint32)hitstats->HP, &net_packet->data[4]);
-						SDLNet_Write32((Uint32)myStats->type, &net_packet->data[8]);
+						SDLNet_Write32((uint32_t)hitstats->HP, &net_packet->data[4]);
+						SDLNet_Write32((uint32_t)myStats->type, &net_packet->data[8]);
 						net_packet->address.host = net_clients[playerhit - 1].host;
 						net_packet->address.port = net_clients[playerhit - 1].port;
 						net_packet->len = 12;
@@ -3833,12 +3845,12 @@ void Entity::attack(int pose, int charge)
 					}
 					if ( !strcmp(myStats->name, "") )
 					{
-						Uint32 color = SDL_MapRGB(mainsurface->format, 255, 0, 0);
+						uint32_t color = SDL_MapRGB(mainsurface->format, 255, 0, 0);
 						messagePlayerColor(playerhit, color, language[698], language[90 + myStats->type], language[132 + myStats->type]);
 					}
 					else
 					{
-						Uint32 color = SDL_MapRGB(mainsurface->format, 255, 0, 0);
+						uint32_t color = SDL_MapRGB(mainsurface->format, 255, 0, 0);
 						messagePlayerColor(playerhit, color, language[699], myStats->name, language[132 + myStats->type]);
 					}
 					if ( damage > 0 )
@@ -3867,12 +3879,12 @@ void Entity::attack(int pose, int charge)
 								}
 								if ( playerhit >= 0 )
 								{
-									Uint32 color = SDL_MapRGB(mainsurface->format, 255, 0, 0);
+									uint32_t color = SDL_MapRGB(mainsurface->format, 255, 0, 0);
 									messagePlayerColor(playerhit, color, language[701]);
 								}
 								else
 								{
-									Uint32 color = SDL_MapRGB(mainsurface->format, 0, 255, 0);
+									uint32_t color = SDL_MapRGB(mainsurface->format, 0, 255, 0);
 									if ( !strcmp(hitstats->name, "") )
 									{
 										messagePlayerColor(player, color, language[702], language[90 + hitstats->type]);
@@ -4431,7 +4443,7 @@ bool Entity::checkEnemy(Entity* your)
 		bool foundFollower = false;
 		for ( t_node = myStats->FOLLOWERS.first; t_node != NULL; t_node = t_node->next )
 		{
-			Uint32* uid = (Uint32*)t_node->element;
+			uint32_t* uid = (uint32_t*)t_node->element;
 			if ( *uid == your->uid )
 			{
 				foundFollower = true;
@@ -4539,7 +4551,7 @@ bool Entity::checkFriend(Entity* your)
 		bool foundFollower = false;
 		for ( t_node = myStats->FOLLOWERS.first; t_node != NULL; t_node = t_node->next )
 		{
-			Uint32* uid = (Uint32*)t_node->element;
+			uint32_t* uid = (uint32_t*)t_node->element;
 			if ( *uid == your->uid )
 			{
 				foundFollower = true;

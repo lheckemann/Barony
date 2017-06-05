@@ -12,9 +12,8 @@
 
 #include "draw.hpp"
 #include "messages.hpp"
-#include "main.hpp"
 
-Uint32 old_sdl_ticks;
+uint32_t old_sdl_ticks;
 
 /*
  * Removes the last message from the list of messages. Don't you worry yourself about this function, it's only needed in this file.
@@ -41,7 +40,7 @@ void messageDeconstructor(void* data)
 	}
 }
 
-void addMessage(Uint32 color, char* content, ...)
+void addMessage(uint32_t color, char* content, ...)
 {
 	//Add a message to notification_messages (the list of messages) -- and pop off (and delete) and excess messages.
 
@@ -276,7 +275,7 @@ void drawMessages()
 	{
 		current = (Message*)node->element;
 
-		Uint32 color = current->text->color ^ mainsurface->format->Amask;
+		uint32_t color = current->text->color ^ mainsurface->format->Amask;
 		color += std::min<Sint16>(std::max<Sint16>(0, current->alpha), 255) << mainsurface->format->Ashift;
 		ttfPrintTextFormattedColor(MESSAGE_FONT, current->x, current->y, color, current->text->data);
 	}

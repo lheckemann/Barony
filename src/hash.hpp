@@ -11,6 +11,9 @@
 
 #pragma once
 
+#include <SDL.h>
+#include <SDL_ttf.h>
+
 #define HASH_SIZE 256
 
 typedef struct ttfTextHash_t

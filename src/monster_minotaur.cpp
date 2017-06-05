@@ -9,7 +9,6 @@
 
 -------------------------------------------------------------------------------*/
 
-#include "main.hpp"
 #include "game.hpp"
 #include "stat.hpp"
 #include "entity.hpp"
@@ -683,7 +682,7 @@ void actMinotaurTrap(Entity* my)
 					for ( c = 0; c < MAXPLAYERS; c++ )
 					{
 						playSoundPlayer( c, 107 + rand() % 3, 128 );
-						Uint32 color = SDL_MapRGB(mainsurface->format, 255, 128, 0);
+						uint32_t color = SDL_MapRGB(mainsurface->format, 255, 128, 0);
 						messagePlayerColor(c, color, language[1113]);
 					}
 				}
@@ -706,7 +705,7 @@ void actMinotaurTimer(Entity* my)
 		bool spawnedsomebody = false;
 		for ( c = 0; c < 9; c++ )
 		{
-			Uint32 zapLeaderUid = 0;
+			uint32_t zapLeaderUid = 0;
 			Entity* monster = summonMonster(HUMAN, my->x, my->y);
 			if ( monster )
 			{
@@ -733,7 +732,7 @@ void actMinotaurTimer(Entity* my)
 #endif
 			for ( c = 0; c < MAXPLAYERS; c++ )
 			{
-				Uint32 color = SDL_MapRGB(mainsurface->format, 0, 255, 255);
+				uint32_t color = SDL_MapRGB(mainsurface->format, 0, 255, 255);
 				messagePlayerColor(c, color, language[1114], stats[c]->name);
 			}
 		}
@@ -747,7 +746,7 @@ void actMinotaurTimer(Entity* my)
 			for ( c = 0; c < MAXPLAYERS; c++ )
 			{
 				playSoundPlayer( c, 107 + rand() % 3, 128 );
-				Uint32 color = SDL_MapRGB(mainsurface->format, 255, 128, 0);
+				uint32_t color = SDL_MapRGB(mainsurface->format, 255, 128, 0);
 				messagePlayerColor(c, color, language[1115]);
 			}
 			MINOTAURTIMER_ACTIVE = MINOTAURTIMER_LIFE;
@@ -759,7 +758,7 @@ void actMinotaurTimer(Entity* my)
 		for ( c = 0; c < MAXPLAYERS; c++ )
 		{
 			playSoundPlayer(c, 120 + rand() % 3, 128);
-			Uint32 color = SDL_MapRGB(mainsurface->format, 255, 0, 255);
+			uint32_t color = SDL_MapRGB(mainsurface->format, 255, 0, 255);
 			messagePlayerColor(c, color, language[1116]);
 			messagePlayerColor(c, color, language[73]);
 		}

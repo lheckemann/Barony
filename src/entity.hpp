@@ -11,7 +11,7 @@
 
 #pragma once
 
-#include "main.hpp"
+#include <cstdint>
 #include "game.hpp"
 #include "light.hpp"
 #include "stat.hpp"
@@ -35,20 +35,20 @@
 // entity class
 class Entity
 {
-	Sint32& char_gonnavomit;
-	Sint32& char_heal;
-	Sint32& char_energize;
-	Sint32& char_torchtime;
-	Sint32& char_poison;
-	Sint32& monster_attack;
-	Sint32& monster_attacktime;
-	Sint32& monster_state;
-	Sint32& monster_target;
-	Sint32& circuit_status; //Use CIRCUIT_OFF and CIRCUIT_ON.
-	Sint32& switch_power; //Switch/mechanism power status.
+	int32_t& char_gonnavomit;
+	int32_t& char_heal;
+	int32_t& char_energize;
+	int32_t& char_torchtime;
+	int32_t& char_poison;
+	int32_t& monster_attack;
+	int32_t& monster_attacktime;
+	int32_t& monster_state;
+	int32_t& monster_target;
+	int32_t& circuit_status; //Use CIRCUIT_OFF and CIRCUIT_ON.
+	int32_t& switch_power; //Switch/mechanism power status.
 
-	Sint32& chest_status; //0 = closed. 1 = open.
-	Sint32& chest_opener; //Index of the player the chest was opened by.
+	int32_t& chest_status; //0 = closed. 1 = open.
+	int32_t& chest_opener; //Index of the player the chest was opened by.
 
 	//--- Mechanism defines ---
 	static const int CIRCUIT_OFF = 1;
@@ -56,37 +56,37 @@ class Entity
 
 	static const int SWITCH_UNPOWERED = 0;
 	static const int SWITCH_POWERED = 1;
-	Uint32 uid;                    // entity uid
+	uint32_t uid;                    // entity uid
 public:
-	Entity(Sint32 in_sprite, Uint32 pos, list_t* entlist);
+	Entity(int32_t in_sprite, uint32_t pos, list_t* entlist);
 	~Entity();
 
 
-	Uint32 getUID() const {return uid;}
-	void setUID(Uint32 new_uid);
-	Uint32 ticks;                  // duration of the entity's existence
-	real_t x, y, z;                // world coordinates
-	real_t yaw, pitch, roll;       // rotation
-	real_t focalx, focaly, focalz; // focal point for rotation, movement, etc.
-	real_t scalex, scaley, scalez; // stretches/squashes the entity visually
-	Sint32 sizex, sizey;           // entity bounding box size
-	Sint32 sprite;                 // the entity's sprite index
+	uint32_t getUID() const {return uid;}
+	void setUID(uint32_t new_uid);
+	uint32_t ticks;                  // duration of the entity's existence
+	float x, y, z;                // world coordinates
+	float yaw, pitch, roll;       // rotation
+	float focalx, focaly, focalz; // focal point for rotation, movement, etc.
+	float scalex, scaley, scalez; // stretches/squashes the entity visually
+	int32_t sizex, sizey;           // entity bounding box size
+	int32_t sprite;                 // the entity's sprite index
 
 	// network stuff
-	Uint32 lastupdate;                   // last time since the entity was updated
-	Uint32 lastupdateserver;             // used to sort out old packets
-	real_t vel_x, vel_y, vel_z;          // entity velocity vector
-	real_t new_x, new_y, new_z;          // world coordinates
-	real_t new_yaw, new_pitch, new_roll; // rotation
+	uint32_t lastupdate;                   // last time since the entity was updated
+	uint32_t lastupdateserver;             // used to sort out old packets
+	float vel_x, vel_y, vel_z;          // entity velocity vector
+	float new_x, new_y, new_z;          // world coordinates
+	float new_yaw, new_pitch, new_roll; // rotation
 
 	// entity attributes
-	real_t fskill[30]; // floating point general purpose variables
-	Sint32 skill[30];  // general purpose variables
+	float fskill[30]; // floating point general purpose variables
+	int32_t skill[30];  // general purpose variables
 	bool flags[16];    // engine flags
 	char* string;      // general purpose string
 	light_t* light;    // every entity has a specialized light pointer
 	list_t children;   // every entity has a list of child objects
-	Uint32 parent;     // id of the entity's "parent" entity
+	uint32_t parent;     // id of the entity's "parent" entity
 
 	// a pointer to the entity's location in a list (ie the map list of entities)
 	node_t* mynode;
@@ -101,12 +101,12 @@ public:
 
 	void killedByMonsterObituary(Entity* victim);
 
-	Sint32 getSTR();
-	Sint32 getDEX();
-	Sint32 getCON();
-	Sint32 getINT();
-	Sint32 getPER();
-	Sint32 getCHR();
+	int32_t getSTR();
+	int32_t getDEX();
+	int32_t getCON();
+	int32_t getINT();
+	int32_t getPER();
+	int32_t getCHR();
 
 	int entityLight(); //NOTE: Name change conflicted with light_t *light
 
@@ -126,7 +126,7 @@ public:
 	void drainMP(int amount); //Removes this much from MP. Anything over the entity's MP is subtracted from their health. Can be very dangerous.
 	bool safeConsumeMP(int amount); //A function for the magic code. Attempts to remove mana without overdrawing the player. Returns true if success, returns false if didn't have enough mana.
 
-	Sint32 getAttack();
+	int32_t getAttack();
 	bool isBlind();
 
 	bool isInvisible();
@@ -168,9 +168,9 @@ public:
 };
 
 extern list_t entitiesToDelete[MAXPLAYERS];
-extern Uint32 entity_uids, lastEntityUIDs;
+extern uint32_t entity_uids, lastEntityUIDs;
 //extern Entity *players[4];
-extern Uint32 nummonsters;
+extern uint32_t nummonsters;
 
 #define CHAR_POISON my->skill[21] //TODO: Being replaced with Entity char_poison
 #define CHAR_HEAL my->skill[22] //TODO: Being replaced with Entity::char_heal
@@ -184,15 +184,15 @@ class Item;
 extern bool swornenemies[NUMMONSTERS][NUMMONSTERS];
 extern bool monsterally[NUMMONSTERS][NUMMONSTERS];
 
-Sint32 statGetSTR(Stat* entitystats);
-Sint32 statGetDEX(Stat* entitystats);
-Sint32 statGetCON(Stat* entitystats);
-Sint32 statGetINT(Stat* entitystats);
-Sint32 statGetPER(Stat* entitystats);
-Sint32 statGetCHR(Stat* entitystats);
+int32_t statGetSTR(Stat* entitystats);
+int32_t statGetDEX(Stat* entitystats);
+int32_t statGetCON(Stat* entitystats);
+int32_t statGetINT(Stat* entitystats);
+int32_t statGetPER(Stat* entitystats);
+int32_t statGetCHR(Stat* entitystats);
 int AC(Stat* stat);
 
-Entity* uidToEntity(Sint32 uidnum);
+Entity* uidToEntity(int32_t uidnum);
 list_t* checkTileForEntity(int x, int y); //Don't forget to free the list returned when you're done with it. Also, provide x and y in map, not entity, units.
 /*
  * Don't forget to free the list returned when you're done with it.

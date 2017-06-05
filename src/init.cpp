@@ -9,13 +9,13 @@
 
 -------------------------------------------------------------------------------*/
 
-#include "main.hpp"
 #include "draw.hpp"
 #include "files.hpp"
 #include "sound.hpp"
 #include "prng.hpp"
 #include "hash.hpp"
 #include "init.hpp"
+#include "maps.hpp"
 #include "net.hpp"
 #ifdef STEAMWORKS
 #include <steam/steam_api.h>
@@ -52,11 +52,26 @@ GLuint fbo_ren = 0;
 FILE* logfile = nullptr;
 bool steam_init = false;
 
+typedef struct polymodel_t
+{
+	polytriangle_t* faces;
+	uint32_t numfaces;
+	GLuint vbo;
+	GLuint colors;
+	GLuint colors_shifted;
+	GLuint va;
+} polymodel_t;
+
+polymodel_t* polymodels = NULL;
+
+const int NUM_JOY_TRIGGER_STATUS = 2;
+Sint8 joy_trigger_status[NUM_JOY_TRIGGER_STATUS]; //0 = left, 1 = right.
+
 int initApp(char* title, int fullscreen)
 {
 	char name[128];
 	FILE* fp;
-	Uint32 x, c;
+	uint32_t x, c;
 
 	// open log file
 	if ( !logfile )
@@ -247,7 +262,7 @@ int initApp(char* title, int fullscreen)
 #endif
 
 	// initialize buffers
-	zbuffer = (real_t*) malloc(sizeof(real_t) * xres * yres);
+	zbuffer = (float*) malloc(sizeof(float) * xres * yres);
 	clickmap = (Entity**) malloc(sizeof(Entity*)*xres * yres);
 	texid = (GLuint*) malloc(MAXTEXTURES * sizeof(GLuint));
 	//vaoid = (GLuint *) malloc(MAXBUFFERS*sizeof(GLuint));
@@ -669,7 +684,7 @@ int loadLanguage(char* lang)
 	}
 
 	// read file
-	Uint32 line;
+	uint32_t line;
 	for ( line = 1; !feof(fp); )
 	{
 		//printlog( "loading line %d...\n", line);
@@ -776,13 +791,13 @@ int reloadLanguage()
 
 void generatePolyModels()
 {
-	Sint32 x, y, z;
-	Sint32 c, i;
-	Uint32 index, indexdown[3];
+	int32_t x, y, z;
+	int32_t c, i;
+	uint32_t index, indexdown[3];
 	Uint8 newcolor, oldcolor;
 	bool buildingquad;
 	polyquad_t* quad1, *quad2;
-	Uint32 numquads;
+	uint32_t numquads;
 	list_t quads;
 
 	quads.first = NULL;
@@ -1821,7 +1836,7 @@ void generateVBOs()
 -------------------------------------------------------------------------------*/
 int deinitApp()
 {
-	Uint32 c;
+	uint32_t c;
 #ifdef HAVE_OPENAL
 	closeOPENAL();
 #endif
@@ -2159,7 +2174,7 @@ bool initVideo()
 	//SDL_GL_SetAttribute( SDL_GL_MULTISAMPLESAMPLES, 4 );
 
 	printlog("setting display mode to %dx%d...\n", xres, yres);
-	Uint32 flags = 0;
+	uint32_t flags = 0;
 #ifdef PANDORA
 	fullscreen = true;
 #endif
@@ -2238,15 +2253,15 @@ bool initVideo()
 	SDL_GL_MakeCurrent(screen, renderer);
 #endif
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
-	Uint32 rmask = 0xff000000;
-	Uint32 gmask = 0x00ff0000;
-	Uint32 bmask = 0x0000ff00;
-	Uint32 amask = 0x000000ff;
+	uint32_t rmask = 0xff000000;
+	uint32_t gmask = 0x00ff0000;
+	uint32_t bmask = 0x0000ff00;
+	uint32_t amask = 0x000000ff;
 #else
-	Uint32 rmask = 0x000000ff;
-	Uint32 gmask = 0x0000ff00;
-	Uint32 bmask = 0x00ff0000;
-	Uint32 amask = 0xff000000;
+	uint32_t rmask = 0x000000ff;
+	uint32_t gmask = 0x0000ff00;
+	uint32_t bmask = 0x00ff0000;
+	uint32_t amask = 0xff000000;
 #endif
 	if ((mainsurface = SDL_CreateRGBSurface(0, xres, yres, 32, rmask, gmask, bmask, amask)) == NULL)
 	{

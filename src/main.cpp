@@ -10,16 +10,19 @@
 -------------------------------------------------------------------------------*/
 
 #include "main.hpp"
+#include "maps.hpp"
+#include "draw.hpp"
 #include "hash.hpp"
 #include "entity.hpp"
 #include "prng.hpp"
+#include "voxel.hpp"
 
 // main definitions
-Sint32 xres = 960;
-Sint32 yres = 600;
+int32_t xres = 960;
+int32_t yres = 600;
 int mainloop = 1;
 bool initialized = false;
-Uint32 ticks = 0;
+uint32_t ticks = 0;
 bool stop = false;
 char datadir[1024];
 
@@ -29,22 +32,21 @@ char** language = NULL;
 
 // input stuff
 int reversemouse = 0;
-real_t mousespeed = 32;
-Uint32 impulses[NUMIMPULSES];
-Uint32 joyimpulses[NUM_JOY_IMPULSES];
-Uint32 lastkeypressed = 0;
+float mousespeed = 32;
+uint32_t impulses[NUMIMPULSES];
+uint32_t joyimpulses[NUM_JOY_IMPULSES];
+uint32_t lastkeypressed = 0;
 Sint8 keystatus[512];
 char* inputstr = NULL;
 int inputlen = 0;
 Sint8 mousestatus[6];
 Sint8 joystatus[NUM_JOY_STATUS];
-Sint8 joy_trigger_status[NUM_JOY_TRIGGER_STATUS];
 Entity** clickmap = NULL;
 bool capture_mouse = true;
-string lastname;
+std::string lastname;
 
 // net stuff
-Uint32 clientplayer = 0;
+uint32_t clientplayer = 0;
 int numplayers = 0;
 int clientnum = 0;
 int multiplayer = -1;
@@ -54,15 +56,6 @@ bool directConnect = false;
 bool directConnect = true;
 #endif
 char address[64];
-IPaddress net_server;
-IPaddress* net_clients = NULL;
-UDPsocket net_sock = NULL;
-TCPsocket net_tcpsock = NULL;
-UDPpacket* net_packet = NULL;
-TCPsocket* net_tcpclients = NULL;
-SDLNet_SocketSet tcpset = NULL;
-list_t safePacketsSent, safePacketsReceived[MAXPLAYERS];
-bool receivedclientnum = false;
 char* window_title = NULL;
 bool softwaremode = false;
 SDL_TimerID timer;
@@ -81,30 +74,30 @@ list_t removedEntities;
 list_t entitiesToDelete[MAXPLAYERS];
 Entity* client_selected[MAXPLAYERS] = {NULL, NULL, NULL, NULL};
 bool inrange[MAXPLAYERS];
-Sint32 client_classes[MAXPLAYERS];
-Uint32 client_keepalive[MAXPLAYERS];
-Uint32 portnumber;
+int32_t client_classes[MAXPLAYERS];
+uint32_t client_keepalive[MAXPLAYERS];
+uint32_t portnumber;
 bool client_disconnected[MAXPLAYERS];
 list_t entitiesdeleted;
 
 // fps
 bool showfps = false;
-real_t t, ot = 0.0, frameval[AVERAGEFRAMES];
-Uint32 cycles = 0, pingtime = 0;
-Uint32 timesync = 0;
-real_t fps = 0.0;
+float t, ot = 0.0, frameval[AVERAGEFRAMES];
+uint32_t cycles = 0, pingtime = 0;
+uint32_t timesync = 0;
+float fps = 0.0;
 
 // world sim data
-Sint32 camx = 0, camy = 0;
-Sint32 ocamx = 0, ocamy = 0;
-Sint32 newcamx, newcamy;
-Uint32 entity_uids = 1, lastEntityUIDs = 1;
+int32_t camx = 0, camy = 0;
+int32_t ocamx = 0, ocamy = 0;
+int32_t newcamx, newcamy;
+uint32_t entity_uids = 1, lastEntityUIDs = 1;
 view_t camera;
 map_t map;
 voxel_t** models = NULL;
 list_t button_l;
 list_t light_l;
-Uint32 mapseed;
+uint32_t mapseed;
 bool* shoparea = NULL;
 
 // game variables
@@ -123,7 +116,7 @@ bool everybodyfriendly = false;
 bool combat = false, combattoggle = false;
 bool assailant[MAXPLAYERS];
 bool oassailant[MAXPLAYERS];
-Uint32 nummonsters = 0;
+uint32_t nummonsters = 0;
 bool gamePaused = false;
 bool intro = true;
 int introstage = -1;
@@ -172,7 +165,6 @@ SDL_Cursor* cursorArrow, *cursorPencil, *cursorBrush, *cursorSelect, *cursorFill
 int* palette;
 
 // video definitions
-polymodel_t* polymodels = NULL;
 list_t ttfTextHash[HASH_SIZE];
 TTF_Font* ttf8 = NULL;
 TTF_Font* ttf12 = NULL;
@@ -183,18 +175,17 @@ SDL_Surface* font16x16_bmp = NULL;
 SDL_Surface* fancyWindow_bmp = NULL;
 SDL_Surface** sprites = NULL;
 SDL_Surface** tiles = NULL;
-Uint32 imgref = 1, vboref = 1;
-GLuint* texid = NULL;
+uint32_t imgref = 1, vboref = 1;
 bool disablevbos = false;
-Uint32 fov = 65;
+uint32_t fov = 65;
 //GLuint *vboid=NULL, *vaoid=NULL;
 SDL_Surface** allsurfaces;
-Uint32 numsprites, numtiles, nummodels;
+uint32_t numsprites, numtiles, nummodels;
 bool* animatedtiles = NULL, *lavatiles = NULL;
 int rscale = 1;
-real_t vidgamma = 1.0f;
-real_t* zbuffer = NULL;
-Sint32* lightmap = NULL;
+float vidgamma = 1.0f;
+float* zbuffer = NULL;
+int32_t* lightmap = NULL;
 bool* vismap = NULL;
 bool mode3d = false;
 
@@ -214,8 +205,8 @@ SDL_Surface* cross_bmp = NULL;
 int shaking = 0, bobbing = 0;
 bool fadeout = false, fadefinished = false;
 int fadealpha = 0;
-real_t camera_shakex;
-real_t camera_shakex2;
+float camera_shakex;
+float camera_shakex2;
 int camera_shakey;
 int camera_shakey2;
 
@@ -224,13 +215,11 @@ char tempstr[1024];
 char maptoload[256], configtoload[256];
 bool loadingmap = false, genmap = false, loadingconfig = false;
 bool deleteallbuttons = false;
-Uint32 cursorflash = 0;
+uint32_t cursorflash = 0;
 
 bool no_sound = false;
 
 //Entity *players[4];
-
-hit_t hit;
 
 /*-------------------------------------------------------------------------------
 
@@ -288,7 +277,7 @@ int concatedStringLength(char* str, ...)
 
 -------------------------------------------------------------------------------*/
 
-int sgn(real_t x)
+int sgn(float x)
 {
 	return (x > 0) - (x < 0);
 }

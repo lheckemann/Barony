@@ -9,7 +9,6 @@
 
 -------------------------------------------------------------------------------*/
 
-#include "main.hpp"
 #include "game.hpp"
 #include "stat.hpp"
 #include "messages.hpp"
@@ -108,7 +107,7 @@ void actBeartrap(Entity* my)
 					if ( entity->behavior == &actPlayer )
 					{
 						int player = entity->skill[2];
-						Uint32 color = SDL_MapRGB(mainsurface->format, 255, 0, 0);
+						uint32_t color = SDL_MapRGB(mainsurface->format, 255, 0, 0);
 						messagePlayerColor(player, color, language[454]);
 						if ( player > 0 )
 						{
