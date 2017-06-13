@@ -10,7 +10,6 @@
 -------------------------------------------------------------------------------*/
 
 #include "main.hpp"
-#include "hash.hpp"
 #include "entity.hpp"
 #include "prng.hpp"
 
@@ -172,7 +171,6 @@ int* palette;
 
 // video definitions
 polymodel_t* polymodels = NULL;
-list_t ttfTextHash[HASH_SIZE];
 TTF_Font* ttf8 = NULL;
 TTF_Font* ttf12 = NULL;
 TTF_Font* ttf16 = NULL;

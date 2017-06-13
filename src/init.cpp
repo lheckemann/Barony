@@ -14,7 +14,6 @@
 #include "files.hpp"
 #include "sound.hpp"
 #include "prng.hpp"
-#include "hash.hpp"
 #include "init.hpp"
 #include "net.hpp"
 #ifdef STEAMWORKS
@@ -80,11 +79,6 @@ int initApp(char* title, int fullscreen)
 	light_l.last = NULL;
 	entitiesdeleted.first = NULL;
 	entitiesdeleted.last = NULL;
-	for ( c = 0; c < HASH_SIZE; c++ )
-	{
-		ttfTextHash[c].first = NULL;
-		ttfTextHash[c].last = NULL;
-	}
 	map.entities = NULL;
 	map.tiles = NULL;
 
@@ -1869,11 +1863,6 @@ int deinitApp()
 	if ( vismap != NULL )
 	{
 		free(vismap);
-	}
-
-	for ( c = 0; c < HASH_SIZE; c++ )
-	{
-		list_FreeAll(&ttfTextHash[c]);
 	}
 
 	// free textures

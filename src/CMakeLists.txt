@@ -77,7 +77,6 @@ list(APPEND GAME_SOURCES
 	"${CMAKE_CURRENT_SOURCE_DIR}/prng.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/scores.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/steam.cpp"
-	"${CMAKE_CURRENT_SOURCE_DIR}/hash.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/player.cpp"
 )
 
@@ -97,7 +96,6 @@ list(APPEND EDITOR_SOURCES
 	"${CMAKE_CURRENT_SOURCE_DIR}/objects.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/entity_editor.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/list.cpp"
-	"${CMAKE_CURRENT_SOURCE_DIR}/hash.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/files.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/editor.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/sound.cpp"

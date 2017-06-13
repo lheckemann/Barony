@@ -9,10 +9,11 @@
 
 -------------------------------------------------------------------------------*/
 
+#include <map>
+
 #include "main.hpp"
 #include "draw.hpp"
 #include "files.hpp"
-#include "hash.hpp"
 #include "entity.hpp"
 #include "player.hpp"
 
@@ -1413,43 +1414,34 @@ void drawWindowFancy(int x1, int y1, int x2, int y2)
 -------------------------------------------------------------------------------*/
 
 SDL_Rect errorRect = { 0 };
+static std::map<std::tuple<std::string, TTF_Font*, bool>, SDL_Surface*> textMap;
 
 SDL_Rect ttfPrintTextColor( TTF_Font* font, int x, int y, Uint32 color, bool outline, const char* str )
 {
 	SDL_Rect pos = { x, y, 0, 0 };
 	SDL_Surface* surf;
-	int c;
 
 	if ( !str )
 	{
 		return errorRect;
 	}
-	char newStr[1024] = { 0 };
-	strcpy(newStr, str);
 
-	// tokenize string
-	for ( c = 0; c < strlen(newStr) + 1; c++ )
-	{
-		if ( newStr[c] == '\n' || newStr[c] == '\r' )
-		{
-			int offY = 0;
-			if ( newStr[c] == '\n' )
-			{
-				offY = TTF_FontHeight(font);
-			}
-			newStr[c] = 0;
-			ttfPrintTextColor(font, x, y + offY, color, outline, (char*)&newStr[c + 1]);
-			break;
-		}
-		else if ( newStr[c] == 0 )
-		{
-			break;
-		}
+	std::string newStr(str);
+	std::string::size_type breakPos = 0;
+	while ((breakPos = newStr.find_first_of("\n\r")) != std::string::npos) {
+		int offY = 0;
+		if (newStr[breakPos] == '\n')
+			offY = TTF_FontHeight(font);
+
+		ttfPrintTextColor(font, x, y + offY, color, outline, str + breakPos + 1);
+		newStr.erase(breakPos, newStr.length());
 	}
 
 	// retrieve text surface
-	if ( (surf = ttfTextHashRetrieve(ttfTextHash, newStr, font, outline)) == NULL )
-	{
+	try {
+		surf = textMap.at(std::make_tuple(newStr.c_str(), font, outline));
+	}
+	catch (std::out_of_range) {
 		// create the text outline surface
 		if ( outline )
 		{
@@ -1462,12 +1454,12 @@ SDL_Rect ttfPrintTextColor( TTF_Font* font, int x, int y, Uint32 color, bool out
 				TTF_SetFontOutline(font, 2);
 			}
 			SDL_Color sdlColorBlack = { 0, 0, 0, 255 };
-			surf = TTF_RenderUTF8_Blended(font, newStr, sdlColorBlack);
+			surf = TTF_RenderUTF8_Blended(font, newStr.c_str(), sdlColorBlack);
 		}
 		else
 		{
 			int w, h;
-			TTF_SizeUTF8(font, newStr, &w, &h);
+			TTF_SizeUTF8(font, newStr.c_str(), &w, &h);
 			if ( font == ttf8 )
 			{
 				surf = SDL_CreateRGBSurface(0, w + 2, h + 2,
@@ -1493,7 +1485,7 @@ SDL_Rect ttfPrintTextColor( TTF_Font* font, int x, int y, Uint32 color, bool out
 		// create the text surface
 		TTF_SetFontOutline(font, 0);
 		SDL_Color sdlColorWhite = { 255, 255, 255, 255 };
-		SDL_Surface* textSurf = TTF_RenderUTF8_Blended(font, newStr, sdlColorWhite);
+		SDL_Surface* textSurf = TTF_RenderUTF8_Blended(font, newStr.c_str(), sdlColorWhite);
 
 		// combine the surfaces
 		if ( font == ttf8 )
@@ -1513,11 +1505,7 @@ SDL_Rect ttfPrintTextColor( TTF_Font* font, int x, int y, Uint32 color, bool out
 		glLoadTexture(allsurfaces[imgref], imgref);
 		imgref++;
 
-		// store the surface in the text surface cache
-		if ( !ttfTextHashStore(ttfTextHash, newStr, font, outline, surf) )
-		{
-			printlog("warning: failed to store text outline surface with imgref %d\n", imgref - 1);
-		}
+		textMap[std::make_tuple(newStr.c_str(), font, outline)] = surf;
 	}
 
 	// draw the text surface

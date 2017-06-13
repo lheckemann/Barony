@@ -449,11 +449,8 @@ extern SDLNet_SocketSet tcpset;
 #define MAXTEXTURES 10240
 #define MAXBUFFERS 256
 
-#include "hash.hpp"
-
 // various definitions
 extern map_t map;
-extern list_t ttfTextHash[HASH_SIZE];
 extern TTF_Font* ttf8;
 #define TTF8_WIDTH 7
 #define TTF8_HEIGHT 12
