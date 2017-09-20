@@ -118,7 +118,7 @@ void castSpellInit(Uint32 caster_uid, spell_t* spell)
     // Check to prevent Mana loss if there are no valid Items to be processed by Identify Spell
     if ( spell->ID == SPELL_IDENTIFY )
     {
-        if ( itemModifyingGUI->areThereValidItems(0) != true )
+        if ( itemModifyingGUI->AreThereValidItems(0) != true )
         {
             return;
         }
@@ -127,7 +127,7 @@ void castSpellInit(Uint32 caster_uid, spell_t* spell)
     // Check to prevent Mana loss if there are no valid Items to be processed by Remove Curse Spell
     if ( spell->ID == SPELL_REMOVECURSE )
     {
-        if ( itemModifyingGUI->areThereValidItems(1) != true )
+        if ( itemModifyingGUI->AreThereValidItems(1) != true )
         {
             return;
         }
@@ -547,7 +547,7 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
 					else
 					{
 						// Open ItemModifyingGUI as Identify GUI
-                        itemModifyingGUI->openItemModifyingGUI(0, nullptr);
+                        itemModifyingGUI->OpenGUI(0, nullptr);
 					}
 				}
 			}
@@ -577,7 +577,7 @@ Entity* castSpell(Uint32 caster_uid, spell_t* spell, bool using_magicstaff, bool
 					else
 					{
                         // Open ItemModifyingGUI as Remove Curse GUI
-                        itemModifyingGUI->openItemModifyingGUI(1, nullptr);
+                        itemModifyingGUI->OpenGUI(1, nullptr);
 					}
 				}
 			}
