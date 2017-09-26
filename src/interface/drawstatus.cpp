@@ -580,10 +580,10 @@ void drawStatus()
 							badpotion = true;
 						}
 
-                        // Shift + Right click on Item in Player Inventory will starting Appraising
+						// Shift + Right click on Item in Player Inventory will starting Appraising
 						if ( keystatus[SDL_SCANCODE_LSHIFT] || keystatus[SDL_SCANCODE_RSHIFT] )
 						{
-                            appraisalGUI->OpenGUI(item, players[clientnum]->entity);
+							appraisalGUI->OpenGUI(item, players[clientnum]->entity);
 						}
 						else
 						{
