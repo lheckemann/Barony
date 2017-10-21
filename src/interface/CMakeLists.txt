@@ -9,7 +9,6 @@ list(APPEND GAME_SOURCES
 	"${CMAKE_CURRENT_SOURCE_DIR}/updatecharactersheet.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/updaterightsidebar.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/updatechestinventory.cpp"
-	"${CMAKE_CURRENT_SOURCE_DIR}/identify_and_appraise.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/playerinventory.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/bookgui.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/shopgui.cpp"
