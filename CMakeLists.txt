@@ -52,7 +52,7 @@ set (Windows 0)
 set (Linux 0)
 set (NOT_DWORD_DEFINED 0)
 if( NOT WIN32 )
-  set(FLAGS "-Wall -ffast-math -funroll-loops -fstrict-aliasing")
+  set(FLAGS "-Wall -Wformat-security -ffast-math -funroll-loops -fstrict-aliasing")
   set(RELEASE_FLAGS "-O3")
   if(PANDORA)
     # Pandora-specific optimisations
