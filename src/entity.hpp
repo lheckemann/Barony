@@ -637,6 +637,8 @@ public:
 	 * Calculations for reductions is outlined in this function
 	 */
 	void SetEntityOnFire();
+
+	std::vector<Entity*> bodyparts;
 };
 
 extern list_t entitiesToDelete[MAXPLAYERS];
