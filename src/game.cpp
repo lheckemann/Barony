@@ -1315,7 +1315,7 @@ void gameLogic(void)
 										}
 										clipMove(&entity->x, &entity->y, entity->vel_x, entity->vel_y, entity);
 										clipMove(&entity->new_x, &entity->new_y, entity->vel_x, entity->vel_y, entity);
-										if ( entity->behavior == &actPlayer )
+										if ( entity->behavior == &actPlayer || entity->behavior == &actMonster )
 										{
 											for (Entity *bodypart : entity->bodyparts)
 											{
@@ -1323,21 +1323,6 @@ void gameLogic(void)
 												bodypart->y += entity->y - oy;
 												bodypart->new_x += entity->new_x - onewx;
 												bodypart->new_y += entity->new_y - onewy;
-											}
-										}
-										if ( entity->behavior == &actMonster )
-										{
-											node_t* node2;
-											for ( node2 = map.entities->first; node2 != NULL; node2 = node2->next )
-											{
-												Entity* bodypart = (Entity*)node2->element;
-												if ( bodypart->skill[2] == entity->getUID() && bodypart->parent == entity->getUID() )
-												{
-													bodypart->x += entity->x - ox;
-													bodypart->y += entity->y - oy;
-													bodypart->new_x += entity->new_x - onewx;
-													bodypart->new_y += entity->new_y - onewy;
-												}
 											}
 										}
 									}

@@ -62,6 +62,7 @@ void initDevil(Entity* my, Stat* myStats)
 	node->element = entity;
 	node->deconstructor = &emptyDeconstructor;
 	node->size = sizeof(Entity*);
+	my->bodyparts.push_back(entity);
 
 	// right bicep
 	entity = newEntity(305, 0, map.entities);
@@ -80,6 +81,7 @@ void initDevil(Entity* my, Stat* myStats)
 	node->element = entity;
 	node->deconstructor = &emptyDeconstructor;
 	node->size = sizeof(Entity*);
+	my->bodyparts.push_back(entity);
 
 	// right forearm
 	entity = newEntity(306, 0, map.entities);
@@ -98,6 +100,7 @@ void initDevil(Entity* my, Stat* myStats)
 	node->element = entity;
 	node->deconstructor = &emptyDeconstructor;
 	node->size = sizeof(Entity*);
+	my->bodyparts.push_back(entity);
 
 	// left bicep
 	entity = newEntity(307, 0, map.entities);
@@ -116,6 +119,7 @@ void initDevil(Entity* my, Stat* myStats)
 	node->element = entity;
 	node->deconstructor = &emptyDeconstructor;
 	node->size = sizeof(Entity*);
+	my->bodyparts.push_back(entity);
 
 	// left forearm
 	entity = newEntity(308, 0, map.entities);
@@ -134,6 +138,7 @@ void initDevil(Entity* my, Stat* myStats)
 	node->element = entity;
 	node->deconstructor = &emptyDeconstructor;
 	node->size = sizeof(Entity*);
+	my->bodyparts.push_back(entity);
 }
 
 void actDevilLimb(Entity* my)
